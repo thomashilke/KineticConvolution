@@ -27,5 +27,10 @@ namespace KineticConvolution
         {
             return directions.IsShortestRange() && direction.BelongsToShortestRange(directions);
         }
+
+        public static Direction Opposite(this Direction direction)
+        {
+            return new Direction(direction.X.Opposite(), direction.Y.Opposite());
+        }
     }
 }

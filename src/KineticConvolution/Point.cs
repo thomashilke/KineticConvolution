@@ -2,8 +2,8 @@ namespace KineticConvolution
 {
     public class Point
     {
-        IAlgebraicNumber X { get; }
+        public IAlgebraicNumber X { get; }
 
-        IAlgebraicNumber Y { get; }
+        public IAlgebraicNumber Y { get; }
     }
 }
