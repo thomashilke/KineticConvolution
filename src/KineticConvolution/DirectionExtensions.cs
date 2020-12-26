@@ -22,10 +22,10 @@ namespace KineticConvolution
                 return false;
             }
         }
-        
+
         public static bool BelongsTo(this Direction direction, DirectionRange directions)
         {
-            return directions.IsShortestRange() && direction.BelongsToShortestRange(directions);
+            return !(directions.IsShortestRange() ^ direction.BelongsToShortestRange(directions));
         }
 
         public static Direction Opposite(this Direction direction)

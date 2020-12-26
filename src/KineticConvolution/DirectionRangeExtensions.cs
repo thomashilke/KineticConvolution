@@ -1,4 +1,4 @@
-using System.ComponentModel;
+using System;
 
 namespace KineticConvolution
 {
@@ -17,10 +17,7 @@ namespace KineticConvolution
                         .IsStrictlyPositive();
 
                 default:
-                    throw new InvalidEnumArgumentException(
-                        nameof(directions),
-                        (int)directions.Orientation,
-                        typeof(Orientation));
+                    throw new NotSupportedException();
             }
         }
     }
