@@ -20,5 +20,23 @@ namespace KineticConvolution
                     throw new NotSupportedException();
             }
         }
+
+        public static DirectionRange Reverse(this DirectionRange directions)
+        {
+            return new DirectionRange(
+                directions.End,
+                directions.Start,
+                directions.Orientation == Orientation.CounterClockwise
+                ? Orientation.Clockwise
+                : Orientation.CounterClockwise);
+        }
+
+        public static DirectionRange Opposite(this DirectionRange directions)
+        {
+            return new DirectionRange(
+                directions.Start.Opposite(),
+                directions.End.Opposite(),
+                directions.Orientation);
+        }
     }
 }

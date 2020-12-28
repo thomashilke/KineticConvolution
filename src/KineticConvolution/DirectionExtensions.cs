@@ -32,5 +32,23 @@ namespace KineticConvolution
         {
             return new Direction(direction.X.Opposite(), direction.Y.Opposite());
         }
+
+        public static Direction Normalized(this Direction direction)
+        {
+            var length = direction.X.MultipliedBy(direction.X)
+                .Add(direction.Y.MultipliedBy(direction.Y))
+                .SquareRoot();
+
+            return new Direction(
+                direction.X.DividedBy(length),
+                direction.Y.DividedBy(length));
+        }
+
+        public static Direction Scale(this Direction direction, IAlgebraicNumber scalar)
+        {
+            return new Direction(
+                direction.X.MultipliedBy(scalar),
+                direction.Y.MultipliedBy(scalar));
+        }
     }
 }

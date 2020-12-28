@@ -2,7 +2,7 @@ using System;
 
 namespace KineticConvolution
 {
-    public class Direction
+    public class Direction: IEquatable<Direction>
     {
         public Direction(IAlgebraicNumber x, IAlgebraicNumber y)
         {
@@ -30,5 +30,13 @@ namespace KineticConvolution
         public IAlgebraicNumber X { get; }
 
         public IAlgebraicNumber Y { get; }
+
+        public bool Equals(Direction d)
+        {
+            return
+                DirectionHelper.Determinant(this, d).IsZero() &&
+                X.Sign() == d.X.Sign() &&
+                Y.Sign() == d.Y.Sign();
+        }
     }
 }

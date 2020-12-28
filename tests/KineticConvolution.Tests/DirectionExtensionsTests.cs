@@ -37,7 +37,7 @@ namespace KineticConvolutionTests
             var range = new DirectionRange(northEast, northWest, Orientation.CounterClockwise);
 
             var perturbation = 1.0e-2;
-            
+
             var d1 = new Direction(
                 DoubleNumber.FromDouble(1.0 + perturbation),
                 DoubleNumber.FromDouble(1.0));

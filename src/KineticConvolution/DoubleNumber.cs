@@ -7,7 +7,7 @@ namespace KineticConvolution
         private readonly double _value;
 
         public double Value => _value;
-        
+
         public IAlgebraicNumber Add(IAlgebraicNumber operand)
         {
             if (operand is DoubleNumber n)
