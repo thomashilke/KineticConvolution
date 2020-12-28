@@ -1,6 +1,8 @@
+using System;
+
 namespace KineticConvolution
 {
-    public interface IAlgebraicNumber
+    public interface IAlgebraicNumber : IEquatable<IAlgebraicNumber>
     {
         IAlgebraicNumber Add(IAlgebraicNumber number);
 

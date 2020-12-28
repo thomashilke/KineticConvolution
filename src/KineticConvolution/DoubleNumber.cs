@@ -99,5 +99,25 @@ namespace KineticConvolution
         {
             _value = value;
         }
+
+        public bool Equals(IAlgebraicNumber number)
+        {
+            if (number is DoubleNumber n)
+            {
+                return n._value == _value;
+            }
+
+            return false;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if (obj is IAlgebraicNumber number)
+            {
+                return Equals(number);
+            }
+
+            return false;
+        }
     }
 }
