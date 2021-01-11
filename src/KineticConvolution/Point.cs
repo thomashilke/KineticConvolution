@@ -31,6 +31,11 @@ namespace Hilke.KineticConvolution
                 && Y.Equals(other.Y);
         }
 
+        public Direction DirectionTo(Point target) =>
+            new Direction(
+                X.Subtract(target.X),
+                Y.Subtract(target.Y));
+
         /// <inheritdoc />
         public override bool Equals(object? obj)
         {

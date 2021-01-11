@@ -25,9 +25,8 @@ namespace Hilke.KineticConvolution.Tests
             double directionEndX,
             double directionEndY,
             Orientation orientation,
-            double radius)
-        {
-            return new Arc(
+            double radius) =>
+            Arc.Create(
                 1,
                 new Point(DoubleNumber.FromDouble(centerX),
                           DoubleNumber.FromDouble(centerY)),
@@ -40,7 +39,6 @@ namespace Hilke.KineticConvolution.Tests
                         DoubleNumber.FromDouble(directionEndY)),
                     orientation),
                 DoubleNumber.FromDouble(radius));
-        }
 
         [Test]
         public void When_Direction_Ranges_Are_Included_Then_Intersection_Should_Be_The_Innermost_Range()

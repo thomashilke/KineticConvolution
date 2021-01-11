@@ -49,6 +49,8 @@ namespace Hilke.KineticConvolution
                 && Y.Sign() == other.Y.Sign();
         }
 
+        public Direction NormalDirection() => new Direction(Y.Opposite(), X);
+
         /// <inheritdoc />
         public override bool Equals(object? obj)
         {
