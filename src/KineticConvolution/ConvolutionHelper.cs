@@ -2,11 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using static Hilke.KineticConvolution.Algorithms;
-
 namespace Hilke.KineticConvolution
 {
-    public static class ConvolutionHelper
+    internal static class ConvolutionHelper
     {
         public static IEnumerable<ConvolvedTracing> Convolve(Tracing tracing1, Tracing tracing2) =>
             (tracing1, tracing2) switch
@@ -22,19 +20,19 @@ namespace Hilke.KineticConvolution
         {
             if (arc1.Directions.Orientation == arc2.Directions.Orientation)
             {
-                return Intersection(arc1.Directions, arc2.Directions)
+                return arc1.Directions.Intersection(arc2.Directions)
                        .Select(
                            range =>
-                               Tracing.CreateArc(1, Sum(arc1.Center, arc2.Center), range, arc1.Radius.Add(arc2.Radius)))
+                               Tracing.CreateArc(1, arc1.Center.Sum(arc2.Center), range, arc1.Radius.Add(arc2.Radius)))
                        .Select(arc => new ConvolvedTracing(arc, arc1, arc2));
             }
 
-            return Intersection(arc1.Directions, arc2.Directions.Opposite())
+            return arc1.Directions.Intersection(arc2.Directions.Opposite())
                    .Select(
                        range =>
                            Tracing.CreateArc(
                                1,
-                               Sum(arc1.Center, arc2.Center),
+                               arc1.Center.Sum(arc2.Center),
                                range,
                                arc1.Radius.Subtract(arc2.Radius)))
                    .Select(arc => new ConvolvedTracing(arc, arc1, arc2));
@@ -49,11 +47,9 @@ namespace Hilke.KineticConvolution
                         {
                             new ConvolvedTracing(
                                 Tracing.CreateSegment(
-                                    Sum(
-                                        segment.Start,
+                                    segment.Start.Sum(
                                         arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
-                                    Sum(
-                                        segment.End,
+                                    segment.End.Sum(
                                         arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
                                     1),
                                 arc,
@@ -66,12 +62,8 @@ namespace Hilke.KineticConvolution
                         {
                             new ConvolvedTracing(
                                 Tracing.CreateSegment(
-                                    Sum(
-                                        segment.Start,
-                                        arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
-                                    Sum(
-                                        segment.End,
-                                        arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
+                                    segment.Start.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
+                                    segment.End.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
                                     1),
                                 arc,
                                 segment)

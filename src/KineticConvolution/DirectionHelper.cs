@@ -1,6 +1,6 @@
 namespace Hilke.KineticConvolution
 {
-    public static class DirectionHelper
+    internal static class DirectionHelper
     {
         public static IAlgebraicNumber Determinant(Direction d1, Direction d2)
         {

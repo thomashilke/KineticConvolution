@@ -45,6 +45,9 @@ namespace Hilke.KineticConvolution
                 X.Subtract(target.X),
                 Y.Subtract(target.Y));
 
+        public Point Sum(Point point2) =>
+            new Point(X.Add(point2.X), Y.Add(point2.Y));
+
         /// <inheritdoc />
         public override bool Equals(object? obj)
         {

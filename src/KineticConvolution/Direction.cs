@@ -49,6 +49,44 @@ namespace Hilke.KineticConvolution
                 && Y.Sign() == other.Y.Sign();
         }
 
+        public int Compare(Direction direction1, Direction direction2)
+        {
+            if (direction1.Equals(direction2))
+            {
+                return 0;
+            }
+
+            return direction1.BelongsTo(
+                       new DirectionRange(
+                           this,
+                           direction2,
+                           Orientation.CounterClockwise))
+                       ? 1
+                       : -1;
+        }
+
+        public Direction FirstOfCounterClockwise(
+            Direction direction1,
+            Direction direction2) =>
+            Compare(direction1, direction2) switch
+            {
+                -1 => direction2,
+                1 => direction1,
+                0 => direction1,
+                _ => throw new NotSupportedException() // TODO add a message
+            };
+
+        public Direction LastOfCounterClockwise(
+            Direction direction1,
+            Direction direction2) =>
+            Compare(direction1, direction2) switch
+            {
+                -1 => direction1,
+                1 => direction2,
+                0 => direction1,
+                _ => throw new NotSupportedException() // TODO add a message
+            };
+
         public bool BelongsToShortestRange(DirectionRange directions)
         {
             var s = DirectionHelper.Determinant(directions.Start, directions.End);
