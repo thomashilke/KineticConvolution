@@ -4,11 +4,8 @@ namespace Hilke.KineticConvolution
 {
     public abstract class Tracing
     {
-        public Fraction Weight { get; }
+        public Tracing(Fraction weight) => Weight = weight;
 
-        public Tracing(Fraction weight)
-        {
-            Weight = weight;
-        }
+        public Fraction Weight { get; }
     }
 }

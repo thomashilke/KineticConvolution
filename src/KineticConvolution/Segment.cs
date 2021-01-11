@@ -6,10 +6,6 @@ namespace Hilke.KineticConvolution
 {
     public class Segment : Tracing
     {
-        public Point End { get; }
-
-        public Point Start { get; }
-
         public Segment(Fraction weight, Point start, Point end)
             : base(weight)
         {
@@ -17,5 +13,9 @@ namespace Hilke.KineticConvolution
 
             End = end ?? throw new ArgumentNullException(nameof(end));
         }
+
+        public Point End { get; }
+
+        public Point Start { get; }
     }
 }

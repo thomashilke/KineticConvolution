@@ -5,29 +5,69 @@ namespace Hilke.KineticConvolution
 {
     public static class Algorithms
     {
-        public static Point Sum(Point point1, Point point2)
-        {
-            return new Point(point1.X.Add(point2.X), point1.Y.Add(point2.Y));
-        }
+        public static Point Sum(Point point1, Point point2) =>
+            new Point(point1.X.Add(point2.X), point1.Y.Add(point2.Y));
 
-        public static IEnumerable<DirectionRange> Intersection(
-            DirectionRange range1, DirectionRange range2)
+        public static IEnumerable<DirectionRange> Intersection(DirectionRange range1, DirectionRange range2)
         {
-            var counterClockwiseRange1 = range1.Orientation == Orientation.CounterClockwise
-                ? range1
-                : range1.Reverse();
+            var counterClockwiseRange1 =
+                range1.Orientation == Orientation.CounterClockwise
+                    ? range1
+                    : range1.Reverse();
 
-            var counterClockwiseRange2 = range2.Orientation == Orientation.CounterClockwise
-                ? range2
-                : range2.Reverse();
+            var counterClockwiseRange2 =
+                range2.Orientation == Orientation.CounterClockwise
+                    ? range2
+                    : range2.Reverse();
 
             return CounterClockwiseRangesIntersection(
                 counterClockwiseRange1,
                 counterClockwiseRange2);
         }
 
+        public static int Compare(Direction reference, Direction direction1, Direction direction2)
+        {
+            if (direction1.Equals(direction2))
+            {
+                return 0;
+            }
+
+            return direction1.BelongsTo(
+                       new DirectionRange(
+                           reference,
+                           direction2,
+                           Orientation.CounterClockwise))
+                       ? 1
+                       : -1;
+        }
+
+        public static Direction FirstOfCounterClockwise(
+            Direction reference,
+            Direction direction1,
+            Direction direction2) =>
+            Compare(reference, direction1, direction2) switch
+            {
+                -1 => direction2,
+                1 => direction1,
+                0 => direction1,
+                _ => throw new NotSupportedException() // TODO add a message
+            };
+
+        public static Direction LastOfCounterClockwise(
+            Direction reference,
+            Direction direction1,
+            Direction direction2) =>
+            Compare(reference, direction1, direction2) switch
+            {
+                -1 => direction1,
+                1 => direction2,
+                0 => direction1,
+                _ => throw new NotSupportedException() // TODO add a message
+            };
+
         private static IEnumerable<DirectionRange> CounterClockwiseRangesIntersection(
-            DirectionRange range1, DirectionRange range2)
+            DirectionRange range1,
+            DirectionRange range2)
         {
             if (range1.Orientation != Orientation.CounterClockwise)
             {
@@ -63,46 +103,6 @@ namespace Hilke.KineticConvolution
                     range1.Start,
                     range2.End,
                     Orientation.CounterClockwise);
-            }
-        }
-
-        public static int Compare(Direction reference, Direction direction1, Direction direction2)
-        {
-            if (direction1.Equals(direction2))
-            {
-                return 0;
-            }
-
-            return direction1.BelongsTo(
-                new DirectionRange(
-                    reference,
-                    direction2,
-                    Orientation.CounterClockwise))
-                ? 1
-                : -1;
-        }
-
-        public static Direction FirstOfCounterClockwise(
-            Direction reference, Direction direction1, Direction direction2)
-        {
-            switch (Compare(reference, direction1, direction2))
-            {
-                case -1: return direction2;
-                case 1: return direction1;
-                case 0: return direction1;
-                default: throw new NotSupportedException();
-            }
-        }
-
-        public static Direction LastOfCounterClockwise(
-            Direction reference, Direction direction1, Direction direction2)
-        {
-            switch (Compare(reference, direction1, direction2))
-            {
-                case -1: return direction1;
-                case 1: return direction2;
-                case 0: return direction1;
-                default: throw new NotSupportedException();
             }
         }
     }

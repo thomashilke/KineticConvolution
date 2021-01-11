@@ -6,7 +6,7 @@ namespace Hilke.KineticConvolution
         {
             var a = d1.X.MultipliedBy(d2.Y);
             var b = d1.Y.MultipliedBy(d2.X);
-            return a.Substract(b);
+            return a.Subtract(b);
         }
     }
 }

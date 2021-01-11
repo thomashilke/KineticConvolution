@@ -2,12 +2,10 @@ namespace Hilke.KineticConvolution
 {
     public static class SegmentExtensions
     {
-        public static Direction Direction(this Segment segment)
-        {
-            return new Direction(
-                segment.End.X.Substract(segment.Start.X),
-                segment.End.Y.Substract(segment.Start.Y));
-        }
+        public static Direction Direction(this Segment segment) =>
+            new Direction(
+                segment.End.X.Subtract(segment.Start.X),
+                segment.End.Y.Subtract(segment.Start.Y));
 
         public static Direction NormalDirection(this Segment segment)
         {
