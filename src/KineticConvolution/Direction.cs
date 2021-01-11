@@ -49,6 +49,47 @@ namespace Hilke.KineticConvolution
                 && Y.Sign() == other.Y.Sign();
         }
 
+        public bool BelongsToShortestRange(DirectionRange directions)
+        {
+            var s = DirectionHelper.Determinant(directions.Start, directions.End);
+            if (s.IsStrictlyPositive())
+            {
+                return
+                    DirectionHelper.Determinant(directions.Start, this).IsStrictlyPositive()
+                 && DirectionHelper.Determinant(this, directions.End).IsStrictlyPositive();
+            }
+
+            if (s.IsStrictlyNegative())
+            {
+                return
+                    DirectionHelper.Determinant(directions.Start, this).IsStrictlyPositive()
+                 && DirectionHelper.Determinant(this, directions.End).IsStrictlyPositive();
+            }
+
+            return false;
+        }
+
+        public bool BelongsTo(DirectionRange directions) =>
+            !(directions.IsShortestRange() ^ BelongsToShortestRange(directions));
+
+        public Direction Opposite() => new Direction(X.Opposite(), Y.Opposite());
+
+        public Direction Normalized()
+        {
+            var length = X.MultipliedBy(X)
+                          .Add(Y.MultipliedBy(Y))
+                          .SquareRoot();
+
+            return new Direction(
+                X.DividedBy(length),
+                Y.DividedBy(length));
+        }
+
+        public Direction Scale(IAlgebraicNumber scalar) =>
+            new Direction(
+                X.MultipliedBy(scalar),
+                Y.MultipliedBy(scalar));
+
         public Direction NormalDirection() => new Direction(Y.Opposite(), X);
 
         /// <inheritdoc />

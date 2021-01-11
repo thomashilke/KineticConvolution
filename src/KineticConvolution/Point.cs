@@ -31,6 +31,15 @@ namespace Hilke.KineticConvolution
                 && Y.Equals(other.Y);
         }
 
+        public Point Translate(Direction direction, IAlgebraicNumber length)
+        {
+            var normalizedDirection = direction.Normalized();
+
+            return new Point(
+                X.Add(normalizedDirection.X.MultipliedBy(length)),
+                Y.Add(normalizedDirection.Y.MultipliedBy(length)));
+        }
+
         public Direction DirectionTo(Point target) =>
             new Direction(
                 X.Subtract(target.X),

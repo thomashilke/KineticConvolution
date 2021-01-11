@@ -30,5 +30,31 @@ namespace Hilke.KineticConvolution
         public Direction End { get; }
 
         public Orientation Orientation { get; }
+
+        public bool IsShortestRange() =>
+            Orientation switch
+            {
+                Orientation.Clockwise =>
+                    DirectionHelper.Determinant(Start, End)
+                                   .IsStrictlyNegative(),
+                Orientation.CounterClockwise =>
+                    DirectionHelper.Determinant(Start, End)
+                                   .IsStrictlyPositive(),
+                _ => throw new NotSupportedException() // TODO add a message
+            };
+
+        public DirectionRange Reverse() =>
+            new DirectionRange(
+                End,
+                Start,
+                Orientation == Orientation.CounterClockwise
+                    ? Orientation.Clockwise
+                    : Orientation.CounterClockwise);
+
+        public DirectionRange Opposite() =>
+            new DirectionRange(
+                Start.Opposite(),
+                End.Opposite(),
+                Orientation);
     }
 }
