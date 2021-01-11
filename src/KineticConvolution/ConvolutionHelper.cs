@@ -25,14 +25,18 @@ namespace Hilke.KineticConvolution
                 return Intersection(arc1.Directions, arc2.Directions)
                        .Select(
                            range =>
-                               Arc.Create(1, Sum(arc1.Center, arc2.Center), range, arc1.Radius.Add(arc2.Radius)))
+                               Tracing.CreateArc(1, Sum(arc1.Center, arc2.Center), range, arc1.Radius.Add(arc2.Radius)))
                        .Select(arc => new ConvolvedTracing(arc, arc1, arc2));
             }
 
             return Intersection(arc1.Directions, arc2.Directions.Opposite())
                    .Select(
                        range =>
-                           Arc.Create(1, Sum(arc1.Center, arc2.Center), range, arc1.Radius.Subtract(arc2.Radius)))
+                           Tracing.CreateArc(
+                               1,
+                               Sum(arc1.Center, arc2.Center),
+                               range,
+                               arc1.Radius.Subtract(arc2.Radius)))
                    .Select(arc => new ConvolvedTracing(arc, arc1, arc2));
         }
 
@@ -44,7 +48,7 @@ namespace Hilke.KineticConvolution
                         ? new[]
                         {
                             new ConvolvedTracing(
-                                new Segment(
+                                Tracing.CreateSegment(
                                     Sum(
                                         segment.Start,
                                         arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
@@ -61,14 +65,14 @@ namespace Hilke.KineticConvolution
                         ? new[]
                         {
                             new ConvolvedTracing(
-                                new Segment(
-                                   Sum(
+                                Tracing.CreateSegment(
+                                    Sum(
                                         segment.Start,
                                         arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
                                     Sum(
                                         segment.End,
                                         arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
-                                   1),
+                                    1),
                                 arc,
                                 segment)
                         }

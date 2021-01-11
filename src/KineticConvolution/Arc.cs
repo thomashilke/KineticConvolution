@@ -6,7 +6,7 @@ namespace Hilke.KineticConvolution
 {
     public class Arc : Tracing
     {
-        private Arc(
+        internal Arc(
             Fraction weight,
             Point center,
             DirectionRange directions,
@@ -29,42 +29,5 @@ namespace Hilke.KineticConvolution
         public DirectionRange Directions { get; }
 
         public IAlgebraicNumber Radius { get; }
-
-        public static Arc Create(
-            Fraction weight,
-            Point center,
-            DirectionRange directions,
-            IAlgebraicNumber radius)
-        {
-            if (center == null)
-            {
-                throw new ArgumentNullException(nameof(center));
-            }
-
-            if (directions == null)
-            {
-                throw new ArgumentNullException(nameof(directions));
-            }
-
-            if (radius == null)
-            {
-                throw new ArgumentNullException(nameof(radius));
-            }
-
-            var start = center.Translate(directions.Start, radius);
-            var end = center.Translate(directions.End, radius);
-
-            var startNormalDirection = directions.Start.NormalDirection();
-            var startDirection = directions.Orientation == Orientation.Clockwise
-                                     ? startNormalDirection.Opposite()
-                                     : startNormalDirection;
-
-            var endNormalDirection = directions.End.NormalDirection();
-            var endDirection = directions.Orientation == Orientation.Clockwise
-                                   ? endNormalDirection.Opposite()
-                                   : endNormalDirection;
-
-            return new Arc(weight, center, directions, radius, start, end, startDirection, endDirection);
-        }
     }
 }
