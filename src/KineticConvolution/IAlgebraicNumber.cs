@@ -1,6 +1,6 @@
 using System;
 
-namespace KineticConvolution
+namespace Hilke.KineticConvolution
 {
     public interface IAlgebraicNumber : IEquatable<IAlgebraicNumber>
     {

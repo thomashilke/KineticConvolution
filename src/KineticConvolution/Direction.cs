@@ -1,6 +1,6 @@
 using System;
 
-namespace KineticConvolution
+namespace Hilke.KineticConvolution
 {
     public class Direction: IEquatable<Direction>
     {

@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 
-namespace KineticConvolution
+namespace Hilke.KineticConvolution
 {
     public static class Algorithms
     {

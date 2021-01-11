@@ -1,14 +1,12 @@
-using Fractions;
+using System.Linq;
 
 using FluentAssertions;
 
-using KineticConvolution;
+using Fractions;
 
 using NUnit.Framework;
 
-using System.Linq;
-
-namespace KineticConvolutionTests
+namespace Hilke.KineticConvolution.Tests
 {
     [TestFixture]
     public class ConvolutionHelperTests

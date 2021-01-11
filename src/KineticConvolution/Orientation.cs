@@ -1,4 +1,4 @@
-namespace KineticConvolution
+namespace Hilke.KineticConvolution
 {
     public enum Orientation
     {

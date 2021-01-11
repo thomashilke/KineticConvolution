@@ -1,6 +1,4 @@
-using System;
-
-namespace KineticConvolution
+namespace Hilke.KineticConvolution
 {
     public static class SegmentExtensions
     {

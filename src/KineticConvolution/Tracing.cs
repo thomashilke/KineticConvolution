@@ -1,8 +1,6 @@
 using Fractions;
 
-using System;
-
-namespace KineticConvolution
+namespace Hilke.KineticConvolution
 {
     public abstract class Tracing
     {

@@ -1,7 +1,7 @@
 using System;
 using System.ComponentModel;
 
-namespace KineticConvolution
+namespace Hilke.KineticConvolution
 {
     public class DirectionRange
     {

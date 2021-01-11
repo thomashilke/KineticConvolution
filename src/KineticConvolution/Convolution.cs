@@ -2,9 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-using static KineticConvolution.ConvolutionHelper;
+using static Hilke.KineticConvolution.ConvolutionHelper;
 
-namespace KineticConvolution
+namespace Hilke.KineticConvolution
 {
     public class ConvolvedTracing
     {
