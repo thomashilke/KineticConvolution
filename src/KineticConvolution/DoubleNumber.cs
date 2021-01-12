@@ -12,9 +12,9 @@ namespace Hilke.KineticConvolution
 
         public DoubleNumber Subtract(DoubleNumber operand) => new DoubleNumber(Value - operand.Value);
 
-        public DoubleNumber MultipliedBy(DoubleNumber operand) => new DoubleNumber(operand.Value * Value);
+        public DoubleNumber Multiply(DoubleNumber operand) => new DoubleNumber(operand.Value * Value);
 
-        public DoubleNumber DividedBy(DoubleNumber operand) => new DoubleNumber(Value / operand.Value);
+        public DoubleNumber Divide(DoubleNumber operand) => new DoubleNumber(Value / operand.Value);
 
         public DoubleNumber Inverse()
         {
@@ -23,7 +23,7 @@ namespace Hilke.KineticConvolution
                 return new DoubleNumber(1.0 / Value);
             }
 
-            throw new InvalidOperationException($"The inverse of 0.0 is undefined.");
+            throw new InvalidOperationException("The inverse of 0.0 is undefined.");
         }
 
         public DoubleNumber SquareRoot()

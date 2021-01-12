@@ -2,20 +2,26 @@ using Fractions;
 
 namespace Hilke.KineticConvolution
 {
-    public class Segment : Tracing
+    public class Segment<TAlgebraicNumber> : Tracing<TAlgebraicNumber>
+        where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
     {
-        internal Segment(Point start, Point end, Direction startDirection, Direction endDirection, Fraction weight)
+        internal Segment(
+            Point<TAlgebraicNumber> start,
+            Point<TAlgebraicNumber> end,
+            Direction<TAlgebraicNumber> startDirection,
+            Direction<TAlgebraicNumber> endDirection,
+            Fraction weight)
             : base(start, end, startDirection, endDirection, weight) { }
 
-        public Direction Direction() =>
-            new Direction(
+        public Direction<TAlgebraicNumber> Direction() =>
+            new Direction<TAlgebraicNumber>(
                 End.X.Subtract(Start.X),
                 End.Y.Subtract(Start.Y));
 
-        public Direction NormalDirection()
+        public Direction<TAlgebraicNumber> NormalDirection()
         {
             var direction = Direction();
-            return new Direction(direction.Y.Opposite(), direction.X);
+            return new Direction<TAlgebraicNumber>(direction.Y.Opposite(), direction.X);
         }
     }
 }

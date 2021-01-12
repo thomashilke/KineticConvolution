@@ -4,17 +4,18 @@ using Fractions;
 
 namespace Hilke.KineticConvolution
 {
-    public class Arc : Tracing
+    public class Arc<TAlgebraicNumber> : Tracing<TAlgebraicNumber>
+        where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
     {
         internal Arc(
             Fraction weight,
-            Point center,
-            DirectionRange directions,
-            IAlgebraicNumber radius,
-            Point start,
-            Point end,
-            Direction startDirection,
-            Direction endDirection)
+            Point<TAlgebraicNumber> center,
+            DirectionRange<TAlgebraicNumber> directions,
+            TAlgebraicNumber radius,
+            Point<TAlgebraicNumber> start,
+            Point<TAlgebraicNumber> end,
+            Direction<TAlgebraicNumber> startDirection,
+            Direction<TAlgebraicNumber> endDirection)
             : base(start, end, startDirection, endDirection, weight)
         {
             Center = center ?? throw new ArgumentNullException(nameof(center));
@@ -22,10 +23,10 @@ namespace Hilke.KineticConvolution
             Radius = radius ?? throw new ArgumentNullException(nameof(radius));
         }
 
-        public Point Center { get; }
+        public Point<TAlgebraicNumber> Center { get; }
 
-        public DirectionRange Directions { get; }
+        public DirectionRange<TAlgebraicNumber> Directions { get; }
 
-        public IAlgebraicNumber Radius { get; }
+        public TAlgebraicNumber Radius { get; }
     }
 }

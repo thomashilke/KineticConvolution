@@ -9,9 +9,9 @@ namespace Hilke.KineticConvolution
 
         TAlgebraicNumber Subtract(TAlgebraicNumber number);
 
-        TAlgebraicNumber MultipliedBy(TAlgebraicNumber number);
+        TAlgebraicNumber Multiply(TAlgebraicNumber number);
 
-        TAlgebraicNumber DividedBy(TAlgebraicNumber number);
+        TAlgebraicNumber Divide(TAlgebraicNumber number);
 
         TAlgebraicNumber Inverse();
 
