@@ -2,21 +2,22 @@ using System;
 
 namespace Hilke.KineticConvolution
 {
-    public interface IAlgebraicNumber : IEquatable<IAlgebraicNumber>
+    public interface IAlgebraicNumber<TAlgebraicNumber> : IEquatable<IAlgebraicNumber<TAlgebraicNumber>>
+        where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
     {
-        IAlgebraicNumber Add(IAlgebraicNumber number);
+        TAlgebraicNumber Add(TAlgebraicNumber number);
 
-        IAlgebraicNumber Subtract(IAlgebraicNumber number);
+        TAlgebraicNumber Subtract(TAlgebraicNumber number);
 
-        IAlgebraicNumber Multiply(IAlgebraicNumber number);
+        TAlgebraicNumber MultipliedBy(TAlgebraicNumber number);
 
-        IAlgebraicNumber Divide(IAlgebraicNumber number);
+        TAlgebraicNumber DividedBy(TAlgebraicNumber number);
 
-        IAlgebraicNumber Inverse();
+        TAlgebraicNumber Inverse();
 
-        IAlgebraicNumber Opposite();
+        TAlgebraicNumber Opposite();
 
-        IAlgebraicNumber SquareRoot();
+        TAlgebraicNumber SquareRoot();
 
         int Sign();
     }

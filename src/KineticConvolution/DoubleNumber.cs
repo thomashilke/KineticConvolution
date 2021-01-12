@@ -2,53 +2,21 @@ using System;
 
 namespace Hilke.KineticConvolution
 {
-    public sealed class DoubleNumber : IAlgebraicNumber, IEquatable<DoubleNumber>
+    public sealed class DoubleNumber : IAlgebraicNumber<DoubleNumber>, IEquatable<DoubleNumber>
     {
         private DoubleNumber(double value) => Value = value;
 
         public double Value { get; }
 
-        public IAlgebraicNumber Add(IAlgebraicNumber operand)
-        {
-            if (operand is DoubleNumber n)
-            {
-                return new DoubleNumber(n.Value + Value);
-            }
+        public DoubleNumber Add(DoubleNumber operand) => new DoubleNumber(operand.Value + Value);
 
-            throw new NotSupportedException();
-        }
+        public DoubleNumber Subtract(DoubleNumber operand) => new DoubleNumber(Value - operand.Value);
 
-        public IAlgebraicNumber Subtract(IAlgebraicNumber operand)
-        {
-            if (operand is DoubleNumber n)
-            {
-                return new DoubleNumber(Value - n.Value);
-            }
+        public DoubleNumber MultipliedBy(DoubleNumber operand) => new DoubleNumber(operand.Value * Value);
 
-            throw new NotSupportedException();
-        }
+        public DoubleNumber DividedBy(DoubleNumber operand) => new DoubleNumber(Value / operand.Value);
 
-        public IAlgebraicNumber MultiplyBy(IAlgebraicNumber operand)
-        {
-            if (operand is DoubleNumber n)
-            {
-                return new DoubleNumber(n.Value * Value);
-            }
-
-            throw new NotSupportedException();
-        }
-
-        public IAlgebraicNumber DivideBy(IAlgebraicNumber operand)
-        {
-            if (operand is DoubleNumber n)
-            {
-                return new DoubleNumber(Value / n.Value);
-            }
-
-            throw new NotSupportedException();
-        }
-
-        public IAlgebraicNumber Inverse()
+        public DoubleNumber Inverse()
         {
             if (Value != 0.0)
             {
@@ -58,7 +26,7 @@ namespace Hilke.KineticConvolution
             throw new InvalidOperationException($"The inverse of 0.0 is undefined.");
         }
 
-        public IAlgebraicNumber SquareRoot()
+        public DoubleNumber SquareRoot()
         {
             if (Value >= 0.0)
             {
@@ -68,7 +36,7 @@ namespace Hilke.KineticConvolution
             throw new InvalidOperationException("The square root of a negative number is undefined.");
         }
 
-        public IAlgebraicNumber Opposite() => new DoubleNumber(-Value);
+        public DoubleNumber Opposite() => new DoubleNumber(-Value);
 
         public int Sign() => Math.Sign(Value);
 
@@ -83,7 +51,7 @@ namespace Hilke.KineticConvolution
             return ReferenceEquals(this, other) || Value.Equals(other.Value);
         }
 
-        public bool Equals(IAlgebraicNumber? other) => Equals(other as DoubleNumber);
+        public bool Equals(IAlgebraicNumber<DoubleNumber>? other) => Equals(other as DoubleNumber);
 
         public static DoubleNumber FromDouble(double value) => new DoubleNumber(value);
 
