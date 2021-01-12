@@ -41,7 +41,9 @@ namespace Hilke.KineticConvolution
                 Orientation.CounterClockwise =>
                     DirectionHelper.Determinant(Start, End)
                                    .IsStrictlyPositive(),
-                _ => throw new NotSupportedException() // TODO add a message
+                var orientation => throw new NotSupportedException(
+                    $"Only clockwise and counterclockwise arc orientations are supported, " +
+                    $"but got {orientation}.")
             };
 
         public DirectionRange Reverse() =>
@@ -73,38 +75,39 @@ namespace Hilke.KineticConvolution
             return counterClockwiseRange1.CounterClockwiseRangesIntersection(counterClockwiseRange2);
         }
 
-        private IEnumerable<DirectionRange> CounterClockwiseRangesIntersection(DirectionRange range2)
+        private IEnumerable<DirectionRange> CounterClockwiseRangesIntersection(DirectionRange range)
         {
             if (Orientation != Orientation.CounterClockwise)
             {
-                throw new InvalidOperationException("The direction range must be counter clockwise.");
+                throw new InvalidOperationException("The direction range must be counterclockwise.");
             }
 
-            if (range2.Orientation != Orientation.CounterClockwise)
+            if (range.Orientation != Orientation.CounterClockwise)
             {
-                throw new ArgumentException(nameof(range2));
+                throw new ArgumentException(
+                    "The direction range must be counterclockwise.", nameof(range));
             }
 
-            if (range2.Start.BelongsTo(this))
+            if (range.Start.BelongsTo(this))
             {
                 yield return new DirectionRange(
-                    range2.Start,
-                        Start.FirstOfCounterClockwise(End, range2.End),
+                    range.Start,
+                        Start.FirstOfCounterClockwise(End, range.End),
                     Orientation.CounterClockwise);
 
-                if (End.Compare(range2.End, Start) == -1)
+                if (End.Compare(range.End, Start) == -1)
                 {
                     yield return new DirectionRange(
                         Start,
-                        range2.End,
+                        range.End,
                         Orientation.CounterClockwise);
                 }
             }
-            else if (range2.End.BelongsTo(this))
+            else if (range.End.BelongsTo(this))
             {
                 yield return new DirectionRange(
                     Start,
-                    range2.End,
+                    range.End,
                     Orientation.CounterClockwise);
             }
         }

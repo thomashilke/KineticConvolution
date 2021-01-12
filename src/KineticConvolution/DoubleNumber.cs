@@ -55,7 +55,7 @@ namespace Hilke.KineticConvolution
                 return new DoubleNumber(1.0 / Value);
             }
 
-            throw new InvalidOperationException();
+            throw new InvalidOperationException($"The inverse of 0.0 is undefined.");
         }
 
         public IAlgebraicNumber SquareRoot()
@@ -65,7 +65,7 @@ namespace Hilke.KineticConvolution
                 return new DoubleNumber(Math.Sqrt(Value));
             }
 
-            throw new InvalidOperationException();
+            throw new InvalidOperationException("The square root of a negative number is undefined.");
         }
 
         public IAlgebraicNumber Opposite() => new DoubleNumber(-Value);

@@ -73,7 +73,8 @@ namespace Hilke.KineticConvolution
                 -1 => direction2,
                 1 => direction1,
                 0 => direction1,
-                _ => throw new NotSupportedException() // TODO add a message
+                var sign => throw new NotSupportedException(
+                    $"Comparison between two directions should yield either -1, 0 or 1, but got {sign}.")
             };
 
         public Direction LastOfCounterClockwise(
@@ -84,7 +85,8 @@ namespace Hilke.KineticConvolution
                 -1 => direction1,
                 1 => direction2,
                 0 => direction1,
-                _ => throw new NotSupportedException() // TODO add a message
+                var sign => throw new NotSupportedException(
+                     $"Comparison between two directions should yield either -1, 0 or 1, but got {sign}.")
             };
 
         public bool BelongsToShortestRange(DirectionRange directions)
