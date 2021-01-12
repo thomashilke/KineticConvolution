@@ -1,14 +1,12 @@
-using Fractions;
+using System.Linq;
 
 using FluentAssertions;
 
-using KineticConvolution;
+using Fractions;
 
 using NUnit.Framework;
 
-using System.Linq;
-
-namespace KineticConvolutionTests
+namespace Hilke.KineticConvolution.Tests
 {
     [TestFixture]
     public class ConvolutionHelperTests
@@ -18,7 +16,7 @@ namespace KineticConvolutionTests
             return new Point(DoubleNumber.FromDouble(x), DoubleNumber.FromDouble(y));
         }
 
-        public static Arc MakeArc(
+        public static Tracing MakeArc(
             Fraction weight,
             double centerX,
             double centerY,
@@ -27,9 +25,8 @@ namespace KineticConvolutionTests
             double directionEndX,
             double directionEndY,
             Orientation orientation,
-            double radius)
-        {
-            return new Arc(
+            double radius) =>
+            Tracing.CreateArc(
                 1,
                 new Point(DoubleNumber.FromDouble(centerX),
                           DoubleNumber.FromDouble(centerY)),
@@ -42,20 +39,19 @@ namespace KineticConvolutionTests
                         DoubleNumber.FromDouble(directionEndY)),
                     orientation),
                 DoubleNumber.FromDouble(radius));
-        }
 
         [Test]
         public void When_Direction_Ranges_Are_Included_Then_Intersection_Should_Be_The_Innermost_Range()
         {
-            var radius1 = 2.0;
-            var radius2 = 2.0;
+            const double radius1 = 2.0;
+            const double radius2 = 2.0;
 
-            var arc1 = MakeArc(
+            var arc1 = (Arc)MakeArc(
                 1, 1.0, 2.0, 1.0, 0.0, 0.0, 1.0,
                 Orientation.CounterClockwise,
                 radius1);
 
-            var arc2 = MakeArc(
+            var arc2 = (Arc)MakeArc(
                 1, 2.0, 1.0, 1.0, 0.5, 0.5, 1.0,
                 Orientation.CounterClockwise,
                 radius2);

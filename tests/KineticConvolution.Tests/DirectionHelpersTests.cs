@@ -1,10 +1,8 @@
-using NUnit.Framework;
-
 using FluentAssertions;
 
-using KineticConvolution;
+using NUnit.Framework;
 
-namespace KineticConvolutionTests
+namespace Hilke.KineticConvolution.Tests
 {
     [TestFixture]
     public class DirectionHelpersTests

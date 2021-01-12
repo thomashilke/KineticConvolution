@@ -1,21 +1,21 @@
 using Fractions;
 
-using System;
-
-namespace KineticConvolution
+namespace Hilke.KineticConvolution
 {
     public class Segment : Tracing
     {
-        public Point End { get; }
+        internal Segment(Point start, Point end, Direction startDirection, Direction endDirection, Fraction weight)
+            : base(start, end, startDirection, endDirection, weight) { }
 
-        public Point Start { get; }
+        public Direction Direction() =>
+            new Direction(
+                End.X.Subtract(Start.X),
+                End.Y.Subtract(Start.Y));
 
-        public Segment(Fraction weight, Point start, Point end)
-            : base(weight)
+        public Direction NormalDirection()
         {
-            Start = start ?? throw new ArgumentNullException(nameof(start));
-
-            End = end ?? throw new ArgumentNullException(nameof(end));
+            var direction = Direction();
+            return new Direction(direction.Y.Opposite(), direction.X);
         }
     }
 }

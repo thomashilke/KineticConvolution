@@ -1,16 +1,16 @@
 using System;
 
-namespace KineticConvolution
+namespace Hilke.KineticConvolution
 {
     public interface IAlgebraicNumber : IEquatable<IAlgebraicNumber>
     {
         IAlgebraicNumber Add(IAlgebraicNumber number);
 
-        IAlgebraicNumber Substract(IAlgebraicNumber number);
+        IAlgebraicNumber Subtract(IAlgebraicNumber number);
 
-        IAlgebraicNumber MultipliedBy(IAlgebraicNumber number);
+        IAlgebraicNumber Multiply(IAlgebraicNumber number);
 
-        IAlgebraicNumber DividedBy(IAlgebraicNumber number);
+        IAlgebraicNumber Divide(IAlgebraicNumber number);
 
         IAlgebraicNumber Inverse();
 
