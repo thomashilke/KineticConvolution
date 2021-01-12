@@ -28,7 +28,7 @@ namespace Hilke.KineticConvolution
             throw new NotSupportedException();
         }
 
-        public IAlgebraicNumber MultipliedBy(IAlgebraicNumber operand)
+        public IAlgebraicNumber MultiplyBy(IAlgebraicNumber operand)
         {
             if (operand is DoubleNumber n)
             {
@@ -38,7 +38,7 @@ namespace Hilke.KineticConvolution
             throw new NotSupportedException();
         }
 
-        public IAlgebraicNumber DividedBy(IAlgebraicNumber operand)
+        public IAlgebraicNumber DivideBy(IAlgebraicNumber operand)
         {
             if (operand is DoubleNumber n)
             {

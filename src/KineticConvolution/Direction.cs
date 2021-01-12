@@ -129,15 +129,15 @@ namespace Hilke.KineticConvolution
 
         public Direction Opposite() => new Direction(X.Opposite(), Y.Opposite());
 
-        public Direction Normalized()
+        public Direction Normalize()
         {
-            var length = X.MultipliedBy(X)
-                          .Add(Y.MultipliedBy(Y))
+            var length = X.MultiplyBy(X)
+                          .Add(Y.MultiplyBy(Y))
                           .SquareRoot();
 
             return new Direction(
-                X.DividedBy(length),
-                Y.DividedBy(length));
+                X.DivideBy(length),
+                Y.DivideBy(length));
         }
 
         public Direction Scale(IAlgebraicNumber scalar)
@@ -148,8 +148,8 @@ namespace Hilke.KineticConvolution
             }
 
             return new Direction(
-                X.MultipliedBy(scalar),
-                Y.MultipliedBy(scalar));
+                X.MultiplyBy(scalar),
+                Y.MultiplyBy(scalar));
         }
 
         public Direction NormalDirection() => new Direction(Y.Opposite(), X);
