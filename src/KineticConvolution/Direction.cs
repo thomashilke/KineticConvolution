@@ -2,7 +2,7 @@ using System;
 
 namespace Hilke.KineticConvolution
 {
-    public class Direction : IEquatable<Direction>
+    public sealed class Direction : IEquatable<Direction>
     {
         public Direction(IAlgebraicNumber x, IAlgebraicNumber y)
         {
@@ -44,6 +44,10 @@ namespace Hilke.KineticConvolution
                 return true;
             }
 
+           if(GetType() != other.GetType())
+           {
+               return false;
+           }
             return DirectionHelper.Determinant(this, other).IsZero()
                 && X.Sign() == other.X.Sign()
                 && Y.Sign() == other.Y.Sign();
@@ -135,17 +139,12 @@ namespace Hilke.KineticConvolution
         /// <inheritdoc />
         public override bool Equals(object? obj)
         {
-            if (obj is null)
+            if (obj is Direction direction)
             {
-                return false;
+                return Equals(direction);
             }
-
-            if (ReferenceEquals(this, obj))
-            {
-                return true;
-            }
-
-            return obj.GetType() == GetType() && Equals((Direction)obj);
+            
+            return false;
         }
 
         /// <inheritdoc />

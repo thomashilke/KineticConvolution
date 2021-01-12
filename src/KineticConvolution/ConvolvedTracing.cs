@@ -7,9 +7,7 @@ namespace Hilke.KineticConvolution
         public ConvolvedTracing(Tracing convolution, Tracing parent1, Tracing parent2)
         {
             Convolution = convolution ?? throw new ArgumentNullException(nameof(convolution));
-
             Parent1 = parent1 ?? throw new ArgumentNullException(nameof(parent1));
-
             Parent2 = parent2 ?? throw new ArgumentNullException(nameof(parent2));
         }
 

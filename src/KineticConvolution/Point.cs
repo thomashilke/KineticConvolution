@@ -2,7 +2,7 @@ using System;
 
 namespace Hilke.KineticConvolution
 {
-    public class Point : IEquatable<Point>
+    public sealed class Point : IEquatable<Point>
     {
         public Point(IAlgebraicNumber x, IAlgebraicNumber y)
         {
