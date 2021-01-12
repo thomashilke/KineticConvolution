@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Hilke.KineticConvolution
 {
@@ -78,7 +79,7 @@ namespace Hilke.KineticConvolution
                     ? other
                     : other.Reverse();
 
-            return counterClockwiseRange1.CounterClockwiseRangesIntersection(counterClockwiseRange2);
+            return counterClockwiseRange1.CounterClockwiseRangesIntersection(counterClockwiseRange2).ToList();
         }
 
         private IEnumerable<DirectionRange<TAlgebraicNumber>> CounterClockwiseRangesIntersection(DirectionRange<TAlgebraicNumber> range)
@@ -98,10 +99,10 @@ namespace Hilke.KineticConvolution
             {
                 yield return new DirectionRange<TAlgebraicNumber>(
                     range.Start,
-                        Start.FirstOf(End, range.End),
+                    Start.FirstOf(End, range.End),
                     Orientation.CounterClockwise);
 
-                if (End.CompareTo(range.End, Start) == -1)
+                if (Start.CompareTo(range.Start, range.End) == -1 && End.CompareTo(range.End, Start) == -1)
                 {
                     yield return new DirectionRange<TAlgebraicNumber>(
                         Start,
@@ -109,12 +110,15 @@ namespace Hilke.KineticConvolution
                         Orientation.CounterClockwise);
                 }
             }
-            else if (range.End.BelongsTo(this))
+            else
             {
-                yield return new DirectionRange<TAlgebraicNumber>(
-                    Start,
-                    range.End,
-                    Orientation.CounterClockwise);
+                if (range.Start.CompareTo(range.End, Start) == -1)
+                {
+                    yield return new DirectionRange<TAlgebraicNumber>(
+                        Start,
+                        Start.FirstOf(End, range.End),
+                        Orientation.CounterClockwise);
+                }
             }
         }
     }
