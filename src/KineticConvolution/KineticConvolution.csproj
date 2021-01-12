@@ -18,8 +18,8 @@
     <IsPackable>true</IsPackable>
     <PackageId>Hilke.KineticConvolution</PackageId>
     <Title>Kinetic convolution</Title>
-    <Description>TODO</Description>
-    <Authors>Thokas Hilke</Authors>
+    <Description>Implementation of the kinetic convolution of polygonal tracings in the Euclidian plane</Description>
+    <Authors>Thomas Hilke</Authors>
   </PropertyGroup>
 
   <ItemGroup>
