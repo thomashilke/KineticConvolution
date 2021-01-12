@@ -54,7 +54,7 @@ namespace Hilke.KineticConvolution
                 && Y.Sign() == other.Y.Sign();
         }
 
-        public int Compare(Direction direction1, Direction direction2)
+        public int CompareTo(Direction direction1, Direction direction2)
         {
             if (direction1.Equals(direction2))
             {
@@ -70,10 +70,10 @@ namespace Hilke.KineticConvolution
                        : -1;
         }
 
-        public Direction FirstOfCounterClockwise(
+        public Direction FirstOf(
             Direction direction1,
             Direction direction2) =>
-            Compare(direction1, direction2) switch
+            CompareTo(direction1, direction2) switch
             {
                 -1 => direction2,
                 1 => direction1,
@@ -83,10 +83,10 @@ namespace Hilke.KineticConvolution
                         $"Comparison between two directions should yield either -1, 0 or 1, but got {sign}.")
             };
 
-        public Direction LastOfCounterClockwise(
+        public Direction LastOf(
             Direction direction1,
             Direction direction2) =>
-            Compare(direction1, direction2) switch
+            CompareTo(direction1, direction2) switch
             {
                 -1 => direction1,
                 1 => direction2,
@@ -110,8 +110,8 @@ namespace Hilke.KineticConvolution
             if (determinant.IsStrictlyNegative())
             {
                 return
-                    DirectionHelper.Determinant(directions.Start, this).IsStrictlyPositive()
-                 && DirectionHelper.Determinant(this, directions.End).IsStrictlyPositive();
+                    DirectionHelper.Determinant(directions.Start, this).IsStrictlyNegative()
+                 && DirectionHelper.Determinant(this, directions.End).IsStrictlyNegative();
             }
 
             return false;
@@ -131,13 +131,13 @@ namespace Hilke.KineticConvolution
 
         public Direction Normalize()
         {
-            var length = X.MultiplyBy(X)
-                          .Add(Y.MultiplyBy(Y))
+            var length = X.Multiply(X)
+                          .Add(Y.Multiply(Y))
                           .SquareRoot();
 
             return new Direction(
-                X.DivideBy(length),
-                Y.DivideBy(length));
+                X.Divide(length),
+                Y.Divide(length));
         }
 
         public Direction Scale(IAlgebraicNumber scalar)
@@ -148,8 +148,8 @@ namespace Hilke.KineticConvolution
             }
 
             return new Direction(
-                X.MultiplyBy(scalar),
-                Y.MultiplyBy(scalar));
+                X.Multiply(scalar),
+                Y.Multiply(scalar));
         }
 
         public Direction NormalDirection() => new Direction(Y.Opposite(), X);

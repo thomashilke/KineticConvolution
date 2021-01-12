@@ -8,9 +8,9 @@ namespace Hilke.KineticConvolution
 
         IAlgebraicNumber Subtract(IAlgebraicNumber number);
 
-        IAlgebraicNumber MultiplyBy(IAlgebraicNumber number);
+        IAlgebraicNumber Multiply(IAlgebraicNumber number);
 
-        IAlgebraicNumber DivideBy(IAlgebraicNumber number);
+        IAlgebraicNumber Divide(IAlgebraicNumber number);
 
         IAlgebraicNumber Inverse();
 
