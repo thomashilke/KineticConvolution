@@ -18,9 +18,7 @@ namespace Hilke.KineticConvolution
             : base(start, end, startDirection, endDirection, weight)
         {
             Center = center ?? throw new ArgumentNullException(nameof(center));
-
             Directions = directions ?? throw new ArgumentNullException(nameof(directions));
-
             Radius = radius ?? throw new ArgumentNullException(nameof(radius));
         }
 

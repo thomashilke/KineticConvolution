@@ -60,17 +60,22 @@ namespace Hilke.KineticConvolution
                 End.Opposite(),
                 Orientation);
 
-        public IEnumerable<DirectionRange> Intersection(DirectionRange range2)
+        public IEnumerable<DirectionRange> Intersection(DirectionRange other)
         {
+            if (other == null)
+            {
+                throw new ArgumentNullException(nameof(other));
+            }
+
             var counterClockwiseRange1 =
                 Orientation == Orientation.CounterClockwise
                     ? this
                     : Reverse();
 
             var counterClockwiseRange2 =
-                range2.Orientation == Orientation.CounterClockwise
-                    ? range2
-                    : range2.Reverse();
+                other.Orientation == Orientation.CounterClockwise
+                    ? other
+                    : other.Reverse();
 
             return counterClockwiseRange1.CounterClockwiseRangesIntersection(counterClockwiseRange2);
         }

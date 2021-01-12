@@ -44,10 +44,11 @@ namespace Hilke.KineticConvolution
                 return true;
             }
 
-           if(GetType() != other.GetType())
-           {
-               return false;
-           }
+            if (GetType() != other.GetType())
+            {
+                return false;
+            }
+
             return DirectionHelper.Determinant(this, other).IsZero()
                 && X.Sign() == other.X.Sign()
                 && Y.Sign() == other.Y.Sign();
@@ -77,8 +78,9 @@ namespace Hilke.KineticConvolution
                 -1 => direction2,
                 1 => direction1,
                 0 => direction1,
-                var sign => throw new NotSupportedException(
-                    $"Comparison between two directions should yield either -1, 0 or 1, but got {sign}.")
+                var sign =>
+                    throw new NotSupportedException(
+                        $"Comparison between two directions should yield either -1, 0 or 1, but got {sign}.")
             };
 
         public Direction LastOfCounterClockwise(
@@ -89,21 +91,23 @@ namespace Hilke.KineticConvolution
                 -1 => direction1,
                 1 => direction2,
                 0 => direction1,
-                var sign => throw new NotSupportedException(
-                     $"Comparison between two directions should yield either -1, 0 or 1, but got {sign}.")
+                var sign =>
+                    throw new NotSupportedException(
+                        $"Comparison between two directions should yield either -1, 0 or 1, but got {sign}.")
             };
 
         public bool BelongsToShortestRange(DirectionRange directions)
         {
-            var s = DirectionHelper.Determinant(directions.Start, directions.End);
-            if (s.IsStrictlyPositive())
+            var determinant = DirectionHelper.Determinant(directions.Start, directions.End);
+
+            if (determinant.IsStrictlyPositive())
             {
                 return
                     DirectionHelper.Determinant(directions.Start, this).IsStrictlyPositive()
                  && DirectionHelper.Determinant(this, directions.End).IsStrictlyPositive();
             }
 
-            if (s.IsStrictlyNegative())
+            if (determinant.IsStrictlyNegative())
             {
                 return
                     DirectionHelper.Determinant(directions.Start, this).IsStrictlyPositive()
@@ -113,8 +117,15 @@ namespace Hilke.KineticConvolution
             return false;
         }
 
-        public bool BelongsTo(DirectionRange directions) =>
-            !(directions.IsShortestRange() ^ BelongsToShortestRange(directions));
+        public bool BelongsTo(DirectionRange directions)
+        {
+            if (directions == null)
+            {
+                throw new ArgumentNullException(nameof(directions));
+            }
+
+            return !(directions.IsShortestRange() ^ BelongsToShortestRange(directions));
+        }
 
         public Direction Opposite() => new Direction(X.Opposite(), Y.Opposite());
 
@@ -129,10 +140,17 @@ namespace Hilke.KineticConvolution
                 Y.DividedBy(length));
         }
 
-        public Direction Scale(IAlgebraicNumber scalar) =>
-            new Direction(
+        public Direction Scale(IAlgebraicNumber scalar)
+        {
+            if (scalar == null)
+            {
+                throw new ArgumentNullException(nameof(scalar));
+            }
+
+            return new Direction(
                 X.MultipliedBy(scalar),
                 Y.MultipliedBy(scalar));
+        }
 
         public Direction NormalDirection() => new Direction(Y.Opposite(), X);
 
@@ -143,7 +161,7 @@ namespace Hilke.KineticConvolution
             {
                 return Equals(direction);
             }
-            
+
             return false;
         }
 

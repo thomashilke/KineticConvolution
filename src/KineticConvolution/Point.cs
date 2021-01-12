@@ -61,7 +61,12 @@ namespace Hilke.KineticConvolution
                 return true;
             }
 
-            return obj.GetType() == GetType() && Equals((Point)obj);
+            if (obj is Point point)
+            {
+                return Equals(point);
+            }
+
+            return false;
         }
 
         /// <inheritdoc />
