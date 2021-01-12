@@ -60,7 +60,7 @@ namespace Hilke.KineticConvolution.Tests
 
             convolution[0].Convolution.Should().BeOfType(typeof(Arc<DoubleNumber>));
 
-            var convolutionAsArc = (convolution[0].Convolution as Arc<DoubleNumber>);
+            var convolutionAsArc = convolution[0].Convolution as Arc<DoubleNumber>;
 
             convolutionAsArc.Center.Should().BeEquivalentTo(MakePoint(3.0, 3.0));
         }
