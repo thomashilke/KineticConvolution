@@ -79,9 +79,10 @@ namespace Hilke.KineticConvolution
                 DirectionOrder.Before => direction2,
                 DirectionOrder.After => direction1,
                 DirectionOrder.Equal => direction1,
-                var sign =>
+                var order =>
                     throw new NotSupportedException(
-                        $"Comparison between two directions should yield either -1, 0 or 1, but got {(int)sign}.")
+                        $"Comparison between two directions should yield either {DirectionOrder.Before}, " +
+                        $"{DirectionOrder.Equal} or {DirectionOrder.After}, but got {(int)order}.")
             };
 
         public Direction<TAlgebraicNumber> LastOf(
@@ -92,9 +93,10 @@ namespace Hilke.KineticConvolution
                 DirectionOrder.Before => direction1,
                 DirectionOrder.After => direction2,
                 DirectionOrder.Equal => direction1,
-                var sign =>
+                var order =>
                     throw new NotSupportedException(
-                        $"Comparison between two directions should yield either -1, 0 or 1, but got {(int)sign}.")
+                        $"Comparison between two directions should yield either {DirectionOrder.Before}, " +
+                        $"{DirectionOrder.Equal} or {DirectionOrder.After}, but got {(int)order}.")
             };
 
         public bool BelongsToShortestRange(DirectionRange<TAlgebraicNumber> directions)
