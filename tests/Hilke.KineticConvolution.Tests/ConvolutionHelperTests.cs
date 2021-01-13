@@ -11,12 +11,10 @@ namespace Hilke.KineticConvolution.Tests
     [TestFixture]
     public class ConvolutionHelperTests
     {
-        public static Point MakePoint(double x, double y)
-        {
-            return new Point(DoubleNumber.FromDouble(x), DoubleNumber.FromDouble(y));
-        }
+        public static Point<DoubleNumber> MakePoint(double x, double y) =>
+            new Point<DoubleNumber>(DoubleNumber.FromDouble(x), DoubleNumber.FromDouble(y));
 
-        public static Tracing MakeArc(
+        public static Tracing<DoubleNumber> MakeArc(
             Fraction weight,
             double centerX,
             double centerY,
@@ -26,15 +24,15 @@ namespace Hilke.KineticConvolution.Tests
             double directionEndY,
             Orientation orientation,
             double radius) =>
-            Tracing.CreateArc(
+            Tracing<DoubleNumber>.CreateArc(
                 1,
-                new Point(DoubleNumber.FromDouble(centerX),
-                          DoubleNumber.FromDouble(centerY)),
-                new DirectionRange(
-                    new Direction(
+                new Point<DoubleNumber>(DoubleNumber.FromDouble(centerX),
+                                        DoubleNumber.FromDouble(centerY)),
+                new DirectionRange<DoubleNumber>(
+                    new Direction<DoubleNumber>(
                         DoubleNumber.FromDouble(directionStartX),
                         DoubleNumber.FromDouble(directionStartY)),
-                    new Direction(
+                    new Direction<DoubleNumber>(
                         DoubleNumber.FromDouble(directionEndX),
                         DoubleNumber.FromDouble(directionEndY)),
                     orientation),
@@ -46,12 +44,12 @@ namespace Hilke.KineticConvolution.Tests
             const double radius1 = 2.0;
             const double radius2 = 2.0;
 
-            var arc1 = (Arc)MakeArc(
+            var arc1 = (Arc<DoubleNumber>)MakeArc(
                 1, 1.0, 2.0, 1.0, 0.0, 0.0, 1.0,
                 Orientation.CounterClockwise,
                 radius1);
 
-            var arc2 = (Arc)MakeArc(
+            var arc2 = (Arc<DoubleNumber>)MakeArc(
                 1, 2.0, 1.0, 1.0, 0.5, 0.5, 1.0,
                 Orientation.CounterClockwise,
                 radius2);
@@ -60,9 +58,9 @@ namespace Hilke.KineticConvolution.Tests
 
             convolution.Should().HaveCount(1);
 
-            convolution[0].Convolution.Should().BeOfType(typeof(Arc));
+            convolution[0].Convolution.Should().BeOfType(typeof(Arc<DoubleNumber>));
 
-            var convolutionAsArc = (convolution[0].Convolution as Arc);
+            var convolutionAsArc = convolution[0].Convolution as Arc<DoubleNumber>;
 
             convolutionAsArc.Center.Should().BeEquivalentTo(MakePoint(3.0, 3.0));
         }

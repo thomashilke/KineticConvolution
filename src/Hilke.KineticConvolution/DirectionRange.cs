@@ -1,14 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 
 namespace Hilke.KineticConvolution
 {
-    public class DirectionRange
+    public class DirectionRange<TAlgebraicNumber>
+        where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
     {
         public DirectionRange(
-            Direction start,
-            Direction end,
+            Direction<TAlgebraicNumber> start,
+            Direction<TAlgebraicNumber> end,
             Orientation orientation)
         {
             Start = start ?? throw new ArgumentNullException(nameof(start));
@@ -26,9 +28,9 @@ namespace Hilke.KineticConvolution
             Orientation = orientation;
         }
 
-        public Direction Start { get; }
+        public Direction<TAlgebraicNumber> Start { get; }
 
-        public Direction End { get; }
+        public Direction<TAlgebraicNumber> End { get; }
 
         public Orientation Orientation { get; }
 
@@ -42,25 +44,25 @@ namespace Hilke.KineticConvolution
                     DirectionHelper.Determinant(Start, End)
                                    .IsStrictlyPositive(),
                 var orientation => throw new NotSupportedException(
-                    $"Only clockwise and counterclockwise arc orientations are supported, " +
-                    $"but got {orientation}.")
+                                       "Only clockwise and counterclockwise arc orientations are supported, "
+                                     + $"but got {orientation}.")
             };
 
-        public DirectionRange Reverse() =>
-            new DirectionRange(
+        public DirectionRange<TAlgebraicNumber> Reverse() =>
+            new DirectionRange<TAlgebraicNumber>(
                 End,
                 Start,
                 Orientation == Orientation.CounterClockwise
                     ? Orientation.Clockwise
                     : Orientation.CounterClockwise);
 
-        public DirectionRange Opposite() =>
-            new DirectionRange(
+        public DirectionRange<TAlgebraicNumber> Opposite() =>
+            new DirectionRange<TAlgebraicNumber>(
                 Start.Opposite(),
                 End.Opposite(),
                 Orientation);
 
-        public IEnumerable<DirectionRange> Intersection(DirectionRange other)
+        public IEnumerable<DirectionRange<TAlgebraicNumber>> Intersection(DirectionRange<TAlgebraicNumber> other)
         {
             if (other == null)
             {
@@ -77,10 +79,11 @@ namespace Hilke.KineticConvolution
                     ? other
                     : other.Reverse();
 
-            return counterClockwiseRange1.CounterClockwiseRangesIntersection(counterClockwiseRange2);
+            return counterClockwiseRange1.CounterClockwiseRangesIntersection(counterClockwiseRange2).ToList();
         }
 
-        private IEnumerable<DirectionRange> CounterClockwiseRangesIntersection(DirectionRange range)
+        private IEnumerable<DirectionRange<TAlgebraicNumber>> CounterClockwiseRangesIntersection(
+            DirectionRange<TAlgebraicNumber> range)
         {
             if (Orientation != Orientation.CounterClockwise)
             {
@@ -89,30 +92,30 @@ namespace Hilke.KineticConvolution
 
             if (range.Orientation != Orientation.CounterClockwise)
             {
-                throw new ArgumentException(
-                    "The direction range must be counterclockwise.", nameof(range));
+                throw new ArgumentException("The direction range must be counterclockwise.", nameof(range));
             }
 
             if (range.Start.BelongsTo(this))
             {
-                yield return new DirectionRange(
+                yield return new DirectionRange<TAlgebraicNumber>(
                     range.Start,
-                        Start.FirstOfCounterClockwise(End, range.End),
+                    Start.FirstOf(End, range.End),
                     Orientation.CounterClockwise);
 
-                if (End.Compare(range.End, Start) == -1)
+                if (Start.CompareTo(range.Start, range.End) == DirectionOrder.Before
+                 && End.CompareTo(range.End, Start) == DirectionOrder.Before)
                 {
-                    yield return new DirectionRange(
+                    yield return new DirectionRange<TAlgebraicNumber>(
                         Start,
                         range.End,
                         Orientation.CounterClockwise);
                 }
             }
-            else if (range.End.BelongsTo(this))
+            else if (range.Start.CompareTo(range.End, Start) == DirectionOrder.Before)
             {
-                yield return new DirectionRange(
+                yield return new DirectionRange<TAlgebraicNumber>(
                     Start,
-                    range.End,
+                    Start.FirstOf(End, range.End),
                     Orientation.CounterClockwise);
             }
         }

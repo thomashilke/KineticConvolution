@@ -4,13 +4,13 @@ using System.Linq;
 
 namespace Hilke.KineticConvolution
 {
-    public class Shape
+    public class Shape<TAlgebraicNumber> where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
     {
-        private Shape(IReadOnlyList<Tracing> tracings) => Tracings = tracings;
+        private Shape(IReadOnlyList<Tracing<TAlgebraicNumber>> tracings) => Tracings = tracings;
 
-        public IReadOnlyList<Tracing> Tracings { get; }
+        public IReadOnlyList<Tracing<TAlgebraicNumber>> Tracings { get; }
 
-        public static Shape FromTracings(IEnumerable<Tracing> tracings)
+        public static Shape<TAlgebraicNumber> FromTracings(IEnumerable<Tracing<TAlgebraicNumber>> tracings)
         {
             var tracingsEnumerated = tracings?.ToList() ?? throw new ArgumentNullException(nameof(tracings));
 
@@ -24,10 +24,10 @@ namespace Hilke.KineticConvolution
                 throw new ArgumentException("The tracings should be continuous.", nameof(tracings));
             }
 
-            return new Shape(tracingsEnumerated);
+            return new Shape<TAlgebraicNumber>(tracingsEnumerated);
         }
 
-        private static bool IsG1Continuous(IReadOnlyList<Tracing> tracings) =>
+        private static bool IsG1Continuous(IReadOnlyList<Tracing<TAlgebraicNumber>> tracings) =>
             tracings.Zip(
                         tracings.Skip(1).Concat(new[] {tracings.First()}),
                         (right, left) => right.IsG1ContinuousWith(left))

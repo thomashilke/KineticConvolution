@@ -5,15 +5,24 @@ VisualStudioVersion = 16.0.30804.86
 MinimumVisualStudioVersion = 15.0.26124.0
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{4B550C17-7848-4B2D-B690-EBE3ACEAA3DE}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KineticConvolution", "src\KineticConvolution\KineticConvolution.csproj", "{12DAD913-2412-4018-9C0D-53206ED68DFB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KineticConvolution", "src\Hilke.KineticConvolution\Hilke.KineticConvolution.csproj", "{12DAD913-2412-4018-9C0D-53206ED68DFB}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{5B9941FD-71C9-4092-98D6-9648B4C37F0D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KineticConvolution.Tests", "tests\KineticConvolution.Tests\KineticConvolution.Tests.csproj", "{2C93819A-383D-48EE-AB60-7ED0428E8D55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "KineticConvolution.Tests", "tests\Hilke.KineticConvolution.Tests\Hilke.KineticConvolution.Tests.csproj", "{2C93819A-383D-48EE-AB60-7ED0428E8D55}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{B52D0A5C-2AD2-4A0C-8E65-3F91A3231602}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
+		.gitignore = .gitignore
+		Directory.Build.Props = Directory.Build.Props
+		LICENSE.md = LICENSE.md
+		README.md = README.md
+	EndProjectSection
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{7527BC77-ED50-4DC9-8E86-C82EB3C6BCF4}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\build-deploy.yml = .github\workflows\build-deploy.yml
 	EndProjectSection
 EndProject
 Global

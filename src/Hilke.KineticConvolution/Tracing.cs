@@ -4,9 +4,14 @@ using Fractions;
 
 namespace Hilke.KineticConvolution
 {
-    public abstract class Tracing
+    public abstract class Tracing<TAlgebraicNumber> where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
     {
-        protected Tracing(Point start, Point end, Direction startDirection, Direction endDirection, Fraction weight)
+        protected Tracing(
+            Point<TAlgebraicNumber> start,
+            Point<TAlgebraicNumber> end,
+            Direction<TAlgebraicNumber> startDirection,
+            Direction<TAlgebraicNumber> endDirection,
+            Fraction weight)
         {
             Start = start ?? throw new ArgumentNullException(nameof(start));
             End = end ?? throw new ArgumentNullException(nameof(end));
@@ -17,21 +22,22 @@ namespace Hilke.KineticConvolution
 
         public Fraction Weight { get; }
 
-        public Point Start { get; }
+        public Point<TAlgebraicNumber> Start { get; }
 
-        public Point End { get; }
+        public Point<TAlgebraicNumber> End { get; }
 
-        public Direction StartDirection { get; }
+        public Direction<TAlgebraicNumber> StartDirection { get; }
 
-        public Direction EndDirection { get; }
+        public Direction<TAlgebraicNumber> EndDirection { get; }
 
-        public bool IsG1ContinuousWith(Tracing next) => End == next.Start && EndDirection == next.StartDirection;
+        public bool IsG1ContinuousWith(Tracing<TAlgebraicNumber> next) =>
+            End == next.Start && EndDirection == next.StartDirection;
 
-        public static Tracing CreateArc(
+        public static Tracing<TAlgebraicNumber> CreateArc(
             Fraction weight,
-            Point center,
-            DirectionRange directions,
-            IAlgebraicNumber radius)
+            Point<TAlgebraicNumber> center,
+            DirectionRange<TAlgebraicNumber> directions,
+            TAlgebraicNumber radius)
         {
             if (center == null)
             {
@@ -61,10 +67,21 @@ namespace Hilke.KineticConvolution
                                    ? endNormalDirection.Opposite()
                                    : endNormalDirection;
 
-            return new Arc(weight, center, directions, radius, start, end, startDirection, endDirection);
+            return new Arc<TAlgebraicNumber>(
+                weight,
+                center,
+                directions,
+                radius,
+                start,
+                end,
+                startDirection,
+                endDirection);
         }
 
-        public static Tracing CreateSegment(Point start, Point end, Fraction weight)
+        public static Tracing<TAlgebraicNumber> CreateSegment(
+            Point<TAlgebraicNumber> start,
+            Point<TAlgebraicNumber> end,
+            Fraction weight)
         {
             if (start == null)
             {
@@ -82,7 +99,7 @@ namespace Hilke.KineticConvolution
             }
 
             var direction = start.DirectionTo(end);
-            return new Segment(start, end, direction, direction, weight);
+            return new Segment<TAlgebraicNumber>(start, end, direction, direction, weight);
         }
     }
 }
