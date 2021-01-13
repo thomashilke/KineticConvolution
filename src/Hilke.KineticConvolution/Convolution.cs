@@ -14,9 +14,8 @@ namespace Hilke.KineticConvolution
             IReadOnlyList<ConvolvedTracing<TAlgebraicNumber>> convolvedTracings)
         {
             Shape1 = shape1 ?? throw new ArgumentNullException(nameof(shape1));
-
             Shape2 = shape2 ?? throw new ArgumentNullException(nameof(shape2));
-
+            
             ConvolvedTracings = convolvedTracings ?? throw new ArgumentNullException(nameof(convolvedTracings));
         }
 
