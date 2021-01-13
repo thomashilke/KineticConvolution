@@ -4,9 +4,6 @@
     <TargetFramework>net5</TargetFramework>
 
     <IsPackable>false</IsPackable>
-
-    <RootNamespace>Hilke.KineticConvolution.Tests</RootNamespace>
-    <AssemblyName>Hilke.KineticConvolution.Tests</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>

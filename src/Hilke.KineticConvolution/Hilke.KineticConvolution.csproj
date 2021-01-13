@@ -6,9 +6,6 @@
     <LangVersion>8</LangVersion>
     <Nullable>Enable</Nullable>
 
-    <AssemblyName>Hilke.KineticConvolution</AssemblyName>
-    <RootNamespace>Hilke.KineticConvolution</RootNamespace>
-
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
 
