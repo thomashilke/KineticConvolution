@@ -55,11 +55,11 @@ namespace Hilke.KineticConvolution
                 && Y.Sign() == other.Y.Sign();
         }
 
-        public int CompareTo(Direction<TAlgebraicNumber> direction1, Direction<TAlgebraicNumber> direction2)
+        public DirectionOrder CompareTo(Direction<TAlgebraicNumber> direction1, Direction<TAlgebraicNumber> direction2)
         {
             if (direction1.Equals(direction2))
             {
-                return 0;
+                return DirectionOrder.Equal;
             }
 
             return direction1.BelongsTo(
@@ -67,8 +67,8 @@ namespace Hilke.KineticConvolution
                            this,
                            direction2,
                            Orientation.CounterClockwise))
-                       ? 1
-                       : -1;
+                       ? DirectionOrder.After
+                       : DirectionOrder.Before;
         }
 
         public Direction<TAlgebraicNumber> FirstOf(
@@ -76,12 +76,12 @@ namespace Hilke.KineticConvolution
             Direction<TAlgebraicNumber> direction2) =>
             CompareTo(direction1, direction2) switch
             {
-                -1 => direction2,
-                1 => direction1,
-                0 => direction1,
+                DirectionOrder.Before => direction2,
+                DirectionOrder.After => direction1,
+                DirectionOrder.Equal => direction1,
                 var sign =>
                     throw new NotSupportedException(
-                        $"Comparison between two directions should yield either -1, 0 or 1, but got {sign}.")
+                        $"Comparison between two directions should yield either -1, 0 or 1, but got {(int)sign}.")
             };
 
         public Direction<TAlgebraicNumber> LastOf(
@@ -89,12 +89,12 @@ namespace Hilke.KineticConvolution
             Direction<TAlgebraicNumber> direction2) =>
             CompareTo(direction1, direction2) switch
             {
-                -1 => direction1,
-                1 => direction2,
-                0 => direction1,
+                DirectionOrder.Before => direction1,
+                DirectionOrder.Equal => direction2,
+                DirectionOrder.After => direction1,
                 var sign =>
                     throw new NotSupportedException(
-                        $"Comparison between two directions should yield either -1, 0 or 1, but got {sign}.")
+                        $"Comparison between two directions should yield either -1, 0 or 1, but got {(int)sign}.")
             };
 
         public bool BelongsToShortestRange(DirectionRange<TAlgebraicNumber> directions)
