@@ -90,8 +90,8 @@ namespace Hilke.KineticConvolution
             CompareTo(direction1, direction2) switch
             {
                 DirectionOrder.Before => direction1,
-                DirectionOrder.Equal => direction2,
-                DirectionOrder.After => direction1,
+                DirectionOrder.After => direction2,
+                DirectionOrder.Equal => direction1,
                 var sign =>
                     throw new NotSupportedException(
                         $"Comparison between two directions should yield either -1, 0 or 1, but got {(int)sign}.")
