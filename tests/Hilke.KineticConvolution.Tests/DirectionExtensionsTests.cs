@@ -27,7 +27,7 @@ namespace Hilke.KineticConvolution.Tests
         }
 
         [Test]
-        public void When_Direction_Is_Close_To_Range_Boundary_Then_BelongsTo_Should_Return_Correct_Result()
+        public void When_Direction_Is_Close_To_Range_Boundary_Then_BelongsTo_Should_Return_Expected_Result()
         {
             var northEast = new Direction<DoubleNumber>(DoubleNumber.FromDouble(1.0), DoubleNumber.FromDouble(1.0));
             var northWest = new Direction<DoubleNumber>(DoubleNumber.FromDouble(-1.0), DoubleNumber.FromDouble(1.0));

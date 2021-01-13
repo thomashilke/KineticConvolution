@@ -8,11 +8,11 @@ namespace Hilke.KineticConvolution
 
         public double Value { get; }
 
-        public DoubleNumber Add(DoubleNumber operand) => new DoubleNumber(operand.Value + Value);
+        public DoubleNumber Add(DoubleNumber operand) => new DoubleNumber(Value + operand.Value);
 
         public DoubleNumber Subtract(DoubleNumber operand) => new DoubleNumber(Value - operand.Value);
 
-        public DoubleNumber Multiply(DoubleNumber operand) => new DoubleNumber(operand.Value * Value);
+        public DoubleNumber Multiply(DoubleNumber operand) => new DoubleNumber(Value * operand.Value);
 
         public DoubleNumber Divide(DoubleNumber operand) => new DoubleNumber(Value / operand.Value);
 
