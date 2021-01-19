@@ -2,21 +2,20 @@ using System;
 
 namespace Hilke.KineticConvolution.Double
 {
-    public sealed class Point<TAlgebraicNumber> : IEquatable<Point<TAlgebraicNumber>>
-        where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
+    public sealed class Point : IEquatable<Point>
     {
-        public Point(TAlgebraicNumber x, TAlgebraicNumber y)
+        public Point(double x, double y)
         {
-            X = x ?? throw new ArgumentNullException(nameof(x));
-            Y = y ?? throw new ArgumentNullException(nameof(y));
+            X = x;
+            Y = y;
         }
 
-        public TAlgebraicNumber X { get; }
+        public double X { get; }
 
-        public TAlgebraicNumber Y { get; }
+        public double Y { get; }
 
         /// <inheritdoc />
-        public bool Equals(Point<TAlgebraicNumber>? other)
+        public bool Equals(Point? other)
         {
             if (other is null)
             {
@@ -32,22 +31,22 @@ namespace Hilke.KineticConvolution.Double
                 && Y.Equals(other.Y);
         }
 
-        public Point<TAlgebraicNumber> Translate(Direction<TAlgebraicNumber> direction, TAlgebraicNumber length)
+        public Point Translate(Direction direction, double length)
         {
             var normalizedDirection = direction.Normalize();
 
-            return new Point<TAlgebraicNumber>(
-                X.Add(normalizedDirection.X.Multiply(length)),
-                Y.Add(normalizedDirection.Y.Multiply(length)));
+            return new Point(
+                X + normalizedDirection.X  * length,
+                Y + normalizedDirection.Y * length);
         }
 
-        public Direction<TAlgebraicNumber> DirectionTo(Point<TAlgebraicNumber> target) =>
-            new Direction<TAlgebraicNumber>(
-                X.Subtract(target.X),
-                Y.Subtract(target.Y));
+        public Direction DirectionTo(Point target) =>
+            new Direction(
+                X - target.X,
+                Y - target.Y);
 
-        public Point<TAlgebraicNumber> Sum(Point<TAlgebraicNumber> point2) =>
-            new Point<TAlgebraicNumber>(X.Add(point2.X), Y.Add(point2.Y));
+        public Point Sum(Point point) =>
+            new Point(X + point.X, Y + point.Y);
 
         /// <inheritdoc />
         public override bool Equals(object? obj)
@@ -62,7 +61,7 @@ namespace Hilke.KineticConvolution.Double
                 return true;
             }
 
-            if (obj is Point<TAlgebraicNumber> point)
+            if (obj is Point point)
             {
                 return Equals(point);
             }
@@ -79,10 +78,10 @@ namespace Hilke.KineticConvolution.Double
             }
         }
 
-        public static bool operator ==(Point<TAlgebraicNumber>? left, Point<TAlgebraicNumber>? right) =>
+        public static bool operator ==(Point? left, Point? right) =>
             Equals(left, right);
 
-        public static bool operator !=(Point<TAlgebraicNumber>? left, Point<TAlgebraicNumber>? right) =>
+        public static bool operator !=(Point? left, Point? right) =>
             !Equals(left, right);
     }
 }

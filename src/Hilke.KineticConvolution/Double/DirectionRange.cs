@@ -5,12 +5,11 @@ using System.Linq;
 
 namespace Hilke.KineticConvolution.Double
 {
-    public class DirectionRange<TAlgebraicNumber>
-        where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
+    public class DirectionRange
     {
         public DirectionRange(
-            Direction<TAlgebraicNumber> start,
-            Direction<TAlgebraicNumber> end,
+            Direction start,
+            Direction end,
             Orientation orientation)
         {
             Start = start ?? throw new ArgumentNullException(nameof(start));
@@ -28,9 +27,9 @@ namespace Hilke.KineticConvolution.Double
             Orientation = orientation;
         }
 
-        public Direction<TAlgebraicNumber> Start { get; }
+        public Direction Start { get; }
 
-        public Direction<TAlgebraicNumber> End { get; }
+        public Direction End { get; }
 
         public Orientation Orientation { get; }
 
@@ -38,31 +37,29 @@ namespace Hilke.KineticConvolution.Double
             Orientation switch
             {
                 Orientation.Clockwise =>
-                    DirectionHelper.Determinant(Start, End)
-                                   .IsStrictlyNegative(),
+                    DirectionHelper.Determinant(Start, End) < 0.0,
                 Orientation.CounterClockwise =>
-                    DirectionHelper.Determinant(Start, End)
-                                   .IsStrictlyPositive(),
+                    DirectionHelper.Determinant(Start, End) > 0.0,
                 var orientation => throw new NotSupportedException(
                                        "Only clockwise and counterclockwise arc orientations are supported, "
                                      + $"but got {orientation}.")
             };
 
-        public DirectionRange<TAlgebraicNumber> Reverse() =>
-            new DirectionRange<TAlgebraicNumber>(
+        public DirectionRange Reverse() =>
+            new DirectionRange(
                 End,
                 Start,
                 Orientation == Orientation.CounterClockwise
                     ? Orientation.Clockwise
                     : Orientation.CounterClockwise);
 
-        public DirectionRange<TAlgebraicNumber> Opposite() =>
-            new DirectionRange<TAlgebraicNumber>(
+        public DirectionRange Opposite() =>
+            new DirectionRange(
                 Start.Opposite(),
                 End.Opposite(),
                 Orientation);
 
-        public IEnumerable<DirectionRange<TAlgebraicNumber>> Intersection(DirectionRange<TAlgebraicNumber> other)
+        public IEnumerable<DirectionRange> Intersection(DirectionRange other)
         {
             if (other == null)
             {
@@ -82,8 +79,8 @@ namespace Hilke.KineticConvolution.Double
             return counterClockwiseRange1.CounterClockwiseRangesIntersection(counterClockwiseRange2).ToList();
         }
 
-        private IEnumerable<DirectionRange<TAlgebraicNumber>> CounterClockwiseRangesIntersection(
-            DirectionRange<TAlgebraicNumber> range)
+        private IEnumerable<DirectionRange> CounterClockwiseRangesIntersection(
+            DirectionRange range)
         {
             if (Orientation != Orientation.CounterClockwise)
             {
@@ -97,7 +94,7 @@ namespace Hilke.KineticConvolution.Double
 
             if (range.Start.BelongsTo(this))
             {
-                yield return new DirectionRange<TAlgebraicNumber>(
+                yield return new DirectionRange(
                     range.Start,
                     Start.FirstOf(End, range.End),
                     Orientation.CounterClockwise);
@@ -105,7 +102,7 @@ namespace Hilke.KineticConvolution.Double
                 if (Start.CompareTo(range.Start, range.End) == DirectionOrder.Before
                  && End.CompareTo(range.End, Start) == DirectionOrder.Before)
                 {
-                    yield return new DirectionRange<TAlgebraicNumber>(
+                    yield return new DirectionRange(
                         Start,
                         range.End,
                         Orientation.CounterClockwise);
@@ -113,7 +110,7 @@ namespace Hilke.KineticConvolution.Double
             }
             else if (range.Start.CompareTo(range.End, Start) == DirectionOrder.Before)
             {
-                yield return new DirectionRange<TAlgebraicNumber>(
+                yield return new DirectionRange(
                     Start,
                     Start.FirstOf(End, range.End),
                     Orientation.CounterClockwise);

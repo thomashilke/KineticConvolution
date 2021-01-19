@@ -6,12 +6,12 @@ using static Hilke.KineticConvolution.Double.ConvolutionHelper;
 
 namespace Hilke.KineticConvolution.Double
 {
-    public class Convolution<TAlgebraicNumber> where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
+    public class Convolution
     {
         private Convolution(
-            Shape<TAlgebraicNumber> shape1,
-            Shape<TAlgebraicNumber> shape2,
-            IReadOnlyList<ConvolvedTracing<TAlgebraicNumber>> convolvedTracings)
+            Shape shape1,
+            Shape shape2,
+            IReadOnlyList<ConvolvedTracing> convolvedTracings)
         {
             Shape1 = shape1 ?? throw new ArgumentNullException(nameof(shape1));
             Shape2 = shape2 ?? throw new ArgumentNullException(nameof(shape2));
@@ -19,22 +19,22 @@ namespace Hilke.KineticConvolution.Double
             ConvolvedTracings = convolvedTracings ?? throw new ArgumentNullException(nameof(convolvedTracings));
         }
 
-        public Shape<TAlgebraicNumber> Shape1 { get; }
+        public Shape Shape1 { get; }
 
-        public Shape<TAlgebraicNumber> Shape2 { get; }
+        public Shape Shape2 { get; }
 
-        public IReadOnlyList<ConvolvedTracing<TAlgebraicNumber>> ConvolvedTracings { get; }
+        public IReadOnlyList<ConvolvedTracing> ConvolvedTracings { get; }
 
-        public static Convolution<TAlgebraicNumber> FromShapes(
-            Shape<TAlgebraicNumber> shape1,
-            Shape<TAlgebraicNumber> shape2)
+        public static Convolution FromShapes(
+            Shape shape1,
+            Shape shape2)
         {
             var convolutions =
                 from tracing1 in shape1.Tracings
                 from tracing2 in shape2.Tracings
                 select Convolve(tracing1, tracing2);
 
-            return new Convolution<TAlgebraicNumber>(shape1, shape2, convolutions.SelectMany(x => x).ToList());
+            return new Convolution(shape1, shape2, convolutions.SelectMany(x => x).ToList());
         }
     }
 }

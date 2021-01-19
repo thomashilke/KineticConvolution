@@ -4,9 +4,9 @@ namespace Hilke.KineticConvolution.Double
 {
     internal static class DirectionHelper
     {
-        public static IAlgebraicNumber<TAlgebraicNumber> Determinant<TAlgebraicNumber>(
-            Direction<TAlgebraicNumber> d1,
-            Direction<TAlgebraicNumber> d2) where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
+        public static double Determinant(
+            Direction d1,
+            Direction d2)
         {
             if (d1 == null)
             {
@@ -18,9 +18,9 @@ namespace Hilke.KineticConvolution.Double
                 throw new ArgumentNullException(nameof(d2));
             }
 
-            var a = d1.X.Multiply(d2.Y);
-            var b = d1.Y.Multiply(d2.X);
-            return a.Subtract(b);
+            var a = d1.X * d2.Y;
+            var b = d1.Y * d2.X;
+            return a - b;
         }
     }
 }

@@ -2,22 +2,11 @@ using System;
 
 namespace Hilke.KineticConvolution.Double
 {
-    public sealed class Direction<TAlgebraicNumber> : IEquatable<Direction<TAlgebraicNumber>>
-        where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
+    public sealed class Direction : IEquatable<Direction>
     {
-        public Direction(TAlgebraicNumber x, TAlgebraicNumber y)
+        public Direction(double x, double y)
         {
-            if (x is null)
-            {
-                throw new ArgumentNullException(nameof(x));
-            }
-
-            if (y is null)
-            {
-                throw new ArgumentNullException(nameof(y));
-            }
-
-            if (x.IsZero() && y.IsZero())
+            if (x == 0.0 && y == 0.0)
             {
                 throw new ArgumentException(
                     "Both components of the direction cannot be simultaneously zero.",
@@ -28,12 +17,12 @@ namespace Hilke.KineticConvolution.Double
             Y = y;
         }
 
-        public TAlgebraicNumber X { get; }
+        public double X { get; }
 
-        public TAlgebraicNumber Y { get; }
+        public double Y { get; }
 
         /// <inheritdoc />
-        public bool Equals(Direction<TAlgebraicNumber>? other)
+        public bool Equals(Direction? other)
         {
             if (other is null)
             {
@@ -50,12 +39,12 @@ namespace Hilke.KineticConvolution.Double
                 return false;
             }
 
-            return DirectionHelper.Determinant(this, other).IsZero()
-                && X.Sign() == other.X.Sign()
-                && Y.Sign() == other.Y.Sign();
+            return DirectionHelper.Determinant(this, other) == 0.0
+                && Math.Sign(X) == Math.Sign(other.X)
+                && Math.Sign(Y) == Math.Sign(other.Y);
         }
 
-        public DirectionOrder CompareTo(Direction<TAlgebraicNumber> direction1, Direction<TAlgebraicNumber> direction2)
+        public DirectionOrder CompareTo(Direction direction1, Direction direction2)
         {
             if (direction1.Equals(direction2))
             {
@@ -63,7 +52,7 @@ namespace Hilke.KineticConvolution.Double
             }
 
             return direction1.BelongsTo(
-                       new DirectionRange<TAlgebraicNumber>(
+                       new DirectionRange(
                            this,
                            direction2,
                            Orientation.CounterClockwise))
@@ -71,9 +60,9 @@ namespace Hilke.KineticConvolution.Double
                        : DirectionOrder.Before;
         }
 
-        public Direction<TAlgebraicNumber> FirstOf(
-            Direction<TAlgebraicNumber> direction1,
-            Direction<TAlgebraicNumber> direction2) =>
+        public Direction FirstOf(
+            Direction direction1,
+            Direction direction2) =>
             CompareTo(direction1, direction2) switch
             {
                 DirectionOrder.Before => direction2,
@@ -85,9 +74,9 @@ namespace Hilke.KineticConvolution.Double
                         $"{DirectionOrder.Equal} or {DirectionOrder.After}, but got {(int)order}.")
             };
 
-        public Direction<TAlgebraicNumber> LastOf(
-            Direction<TAlgebraicNumber> direction1,
-            Direction<TAlgebraicNumber> direction2) =>
+        public Direction LastOf(
+            Direction direction1,
+            Direction direction2) =>
             CompareTo(direction1, direction2) switch
             {
                 DirectionOrder.Before => direction1,
@@ -99,28 +88,28 @@ namespace Hilke.KineticConvolution.Double
                         $"{DirectionOrder.Equal} or {DirectionOrder.After}, but got {(int)order}.")
             };
 
-        public bool BelongsToShortestRange(DirectionRange<TAlgebraicNumber> directions)
+        public bool BelongsToShortestRange(DirectionRange directions)
         {
             var determinant = DirectionHelper.Determinant(directions.Start, directions.End);
 
-            if (determinant.IsStrictlyPositive())
+            if (determinant > 0.0)
             {
                 return
-                    DirectionHelper.Determinant(directions.Start, this).IsStrictlyPositive()
-                 && DirectionHelper.Determinant(this, directions.End).IsStrictlyPositive();
+                    DirectionHelper.Determinant(directions.Start, this) > 0.0
+                 && DirectionHelper.Determinant(this, directions.End) > 0.0;
             }
 
-            if (determinant.IsStrictlyNegative())
+            if (determinant < 0.0)
             {
                 return
-                    DirectionHelper.Determinant(directions.Start, this).IsStrictlyNegative()
-                 && DirectionHelper.Determinant(this, directions.End).IsStrictlyNegative();
+                    DirectionHelper.Determinant(directions.Start, this) < 0.0
+                 && DirectionHelper.Determinant(this, directions.End) < 0.0;
             }
 
             return false;
         }
 
-        public bool BelongsTo(DirectionRange<TAlgebraicNumber> directions)
+        public bool BelongsTo(DirectionRange directions)
         {
             if (directions == null)
             {
@@ -130,37 +119,30 @@ namespace Hilke.KineticConvolution.Double
             return !(directions.IsShortestRange() ^ BelongsToShortestRange(directions));
         }
 
-        public Direction<TAlgebraicNumber> Opposite() => new Direction<TAlgebraicNumber>(X.Opposite(), Y.Opposite());
+        public Direction Opposite() => new Direction(- X, -Y);
 
-        public Direction<TAlgebraicNumber> Normalize()
+        public Direction Normalize()
         {
-            var length = X.Multiply(X)
-                          .Add(Y.Multiply(Y))
-                          .SquareRoot();
+            var length = Math.Sqrt(Math.Pow(X, 2) + Math.Pow(Y, 2));
 
-            return new Direction<TAlgebraicNumber>(
-                X.Divide(length),
-                Y.Divide(length));
+            return new Direction(
+                X / length,
+                Y / length);
         }
 
-        public Direction<TAlgebraicNumber> Scale(TAlgebraicNumber scalar)
-            {
-            if (scalar == null)
-            {
-                throw new ArgumentNullException(nameof(scalar));
-            }
-
-            return new Direction<TAlgebraicNumber>(
-                X.Multiply(scalar),
-                Y.Multiply(scalar));
+        public Direction Scale(double scalar)
+        {
+            return new Direction(
+                X * scalar,
+                Y * scalar);
         }
 
-        public Direction<TAlgebraicNumber> NormalDirection() => new Direction<TAlgebraicNumber>(Y.Opposite(), X);
+        public Direction NormalDirection() => new Direction(- Y, X);
 
         /// <inheritdoc />
         public override bool Equals(object? obj)
         {
-            if (obj is Direction<TAlgebraicNumber> direction)
+            if (obj is Direction direction)
             {
                 return Equals(direction);
             }
@@ -177,10 +159,10 @@ namespace Hilke.KineticConvolution.Double
             }
         }
 
-        public static bool operator ==(Direction<TAlgebraicNumber>? left, Direction<TAlgebraicNumber>? right) =>
+        public static bool operator ==(Direction? left, Direction? right) =>
             Equals(left, right);
 
-        public static bool operator !=(Direction<TAlgebraicNumber>? left, Direction<TAlgebraicNumber>? right) =>
+        public static bool operator !=(Direction? left, Direction? right) =>
             !Equals(left, right);
     }
 }
