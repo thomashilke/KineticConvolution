@@ -3,10 +3,13 @@ using System;
 namespace Hilke.KineticConvolution
 {
     public sealed class Point<TAlgebraicNumber> : IEquatable<Point<TAlgebraicNumber>>
-        where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
+        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
-        public Point(TAlgebraicNumber x, TAlgebraicNumber y)
+        private readonly AlgebraicNumberCalculatorBase<TAlgebraicNumber> _calculator;
+
+        public Point(AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator, TAlgebraicNumber x, TAlgebraicNumber y)
         {
+            _calculator = calculator ?? throw new ArgumentNullException(nameof(calculator));
             X = x ?? throw new ArgumentNullException(nameof(x));
             Y = y ?? throw new ArgumentNullException(nameof(y));
         }
@@ -37,17 +40,19 @@ namespace Hilke.KineticConvolution
             var normalizedDirection = direction.Normalize();
 
             return new Point<TAlgebraicNumber>(
-                X.Add(normalizedDirection.X.Multiply(length)),
-                Y.Add(normalizedDirection.Y.Multiply(length)));
+                _calculator,
+                _calculator.Add(X, _calculator.Multiply(normalizedDirection.X, length)),
+                _calculator.Add(Y, _calculator.Multiply(normalizedDirection.Y, length)));
         }
 
         public Direction<TAlgebraicNumber> DirectionTo(Point<TAlgebraicNumber> target) =>
             new Direction<TAlgebraicNumber>(
-                X.Subtract(target.X),
-                Y.Subtract(target.Y));
+                _calculator,
+                _calculator.Subtract(X, target.X),
+                _calculator.Subtract(Y, target.Y));
 
         public Point<TAlgebraicNumber> Sum(Point<TAlgebraicNumber> point2) =>
-            new Point<TAlgebraicNumber>(X.Add(point2.X), Y.Add(point2.Y));
+            new Point<TAlgebraicNumber>(_calculator, _calculator.Add(X, point2.X), _calculator.Add(Y, point2.Y));
 
         /// <inheritdoc />
         public override bool Equals(object? obj)

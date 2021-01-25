@@ -4,15 +4,18 @@ using Fractions;
 
 namespace Hilke.KineticConvolution
 {
-    public abstract class Tracing<TAlgebraicNumber> where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
+    public abstract class Tracing<TAlgebraicNumber>
+        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
         protected Tracing(
+            AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator,
             Point<TAlgebraicNumber> start,
             Point<TAlgebraicNumber> end,
             Direction<TAlgebraicNumber> startDirection,
             Direction<TAlgebraicNumber> endDirection,
             Fraction weight)
         {
+            Calculator = calculator;
             Start = start ?? throw new ArgumentNullException(nameof(start));
             End = end ?? throw new ArgumentNullException(nameof(end));
             StartDirection = startDirection ?? throw new ArgumentNullException(nameof(startDirection));
@@ -30,10 +33,13 @@ namespace Hilke.KineticConvolution
 
         public Direction<TAlgebraicNumber> EndDirection { get; }
 
+        protected AlgebraicNumberCalculatorBase<TAlgebraicNumber> Calculator { get; }
+
         public bool IsG1ContinuousWith(Tracing<TAlgebraicNumber> next) =>
             End == next.Start && EndDirection == next.StartDirection;
 
         public static Tracing<TAlgebraicNumber> CreateArc(
+            AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator,
             Fraction weight,
             Point<TAlgebraicNumber> center,
             DirectionRange<TAlgebraicNumber> directions,
@@ -68,6 +74,7 @@ namespace Hilke.KineticConvolution
                                    : endNormalDirection;
 
             return new Arc<TAlgebraicNumber>(
+                calculator,
                 weight,
                 center,
                 directions,
@@ -79,6 +86,7 @@ namespace Hilke.KineticConvolution
         }
 
         public static Tracing<TAlgebraicNumber> CreateSegment(
+            AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator,
             Point<TAlgebraicNumber> start,
             Point<TAlgebraicNumber> end,
             Fraction weight)
@@ -99,7 +107,7 @@ namespace Hilke.KineticConvolution
             }
 
             var direction = start.DirectionTo(end);
-            return new Segment<TAlgebraicNumber>(start, end, direction, direction, weight);
+            return new Segment<TAlgebraicNumber>(calculator, start, end, direction, direction, weight);
         }
     }
 }

@@ -5,9 +5,10 @@ using Fractions;
 namespace Hilke.KineticConvolution
 {
     public class Arc<TAlgebraicNumber> : Tracing<TAlgebraicNumber>
-        where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
+        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
         internal Arc(
+            AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator,
             Fraction weight,
             Point<TAlgebraicNumber> center,
             DirectionRange<TAlgebraicNumber> directions,
@@ -16,7 +17,7 @@ namespace Hilke.KineticConvolution
             Point<TAlgebraicNumber> end,
             Direction<TAlgebraicNumber> startDirection,
             Direction<TAlgebraicNumber> endDirection)
-            : base(start, end, startDirection, endDirection, weight)
+            : base(calculator, start, end, startDirection, endDirection, weight)
         {
             Center = center ?? throw new ArgumentNullException(nameof(center));
             Directions = directions ?? throw new ArgumentNullException(nameof(directions));

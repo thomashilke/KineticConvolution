@@ -4,7 +4,8 @@ using System.Linq;
 
 namespace Hilke.KineticConvolution
 {
-    public class Shape<TAlgebraicNumber> where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
+    public class Shape<TAlgebraicNumber>
+        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
         private Shape(IReadOnlyList<Tracing<TAlgebraicNumber>> tracings) => Tracings = tracings;
 

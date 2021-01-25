@@ -1,14 +1,33 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 
 namespace Hilke.KineticConvolution
 {
-    internal static class ConvolutionHelper
+    public class ConvolutionFactory<TAlgebraicNumber>
+        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
-        public static IEnumerable<ConvolvedTracing<TAlgebraicNumber>> Convolve<TAlgebraicNumber>(
+        public ConvolutionFactory(AlgebraicNumberCalculatorBase<TAlgebraicNumber> algebraicNumberCalculator) =>
+            AlgebraicNumberCalculator = algebraicNumberCalculator
+                                     ?? throw new ArgumentNullException(nameof(algebraicNumberCalculator));
+
+        public AlgebraicNumberCalculatorBase<TAlgebraicNumber> AlgebraicNumberCalculator { get; }
+
+        public Convolution<TAlgebraicNumber> FromShapes(
+            Shape<TAlgebraicNumber> shape1,
+            Shape<TAlgebraicNumber> shape2)
+        {
+            var convolutions =
+                from tracing1 in shape1.Tracings
+                from tracing2 in shape2.Tracings
+                select Convolve(tracing1, tracing2);
+
+            return new Convolution<TAlgebraicNumber>(shape1, shape2, convolutions.SelectMany(x => x).ToList());
+        }
+
+        private IEnumerable<ConvolvedTracing<TAlgebraicNumber>> Convolve(
             Tracing<TAlgebraicNumber> tracing1,
-            Tracing<TAlgebraicNumber> tracing2) where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber> =>
+            Tracing<TAlgebraicNumber> tracing2) =>
             (tracing1, tracing2) switch
             {
                 (Arc<TAlgebraicNumber> arc1, Arc<TAlgebraicNumber> arc2) => ConvolveArcs(arc1, arc2),
@@ -17,14 +36,14 @@ namespace Hilke.KineticConvolution
                 (Segment<TAlgebraicNumber> _, Segment<TAlgebraicNumber> _) =>
                     Enumerable.Empty<ConvolvedTracing<TAlgebraicNumber>>(),
                 _ => throw new NotSupportedException(
-                          "Only convolution between pairs of arcs and segments are supported, " +
-                         $"but got a tracing of type {tracing1.GetType()} and a tracing of type " +
-                         $"{tracing2.GetType()}.")
+                         "Only convolution between pairs of arcs and segments are supported, "
+                       + $"but got a tracing of type {tracing1.GetType()} and a tracing of type "
+                       + $"{tracing2.GetType()}.")
             };
 
-        public static IEnumerable<ConvolvedTracing<TAlgebraicNumber>> ConvolveArcs<TAlgebraicNumber>(
+        private IEnumerable<ConvolvedTracing<TAlgebraicNumber>> ConvolveArcs(
             Arc<TAlgebraicNumber> arc1,
-            Arc<TAlgebraicNumber> arc2) where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
+            Arc<TAlgebraicNumber> arc2)
         {
             if (arc1.Directions.Orientation == arc2.Directions.Orientation)
             {
@@ -32,10 +51,11 @@ namespace Hilke.KineticConvolution
                            .Select(
                                range =>
                                    Tracing<TAlgebraicNumber>.CreateArc(
+                                       AlgebraicNumberCalculator,
                                        1,
                                        arc1.Center.Sum(arc2.Center),
                                        range,
-                                       arc1.Radius.Add(arc2.Radius)))
+                                       AlgebraicNumberCalculator.Add(arc1.Radius, arc2.Radius)))
                            .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
             }
 
@@ -43,16 +63,17 @@ namespace Hilke.KineticConvolution
                        .Select(
                            range =>
                                Tracing<TAlgebraicNumber>.CreateArc(
+                                   AlgebraicNumberCalculator,
                                    1,
                                    arc1.Center.Sum(arc2.Center),
                                    range,
-                                   arc1.Radius.Subtract(arc2.Radius)))
+                                   AlgebraicNumberCalculator.Subtract(arc1.Radius, arc2.Radius)))
                        .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
         }
 
-        public static IEnumerable<ConvolvedTracing<TAlgebraicNumber>> ConvolveArcAndSegment<TAlgebraicNumber>(
+        private IEnumerable<ConvolvedTracing<TAlgebraicNumber>> ConvolveArcAndSegment(
             Arc<TAlgebraicNumber> arc,
-            Segment<TAlgebraicNumber> segment) where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber> =>
+            Segment<TAlgebraicNumber> segment) =>
             arc.Directions.Orientation switch
             {
                 Orientation.CounterClockwise =>
@@ -61,6 +82,7 @@ namespace Hilke.KineticConvolution
                         {
                             new ConvolvedTracing<TAlgebraicNumber>(
                                 Tracing<TAlgebraicNumber>.CreateSegment(
+                                    AlgebraicNumberCalculator,
                                     segment.Start.Sum(
                                         arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
                                     segment.End.Sum(
@@ -76,6 +98,7 @@ namespace Hilke.KineticConvolution
                         {
                             new ConvolvedTracing<TAlgebraicNumber>(
                                 Tracing<TAlgebraicNumber>.CreateSegment(
+                                    AlgebraicNumberCalculator,
                                     segment.Start.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
                                     segment.End.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
                                     1),
@@ -84,8 +107,8 @@ namespace Hilke.KineticConvolution
                         }
                         : Enumerable.Empty<ConvolvedTracing<TAlgebraicNumber>>(),
                 var orientation => throw new NotSupportedException(
-                     "Only clockwise and counterclockwise arc orientations are supported, " +
-                    $"but got {orientation}.")
+                                       "Only clockwise and counterclockwise arc orientations are supported, "
+                                     + $"but got {orientation}.")
             };
     }
 }
