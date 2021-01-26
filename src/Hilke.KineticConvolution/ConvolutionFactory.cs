@@ -2,16 +2,48 @@
 using System.Collections.Generic;
 using System.Linq;
 
+using Fractions;
+
 namespace Hilke.KineticConvolution
 {
     public class ConvolutionFactory<TAlgebraicNumber>
         where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
-        public ConvolutionFactory(AlgebraicNumberCalculatorBase<TAlgebraicNumber> algebraicNumberCalculator) =>
+        public ConvolutionFactory(IAlgebraicNumberCalculator<TAlgebraicNumber> algebraicNumberCalculator) =>
             AlgebraicNumberCalculator = algebraicNumberCalculator
                                      ?? throw new ArgumentNullException(nameof(algebraicNumberCalculator));
 
-        public AlgebraicNumberCalculatorBase<TAlgebraicNumber> AlgebraicNumberCalculator { get; }
+        public IAlgebraicNumberCalculator<TAlgebraicNumber> AlgebraicNumberCalculator { get; }
+
+        public Point<TAlgebraicNumber> CreatePoint(TAlgebraicNumber x, TAlgebraicNumber y) =>
+            new Point<TAlgebraicNumber>(AlgebraicNumberCalculator, x, y);
+
+        public Tracing<TAlgebraicNumber> CreateArc(
+            Fraction weight,
+            TAlgebraicNumber centerX,
+            TAlgebraicNumber centerY,
+            TAlgebraicNumber directionStartX,
+            TAlgebraicNumber directionStartY,
+            TAlgebraicNumber directionEndX,
+            TAlgebraicNumber directionEndY,
+            Orientation orientation,
+            TAlgebraicNumber radius) =>
+            Tracing<TAlgebraicNumber>.CreateArc(
+                AlgebraicNumberCalculator,
+                weight,
+                CreatePoint(centerX, centerY),
+                new DirectionRange<TAlgebraicNumber>(
+                    AlgebraicNumberCalculator,
+                    new Direction<TAlgebraicNumber>(
+                        AlgebraicNumberCalculator,
+                        directionStartX,
+                        directionStartY),
+                    new Direction<TAlgebraicNumber>(
+                        AlgebraicNumberCalculator,
+                        directionEndX,
+                        directionEndY),
+                    orientation),
+                radius);
 
         public Convolution<TAlgebraicNumber> FromShapes(
             Shape<TAlgebraicNumber> shape1,

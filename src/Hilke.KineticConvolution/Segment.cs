@@ -8,7 +8,7 @@ namespace Hilke.KineticConvolution
         where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
         internal Segment(
-            AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator,
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             Point<TAlgebraicNumber> start,
             Point<TAlgebraicNumber> end,
             Direction<TAlgebraicNumber> startDirection,

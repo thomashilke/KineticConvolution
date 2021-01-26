@@ -5,10 +5,10 @@ namespace Hilke.KineticConvolution
     public sealed class Direction<TAlgebraicNumber> : IEquatable<Direction<TAlgebraicNumber>>
         where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
-        private readonly AlgebraicNumberCalculatorBase<TAlgebraicNumber> _calculator;
+        private readonly IAlgebraicNumberCalculator<TAlgebraicNumber> _calculator;
 
         public Direction(
-            AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator,
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             TAlgebraicNumber x,
             TAlgebraicNumber y)
         {

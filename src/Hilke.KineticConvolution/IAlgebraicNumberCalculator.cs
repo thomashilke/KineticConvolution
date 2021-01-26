@@ -1,6 +1,6 @@
 ﻿namespace Hilke.KineticConvolution
 {
-    public abstract class AlgebraicNumberCalculatorBase<TAlgebraicNumber>
+    public interface IAlgebraicNumberCalculator<TAlgebraicNumber>
     {
         public abstract TAlgebraicNumber Add(TAlgebraicNumber left, TAlgebraicNumber right);
 

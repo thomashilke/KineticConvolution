@@ -8,7 +8,7 @@ namespace Hilke.KineticConvolution
         where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
         protected Tracing(
-            AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator,
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             Point<TAlgebraicNumber> start,
             Point<TAlgebraicNumber> end,
             Direction<TAlgebraicNumber> startDirection,
@@ -33,13 +33,13 @@ namespace Hilke.KineticConvolution
 
         public Direction<TAlgebraicNumber> EndDirection { get; }
 
-        protected AlgebraicNumberCalculatorBase<TAlgebraicNumber> Calculator { get; }
+        protected IAlgebraicNumberCalculator<TAlgebraicNumber> Calculator { get; }
 
         public bool IsG1ContinuousWith(Tracing<TAlgebraicNumber> next) =>
             End == next.Start && EndDirection == next.StartDirection;
 
         public static Tracing<TAlgebraicNumber> CreateArc(
-            AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator,
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             Fraction weight,
             Point<TAlgebraicNumber> center,
             DirectionRange<TAlgebraicNumber> directions,
@@ -86,7 +86,7 @@ namespace Hilke.KineticConvolution
         }
 
         public static Tracing<TAlgebraicNumber> CreateSegment(
-            AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator,
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             Point<TAlgebraicNumber> start,
             Point<TAlgebraicNumber> end,
             Fraction weight)

@@ -4,7 +4,7 @@ namespace Hilke.KineticConvolution
 {
     public static class AlgebraicNumberCalculatorExtensions
     {
-        public static bool IsZero<TAlgebraicNumber>(this AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator, TAlgebraicNumber number)
+        public static bool IsZero<TAlgebraicNumber>(this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator, TAlgebraicNumber number)
         {
             if (calculator == null)
             {
@@ -14,7 +14,7 @@ namespace Hilke.KineticConvolution
             return calculator.Sign(number) == 0;
         }
 
-        public static bool IsStrictlyPositive<TAlgebraicNumber>(this AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator, TAlgebraicNumber number)
+        public static bool IsStrictlyPositive<TAlgebraicNumber>(this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator, TAlgebraicNumber number)
         {
             if (number == null)
             {
@@ -35,7 +35,7 @@ namespace Hilke.KineticConvolution
             return number.Sign() >= 0;
         }
 
-        public static bool IsStrictlyNegative<TAlgebraicNumber>(this AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator, TAlgebraicNumber number)
+        public static bool IsStrictlyNegative<TAlgebraicNumber>(this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator, TAlgebraicNumber number)
         {
             if (number == null)
             {

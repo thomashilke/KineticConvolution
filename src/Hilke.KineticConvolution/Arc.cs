@@ -8,7 +8,7 @@ namespace Hilke.KineticConvolution
         where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
         internal Arc(
-            AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator,
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             Fraction weight,
             Point<TAlgebraicNumber> center,
             DirectionRange<TAlgebraicNumber> directions,

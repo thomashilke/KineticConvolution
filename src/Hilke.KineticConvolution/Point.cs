@@ -5,9 +5,9 @@ namespace Hilke.KineticConvolution
     public sealed class Point<TAlgebraicNumber> : IEquatable<Point<TAlgebraicNumber>>
         where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
-        private readonly AlgebraicNumberCalculatorBase<TAlgebraicNumber> _calculator;
+        private readonly IAlgebraicNumberCalculator<TAlgebraicNumber> _calculator;
 
-        public Point(AlgebraicNumberCalculatorBase<TAlgebraicNumber> calculator, TAlgebraicNumber x, TAlgebraicNumber y)
+        public Point(IAlgebraicNumberCalculator<TAlgebraicNumber> calculator, TAlgebraicNumber x, TAlgebraicNumber y)
         {
             _calculator = calculator ?? throw new ArgumentNullException(nameof(calculator));
             X = x ?? throw new ArgumentNullException(nameof(x));
