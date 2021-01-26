@@ -1,4 +1,6 @@
-﻿namespace Hilke.KineticConvolution
+﻿using System;
+
+namespace Hilke.KineticConvolution
 {
     public interface IAlgebraicNumberCalculator<TAlgebraicNumber>
     {
@@ -9,9 +11,7 @@
         public abstract TAlgebraicNumber Multiply(TAlgebraicNumber left, TAlgebraicNumber right);
 
         public abstract TAlgebraicNumber Divide(TAlgebraicNumber dividend, TAlgebraicNumber divisor);
-
-        public abstract bool AreEqual(TAlgebraicNumber left, TAlgebraicNumber right);
-
+        
         public abstract TAlgebraicNumber Inverse(TAlgebraicNumber number);
 
         public abstract TAlgebraicNumber Opposite(TAlgebraicNumber number);

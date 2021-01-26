@@ -17,9 +17,6 @@ namespace Hilke.KineticConvolution
         public double Divide(double dividend, double divisor) => dividend / divisor;
 
         /// <inheritdoc />
-        public bool AreEqual(double left, double right) => left == right;
-
-        /// <inheritdoc />
         public double Inverse(double number)
         {
             if (number != 0.0)

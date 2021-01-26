@@ -17,33 +17,78 @@ namespace Hilke.KineticConvolution
 
         public Point<TAlgebraicNumber> CreatePoint(TAlgebraicNumber x, TAlgebraicNumber y) =>
             new Point<TAlgebraicNumber>(AlgebraicNumberCalculator, x, y);
+        
+        public Segment<TAlgebraicNumber> CreateSegment(
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            Point<TAlgebraicNumber> start,
+            Point<TAlgebraicNumber> end,
+            Fraction weight)
+        {
+            if (start == null)
+            {
+                throw new ArgumentNullException(nameof(start));
+            }
 
-        public Tracing<TAlgebraicNumber> CreateArc(
+            if (end == null)
+            {
+                throw new ArgumentNullException(nameof(end));
+            }
+
+            if (start == end)
+            {
+                throw new ArgumentException("The start point cannot be the same as end point.", nameof(start));
+            }
+
+            var direction = start.DirectionTo(end);
+            return new Segment<TAlgebraicNumber>(calculator, start, end, direction, direction, weight);
+        }
+
+        public Arc<TAlgebraicNumber> CreateArc(
             Fraction weight,
-            TAlgebraicNumber centerX,
-            TAlgebraicNumber centerY,
-            TAlgebraicNumber directionStartX,
-            TAlgebraicNumber directionStartY,
-            TAlgebraicNumber directionEndX,
-            TAlgebraicNumber directionEndY,
+            Point<TAlgebraicNumber> center,
+            DirectionRange<TAlgebraicNumber> directions,
             Orientation orientation,
-            TAlgebraicNumber radius) =>
-            Tracing<TAlgebraicNumber>.CreateArc(
+            TAlgebraicNumber radius)
+        {
+            if (center == null)
+            {
+                throw new ArgumentNullException(nameof(center));
+            }
+
+            if (directions == null)
+            {
+                throw new ArgumentNullException(nameof(directions));
+            }
+
+            if (radius == null)
+            {
+                throw new ArgumentNullException(nameof(radius));
+            }
+
+            var start = center.Translate(directions.Start, radius);
+            var end = center.Translate(directions.End, radius);
+
+            var startNormalDirection = directions.Start.NormalDirection();
+            var startDirection = directions.Orientation == Orientation.Clockwise
+                                     ? startNormalDirection.Opposite()
+                                     : startNormalDirection;
+
+            var endNormalDirection = directions.End.NormalDirection();
+            var endDirection = directions.Orientation == Orientation.Clockwise
+                                   ? endNormalDirection.Opposite()
+                                   : endNormalDirection;
+
+            return new Arc<TAlgebraicNumber>(
                 AlgebraicNumberCalculator,
                 weight,
-                CreatePoint(centerX, centerY),
-                new DirectionRange<TAlgebraicNumber>(
-                    AlgebraicNumberCalculator,
-                    new Direction<TAlgebraicNumber>(
-                        AlgebraicNumberCalculator,
-                        directionStartX,
-                        directionStartY),
-                    new Direction<TAlgebraicNumber>(
-                        AlgebraicNumberCalculator,
-                        directionEndX,
-                        directionEndY),
-                    orientation),
-                radius);
+                center,
+                directions,
+                radius,
+                start,
+                end,
+                startDirection,
+                endDirection);
+        }
 
         public Convolution<TAlgebraicNumber> FromShapes(
             Shape<TAlgebraicNumber> shape1,
