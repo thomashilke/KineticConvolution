@@ -10,7 +10,7 @@ namespace Hilke.KineticConvolution
     {
         private readonly IAlgebraicNumberCalculator<TAlgebraicNumber> _calculator;
 
-        public DirectionRange(
+        internal DirectionRange(
             IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             Direction<TAlgebraicNumber> start,
             Direction<TAlgebraicNumber> end,

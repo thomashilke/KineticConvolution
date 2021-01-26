@@ -6,18 +6,72 @@ using Fractions;
 
 namespace Hilke.KineticConvolution
 {
-    public class ConvolutionFactory<TAlgebraicNumber>
-        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
+    public interface IConvolutionFactory<TAlgebraicNumber> where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
-        public ConvolutionFactory(IAlgebraicNumberCalculator<TAlgebraicNumber> algebraicNumberCalculator) =>
+        IAlgebraicNumberCalculator<TAlgebraicNumber> AlgebraicNumberCalculator { get; }
+
+        Point<TAlgebraicNumber> CreatePoint(TAlgebraicNumber x, TAlgebraicNumber y);
+
+        Direction<TAlgebraicNumber> CreateDirection(TAlgebraicNumber x, TAlgebraicNumber y);
+
+        DirectionRange<TAlgebraicNumber> CreateDirectionRange(
+            Direction<TAlgebraicNumber> start,
+            Direction<TAlgebraicNumber> end,
+            Orientation orientation);
+
+        Segment<TAlgebraicNumber> CreateSegment(
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            Point<TAlgebraicNumber> start,
+            Point<TAlgebraicNumber> end,
+            Fraction weight);
+
+        Arc<TAlgebraicNumber> CreateArc(
+            Fraction weight,
+            Point<TAlgebraicNumber> center,
+            DirectionRange<TAlgebraicNumber> directions,
+            TAlgebraicNumber radius);
+
+        Arc<TAlgebraicNumber> CreateArc(
+            Fraction weight,
+            TAlgebraicNumber centerX,
+            TAlgebraicNumber centerY,
+            TAlgebraicNumber directionStartX,
+            TAlgebraicNumber directionStartY,
+            TAlgebraicNumber directionEndX,
+            TAlgebraicNumber directionEndY,
+            Orientation orientation,
+            TAlgebraicNumber radius);
+
+        Convolution<TAlgebraicNumber> ConvolveShapes(
+            Shape<TAlgebraicNumber> shape1,
+            Shape<TAlgebraicNumber> shape2);
+    }
+
+    public class ConvolutionFactory<TAlgebraicNumber>
+        : IConvolutionFactory<TAlgebraicNumber> where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
+    {
+        internal ConvolutionFactory(IAlgebraicNumberCalculator<TAlgebraicNumber> algebraicNumberCalculator) =>
             AlgebraicNumberCalculator = algebraicNumberCalculator
                                      ?? throw new ArgumentNullException(nameof(algebraicNumberCalculator));
+
+        public static IConvolutionFactory<TAlgebraicNumber> Create(
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator) =>
+            new ConvolutionFactory<TAlgebraicNumber>(calculator);
 
         public IAlgebraicNumberCalculator<TAlgebraicNumber> AlgebraicNumberCalculator { get; }
 
         public Point<TAlgebraicNumber> CreatePoint(TAlgebraicNumber x, TAlgebraicNumber y) =>
             new Point<TAlgebraicNumber>(AlgebraicNumberCalculator, x, y);
-        
+
+        public Direction<TAlgebraicNumber> CreateDirection(TAlgebraicNumber x, TAlgebraicNumber y) =>
+            new Direction<TAlgebraicNumber>(AlgebraicNumberCalculator, x, y);
+
+        public DirectionRange<TAlgebraicNumber> CreateDirectionRange(
+            Direction<TAlgebraicNumber> start,
+            Direction<TAlgebraicNumber> end,
+            Orientation orientation) =>
+            new DirectionRange<TAlgebraicNumber>(AlgebraicNumberCalculator, start, end, orientation);
+
         public Segment<TAlgebraicNumber> CreateSegment(
             IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             Point<TAlgebraicNumber> start,
@@ -47,7 +101,6 @@ namespace Hilke.KineticConvolution
             Fraction weight,
             Point<TAlgebraicNumber> center,
             DirectionRange<TAlgebraicNumber> directions,
-            Orientation orientation,
             TAlgebraicNumber radius)
         {
             if (center == null)
@@ -90,7 +143,25 @@ namespace Hilke.KineticConvolution
                 endDirection);
         }
 
-        public Convolution<TAlgebraicNumber> FromShapes(
+        public Arc<TAlgebraicNumber> CreateArc(
+            Fraction weight,
+            TAlgebraicNumber centerX,
+            TAlgebraicNumber centerY,
+            TAlgebraicNumber directionStartX,
+            TAlgebraicNumber directionStartY,
+            TAlgebraicNumber directionEndX,
+            TAlgebraicNumber directionEndY,
+            Orientation orientation,
+            TAlgebraicNumber radius) =>
+            CreateArc(
+                weight,
+                CreatePoint(centerX, centerY),
+                CreateDirectionRange(
+                    CreateDirection(directionStartX, directionStartY),
+                    CreateDirection(directionEndX, directionEndY), orientation),
+                radius);
+
+        public Convolution<TAlgebraicNumber> ConvolveShapes(
             Shape<TAlgebraicNumber> shape1,
             Shape<TAlgebraicNumber> shape2)
         {
@@ -102,7 +173,7 @@ namespace Hilke.KineticConvolution
             return new Convolution<TAlgebraicNumber>(shape1, shape2, convolutions.SelectMany(x => x).ToList());
         }
 
-        private IEnumerable<ConvolvedTracing<TAlgebraicNumber>> Convolve(
+        internal IEnumerable<ConvolvedTracing<TAlgebraicNumber>> Convolve(
             Tracing<TAlgebraicNumber> tracing1,
             Tracing<TAlgebraicNumber> tracing2) =>
             (tracing1, tracing2) switch
@@ -126,25 +197,24 @@ namespace Hilke.KineticConvolution
             {
                 return arc1.Directions.Intersection(arc2.Directions)
                            .Select(
-                               range =>
-                                   Tracing<TAlgebraicNumber>.CreateArc(
-                                       AlgebraicNumberCalculator,
-                                       1,
-                                       arc1.Center.Sum(arc2.Center),
-                                       range,
-                                       AlgebraicNumberCalculator.Add(arc1.Radius, arc2.Radius)))
+                               range => CreateArc(
+                                   1,
+                                   arc1.Center.Sum(arc2.Center),
+                                   range,
+                                   arc1.Radius))
                            .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
             }
 
             return arc1.Directions.Intersection(arc2.Directions.Opposite())
                        .Select(
                            range =>
-                               Tracing<TAlgebraicNumber>.CreateArc(
-                                   AlgebraicNumberCalculator,
+                               CreateArc(
                                    1,
                                    arc1.Center.Sum(arc2.Center),
                                    range,
-                                   AlgebraicNumberCalculator.Subtract(arc1.Radius, arc2.Radius)))
+                                   AlgebraicNumberCalculator.Subtract(arc1.Radius, arc2.Radius))
+
+                               )
                        .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
         }
 
@@ -158,7 +228,7 @@ namespace Hilke.KineticConvolution
                         ? new[]
                         {
                             new ConvolvedTracing<TAlgebraicNumber>(
-                                Tracing<TAlgebraicNumber>.CreateSegment(
+                                CreateSegment(
                                     AlgebraicNumberCalculator,
                                     segment.Start.Sum(
                                         arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
@@ -174,7 +244,7 @@ namespace Hilke.KineticConvolution
                         ? new[]
                         {
                             new ConvolvedTracing<TAlgebraicNumber>(
-                                Tracing<TAlgebraicNumber>.CreateSegment(
+                                CreateSegment(
                                     AlgebraicNumberCalculator,
                                     segment.Start.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
                                     segment.End.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),

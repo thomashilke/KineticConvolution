@@ -10,13 +10,15 @@ namespace Hilke.KineticConvolution.Tests
         [Test]
         public void When_Direction_Is_Given_Then_BelongsTo_Should_Return_Expected_Result()
         {
-            var east = new Direction<DoubleAlgebraicNumberCalculator>(DoubleAlgebraicNumberCalculator.FromDouble(1.0), DoubleAlgebraicNumberCalculator.FromDouble(0.0));
-            var north = new Direction<DoubleAlgebraicNumberCalculator>(DoubleAlgebraicNumberCalculator.FromDouble(0.0), DoubleAlgebraicNumberCalculator.FromDouble(1.0));
+            var factory = new ConvolutionFactory<double>(new DoubleAlgebraicNumberCalculator());
 
-            var clockwiseRange = new DirectionRange<DoubleAlgebraicNumberCalculator>(east, north, Orientation.Clockwise);
-            var counterClockwiseRange = new DirectionRange<DoubleAlgebraicNumberCalculator>(east, north, Orientation.CounterClockwise);
+            var east = factory.CreateDirection(1.0, 0.0);
+            var north = factory.CreateDirection(0.0, 1.0);
 
-            var northEast = new Direction<DoubleAlgebraicNumberCalculator>(DoubleAlgebraicNumberCalculator.FromDouble(1.0), DoubleAlgebraicNumberCalculator.FromDouble(1.0));
+            var clockwiseRange = factory.CreateDirectionRange(east, north, Orientation.Clockwise);
+            var counterClockwiseRange = factory.CreateDirectionRange(east, north, Orientation.CounterClockwise);
+
+            var northEast = factory.CreateDirection(1.0, 1.0);
             var southWest = northEast.Opposite();
 
             northEast.BelongsTo(clockwiseRange).Should().BeFalse();
@@ -29,28 +31,22 @@ namespace Hilke.KineticConvolution.Tests
         [Test]
         public void When_Direction_Is_Close_To_Range_Boundary_Then_BelongsTo_Should_Return_Expected_Result()
         {
-            var northEast = new Direction<DoubleAlgebraicNumberCalculator>(DoubleAlgebraicNumberCalculator.FromDouble(1.0), DoubleAlgebraicNumberCalculator.FromDouble(1.0));
-            var northWest = new Direction<DoubleAlgebraicNumberCalculator>(DoubleAlgebraicNumberCalculator.FromDouble(-1.0), DoubleAlgebraicNumberCalculator.FromDouble(1.0));
+            var factory = new ConvolutionFactory<double>(new DoubleAlgebraicNumberCalculator());
 
-            var range = new DirectionRange<DoubleAlgebraicNumberCalculator>(northEast, northWest, Orientation.CounterClockwise);
+            var northEast = factory.CreateDirection(1.0, 1.0);
+            var northWest = factory.CreateDirection(-1.0, 1.0);
 
-            var perturbation = 1.0e-2;
+            var range = factory.CreateDirectionRange(northEast, northWest, Orientation.CounterClockwise);
 
-            var d1 = new Direction<DoubleAlgebraicNumberCalculator>(
-                DoubleAlgebraicNumberCalculator.FromDouble(1.0 + perturbation),
-                DoubleAlgebraicNumberCalculator.FromDouble(1.0));
+            const double perturbation = 1.0e-2;
 
-            var d2 = new Direction<DoubleAlgebraicNumberCalculator>(
-                DoubleAlgebraicNumberCalculator.FromDouble(1.0 - perturbation),
-                DoubleAlgebraicNumberCalculator.FromDouble(1.0));
+            var d1 = factory.CreateDirection(1.0 + perturbation, 1.0);
 
-            var d3 = new Direction<DoubleAlgebraicNumberCalculator>(
-                DoubleAlgebraicNumberCalculator.FromDouble(-1.0 + perturbation),
-                DoubleAlgebraicNumberCalculator.FromDouble(1.0));
+            var d2 = factory.CreateDirection(1.0 - perturbation, 1.0);
 
-            var d4 = new Direction<DoubleAlgebraicNumberCalculator>(
-                DoubleAlgebraicNumberCalculator.FromDouble(-1.0 - perturbation),
-                DoubleAlgebraicNumberCalculator.FromDouble(1.0));
+            var d3 = factory.CreateDirection(-1.0 + perturbation, 1.0);
+
+            var d4 = factory.CreateDirection(-1.0 - perturbation, 1.0);
 
             d1.BelongsTo(range).Should().BeFalse();
             d2.BelongsTo(range).Should().BeTrue();
