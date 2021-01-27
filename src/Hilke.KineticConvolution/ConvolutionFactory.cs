@@ -169,7 +169,7 @@ namespace Hilke.KineticConvolution
                        + $"{tracing2.GetType()}.")
             };
 
-        private IEnumerable<ConvolvedTracing<TAlgebraicNumber>> ConvolveArcs(
+        internal IEnumerable<ConvolvedTracing<TAlgebraicNumber>> ConvolveArcs(
             Arc<TAlgebraicNumber> arc1,
             Arc<TAlgebraicNumber> arc2)
         {
@@ -178,10 +178,10 @@ namespace Hilke.KineticConvolution
                 return arc1.Directions.Intersection(arc2.Directions)
                            .Select(
                                range => CreateArc(
-                                   1,
+                                   arc1.Weight * arc2.Weight,
                                    arc1.Center.Sum(arc2.Center),
                                    range,
-                                   arc1.Radius))
+                                   AlgebraicNumberCalculator.Add(arc1.Radius, arc2.Radius)))
                            .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
             }
 
@@ -189,14 +189,14 @@ namespace Hilke.KineticConvolution
                        .Select(
                            range =>
                                CreateArc(
-                                   1,
+                                   arc1.Weight * arc2.Weight,
                                    arc1.Center.Sum(arc2.Center),
                                    range,
                                    AlgebraicNumberCalculator.Subtract(arc1.Radius, arc2.Radius)))
                        .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
         }
 
-        private IEnumerable<ConvolvedTracing<TAlgebraicNumber>> ConvolveArcAndSegment(
+        internal IEnumerable<ConvolvedTracing<TAlgebraicNumber>> ConvolveArcAndSegment(
             Arc<TAlgebraicNumber> arc,
             Segment<TAlgebraicNumber> segment) =>
             arc.Directions.Orientation switch
