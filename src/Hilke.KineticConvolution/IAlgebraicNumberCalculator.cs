@@ -17,5 +17,9 @@
         int Sign(TAlgebraicNumber number);
 
         TAlgebraicNumber SquareRoot(TAlgebraicNumber number);
+
+        TAlgebraicNumber CreateConstant(int value);
+
+        TAlgebraicNumber CreateConstant(double value);
     }
 }

@@ -43,5 +43,11 @@ namespace Hilke.KineticConvolution
 
             throw new InvalidOperationException("The square root of a negative number is undefined.");
         }
+
+        /// <inheritdoc />
+        public double CreateConstant(int value) => value;
+
+        /// <inheritdoc />
+        public double CreateConstant(double value) => value;
     }
 }
