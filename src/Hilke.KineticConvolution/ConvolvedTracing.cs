@@ -5,7 +5,7 @@ namespace Hilke.KineticConvolution
     public class ConvolvedTracing<TAlgebraicNumber>
         where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
-        public ConvolvedTracing(
+        internal ConvolvedTracing(
             Tracing<TAlgebraicNumber> convolution,
             Tracing<TAlgebraicNumber> parent1,
             Tracing<TAlgebraicNumber> parent2)

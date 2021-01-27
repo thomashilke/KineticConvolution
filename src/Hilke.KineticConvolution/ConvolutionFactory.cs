@@ -6,57 +6,12 @@ using Fractions;
 
 namespace Hilke.KineticConvolution
 {
-    public interface IConvolutionFactory<TAlgebraicNumber> where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
-    {
-        IAlgebraicNumberCalculator<TAlgebraicNumber> AlgebraicNumberCalculator { get; }
-
-        Point<TAlgebraicNumber> CreatePoint(TAlgebraicNumber x, TAlgebraicNumber y);
-
-        Direction<TAlgebraicNumber> CreateDirection(TAlgebraicNumber x, TAlgebraicNumber y);
-
-        DirectionRange<TAlgebraicNumber> CreateDirectionRange(
-            Direction<TAlgebraicNumber> start,
-            Direction<TAlgebraicNumber> end,
-            Orientation orientation);
-
-        Segment<TAlgebraicNumber> CreateSegment(
-            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
-            Point<TAlgebraicNumber> start,
-            Point<TAlgebraicNumber> end,
-            Fraction weight);
-
-        Arc<TAlgebraicNumber> CreateArc(
-            Fraction weight,
-            Point<TAlgebraicNumber> center,
-            DirectionRange<TAlgebraicNumber> directions,
-            TAlgebraicNumber radius);
-
-        Arc<TAlgebraicNumber> CreateArc(
-            Fraction weight,
-            TAlgebraicNumber centerX,
-            TAlgebraicNumber centerY,
-            TAlgebraicNumber directionStartX,
-            TAlgebraicNumber directionStartY,
-            TAlgebraicNumber directionEndX,
-            TAlgebraicNumber directionEndY,
-            Orientation orientation,
-            TAlgebraicNumber radius);
-
-        Convolution<TAlgebraicNumber> ConvolveShapes(
-            Shape<TAlgebraicNumber> shape1,
-            Shape<TAlgebraicNumber> shape2);
-    }
-
-    public class ConvolutionFactory<TAlgebraicNumber>
-        : IConvolutionFactory<TAlgebraicNumber> where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
+    public class ConvolutionFactory<TAlgebraicNumber> : IConvolutionFactory<TAlgebraicNumber>
+        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
         internal ConvolutionFactory(IAlgebraicNumberCalculator<TAlgebraicNumber> algebraicNumberCalculator) =>
             AlgebraicNumberCalculator = algebraicNumberCalculator
                                      ?? throw new ArgumentNullException(nameof(algebraicNumberCalculator));
-
-        public static IConvolutionFactory<TAlgebraicNumber> Create(
-            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator) =>
-            new ConvolutionFactory<TAlgebraicNumber>(calculator);
 
         public IAlgebraicNumberCalculator<TAlgebraicNumber> AlgebraicNumberCalculator { get; }
 
@@ -158,7 +113,8 @@ namespace Hilke.KineticConvolution
                 CreatePoint(centerX, centerY),
                 CreateDirectionRange(
                     CreateDirection(directionStartX, directionStartY),
-                    CreateDirection(directionEndX, directionEndY), orientation),
+                    CreateDirection(directionEndX, directionEndY),
+                    orientation),
                 radius);
 
         public Convolution<TAlgebraicNumber> ConvolveShapes(
@@ -172,6 +128,35 @@ namespace Hilke.KineticConvolution
 
             return new Convolution<TAlgebraicNumber>(shape1, shape2, convolutions.SelectMany(x => x).ToList());
         }
+
+        public Shape<TAlgebraicNumber> CreateShape(IEnumerable<Tracing<TAlgebraicNumber>> tracings)
+        {
+            var tracingsEnumerated = tracings?.ToList() ?? throw new ArgumentNullException(nameof(tracings));
+
+            if (tracingsEnumerated.Count < 1)
+            {
+                throw new ArgumentException("There should be at least one tracing.", nameof(tracings));
+            }
+
+            if (!isG1Continuous(tracingsEnumerated))
+            {
+                throw new ArgumentException("The tracings should be continuous.", nameof(tracings));
+            }
+
+            return new Shape<TAlgebraicNumber>(tracingsEnumerated);
+
+            static bool isG1Continuous(IReadOnlyList<Tracing<TAlgebraicNumber>> tracings)
+            {
+                return tracings.Zip(
+                                   tracings.Skip(1).Concat(new[] {tracings.First()}),
+                                   (right, left) => right.IsG1ContinuousWith(left))
+                               .All(isContinuous => isContinuous);
+            }
+        }
+
+        public static IConvolutionFactory<TAlgebraicNumber> Create(
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator) =>
+            new ConvolutionFactory<TAlgebraicNumber>(calculator);
 
         internal IEnumerable<ConvolvedTracing<TAlgebraicNumber>> Convolve(
             Tracing<TAlgebraicNumber> tracing1,
@@ -212,9 +197,7 @@ namespace Hilke.KineticConvolution
                                    1,
                                    arc1.Center.Sum(arc2.Center),
                                    range,
-                                   AlgebraicNumberCalculator.Subtract(arc1.Radius, arc2.Radius))
-
-                               )
+                                   AlgebraicNumberCalculator.Subtract(arc1.Radius, arc2.Radius)))
                        .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
         }
 
