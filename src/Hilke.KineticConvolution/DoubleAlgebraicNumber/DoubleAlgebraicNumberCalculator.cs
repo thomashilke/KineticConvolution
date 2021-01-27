@@ -1,6 +1,6 @@
 using System;
 
-namespace Hilke.KineticConvolution
+namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
 {
     public sealed class DoubleAlgebraicNumberCalculator : IAlgebraicNumberCalculator<double>
     {

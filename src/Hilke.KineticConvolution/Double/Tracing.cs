@@ -30,8 +30,7 @@ namespace Hilke.KineticConvolution.Double
 
         public Direction EndDirection { get; }
 
-        public bool IsG1ContinuousWith(Tracing next) =>
-            End == next.Start && EndDirection == next.StartDirection;
+        public bool IsG1ContinuousWith(Tracing next) => End == next.Start && EndDirection == next.StartDirection;
 
         public static Tracing CreateArc(
             Fraction weight,

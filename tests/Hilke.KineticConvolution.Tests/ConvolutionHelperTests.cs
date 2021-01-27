@@ -2,6 +2,8 @@ using System.Linq;
 
 using FluentAssertions;
 
+using Hilke.KineticConvolution.DoubleAlgebraicNumber;
+
 using NUnit.Framework;
 
 namespace Hilke.KineticConvolution.Tests
@@ -15,7 +17,7 @@ namespace Hilke.KineticConvolution.Tests
             const double radius1 = 2.0;
             const double radius2 = 2.0;
 
-            var convolutionFactory = new ConvolutionFactory<double>(new DoubleAlgebraicNumberCalculator());
+            var convolutionFactory = new ConvolutionFactory();
 
             var arc1 = convolutionFactory.CreateArc(
                 1,

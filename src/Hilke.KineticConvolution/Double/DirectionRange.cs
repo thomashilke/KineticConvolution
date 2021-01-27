@@ -79,8 +79,7 @@ namespace Hilke.KineticConvolution.Double
             return counterClockwiseRange1.CounterClockwiseRangesIntersection(counterClockwiseRange2).ToList();
         }
 
-        private IEnumerable<DirectionRange> CounterClockwiseRangesIntersection(
-            DirectionRange range)
+        private IEnumerable<DirectionRange> CounterClockwiseRangesIntersection(DirectionRange range)
         {
             if (Orientation != Orientation.CounterClockwise)
             {

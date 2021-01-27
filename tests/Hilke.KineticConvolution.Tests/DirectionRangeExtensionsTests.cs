@@ -1,5 +1,7 @@
 using FluentAssertions;
 
+using Hilke.KineticConvolution.DoubleAlgebraicNumber;
+
 using NUnit.Framework;
 
 namespace Hilke.KineticConvolution.Tests
@@ -10,7 +12,7 @@ namespace Hilke.KineticConvolution.Tests
         [Test]
         public void IsShortestRange_Should_Return_Expected_Result()
         {
-            var factory = new ConvolutionFactory<double>(new DoubleAlgebraicNumberCalculator());
+            var factory = new ConvolutionFactory();
 
             var d1 = factory.CreateDirection(1.0, 0.0);
             var d2 = factory.CreateDirection(0.0, 1.0);
