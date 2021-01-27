@@ -82,7 +82,11 @@ namespace Hilke.KineticConvolution
                     ? other
                     : other.Reverse();
 
-            return counterClockwiseRange1.CounterClockwiseRangesIntersection(counterClockwiseRange2).ToList();
+            var result = counterClockwiseRange1.CounterClockwiseRangesIntersection(counterClockwiseRange2).ToList();
+
+            return Orientation == Orientation.CounterClockwise
+                    ? result
+                    : result.Select(t => t.Reverse());
         }
 
         private IEnumerable<DirectionRange<TAlgebraicNumber>> CounterClockwiseRangesIntersection(
