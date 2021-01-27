@@ -4,7 +4,9 @@ namespace Hilke.KineticConvolution
 {
     public static class AlgebraicNumberCalculatorExtensions
     {
-        public static bool IsZero<TAlgebraicNumber>(this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator, TAlgebraicNumber number)
+        public static bool IsZero<TAlgebraicNumber>(
+            this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            TAlgebraicNumber number)
         {
             if (calculator == null)
             {
@@ -14,46 +16,52 @@ namespace Hilke.KineticConvolution
             return calculator.Sign(number) == 0;
         }
 
-        public static bool IsStrictlyPositive<TAlgebraicNumber>(this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator, TAlgebraicNumber number)
+        public static bool IsStrictlyPositive<TAlgebraicNumber>(
+            this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            TAlgebraicNumber number)
         {
-            if (number == null)
+            if (calculator == null)
             {
-                throw new ArgumentNullException(nameof(number));
+                throw new ArgumentNullException(nameof(calculator));
             }
 
             return calculator.Sign(number) == 1;
         }
 
-        public static bool IsPositive<TAlgebraicNumber>(this IAlgebraicNumber<TAlgebraicNumber> number)
-            where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
+        public static bool IsPositive<TAlgebraicNumber>(
+            this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            TAlgebraicNumber number)
         {
-            if (number == null)
+            if (calculator == null)
             {
-                throw new ArgumentNullException(nameof(number));
+                throw new ArgumentNullException(nameof(calculator));
             }
 
-            return number.Sign() >= 0;
+            return calculator.Sign(number) >= 0;
         }
 
-        public static bool IsStrictlyNegative<TAlgebraicNumber>(this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator, TAlgebraicNumber number)
+        public static bool IsStrictlyNegative<TAlgebraicNumber>(
+            this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            TAlgebraicNumber number)
         {
-            if (number == null)
+            if (calculator == null)
             {
-                throw new ArgumentNullException(nameof(number));
+                throw new ArgumentNullException(nameof(calculator));
             }
 
             return calculator.Sign(number) == -1;
         }
 
-        public static bool IsNegative<TAlgebraicNumber>(this IAlgebraicNumber<TAlgebraicNumber> number)
-            where TAlgebraicNumber : IAlgebraicNumber<TAlgebraicNumber>
+        public static bool IsNegative<TAlgebraicNumber>(
+            this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            TAlgebraicNumber number)
         {
-            if (number == null)
+            if (calculator == null)
             {
-                throw new ArgumentNullException(nameof(number));
+                throw new ArgumentNullException(nameof(calculator));
             }
 
-            return number.Sign() <= 0;
+            return calculator.Sign(number) <= 0;
         }
     }
 }
