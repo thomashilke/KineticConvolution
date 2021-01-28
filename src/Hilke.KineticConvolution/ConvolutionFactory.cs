@@ -51,6 +51,18 @@ namespace Hilke.KineticConvolution
             return new Segment<TAlgebraicNumber>(calculator, start, end, direction, direction, weight);
         }
 
+        public Segment<TAlgebraicNumber> CreateSegment(
+            Fraction weight,
+            TAlgebraicNumber startX,
+            TAlgebraicNumber startY,
+            TAlgebraicNumber endX,
+            TAlgebraicNumber endY) =>
+            CreateSegment(
+                AlgebraicNumberCalculator,
+                CreatePoint(startX, startY),
+                CreatePoint(endX, endY),
+                weight);
+
         public Arc<TAlgebraicNumber> CreateArc(
             Fraction weight,
             Point<TAlgebraicNumber> center,
@@ -212,7 +224,7 @@ namespace Hilke.KineticConvolution
                                         arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
                                     segment.End.Sum(
                                         arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
-                                    1),
+                                    arc.Weight * segment.Weight),
                                 arc,
                                 segment)
                         }
@@ -226,7 +238,7 @@ namespace Hilke.KineticConvolution
                                     AlgebraicNumberCalculator,
                                     segment.Start.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
                                     segment.End.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
-                                    1),
+                                    arc.Weight * segment.Weight),
                                 arc,
                                 segment)
                         }
