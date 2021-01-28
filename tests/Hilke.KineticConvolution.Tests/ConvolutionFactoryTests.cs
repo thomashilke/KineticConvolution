@@ -21,37 +21,40 @@ namespace Hilke.KineticConvolution.Tests
         public void When_calling_ConvolveArcs_With_same_counterClockwise_orientation_Then_the_correct_result_Should_be_returned()
         {
             // Arrange arc1
-            var start1 = _factory.CreateDirection(2.0, 0.0);
-            var end1 = _factory.CreateDirection(0.0, 5.0);
-            var range1 = _factory.CreateDirectionRange(start1, end1, Orientation.CounterClockwise);
-
             var arc1 = _factory.CreateArc(
+                radius: 2.0,
                 weight: 1,
-                center: _factory.CreatePoint(1.0, 3.0),
-                directions: range1,
-                radius: 2.0);
+                centerX: 1.0,
+                centerY: 3.0,
+                directionStartX: 2.0,
+                directionStartY: 0.0,
+                directionEndX: 0.0,
+                directionEndY: 5.0,
+                orientation: Orientation.CounterClockwise);
 
             // Arrange arc2
-            var start2 = _factory.CreateDirection(1.0, 0.0);
-            var end2 = _factory.CreateDirection(0.0, 3.0);
-            var range2 = _factory.CreateDirectionRange(start2, end2, Orientation.CounterClockwise);
-
             var arc2 = _factory.CreateArc(
+                radius: 1.0,
                 weight: 2,
-                center: _factory.CreatePoint(5.0, 3.0),
-                directions: range2,
-                radius: 1.0);
+                centerX: 5.0,
+                centerY: 3.0,
+                directionStartX: 1.0,
+                directionStartY: 0.0,
+                directionEndX: 0.0,
+                directionEndY: 3.0,
+                orientation: Orientation.CounterClockwise);
 
-            var expectedStart = _factory.CreateDirection(12.0, 0.0);
-            var expectedEnd = _factory.CreateDirection(0.0, 51.0);
-
-            var expectedRange = _factory.CreateDirectionRange(start2, end2, Orientation.CounterClockwise);
+            // Arrange expected
             var expected = _factory.CreateArc(
+                radius: 3.0,
                 weight: 2,
-                center: _factory.CreatePoint(6.0, 6.0),
-                directions: expectedRange,
-                radius: 3.0);
-
+                centerX: 6.0,
+                centerY: 6.0,
+                directionStartX: 12.0,
+                directionStartY: 0.0,
+                directionEndX: 0.0,
+                directionEndY: 51.0,
+                orientation: Orientation.CounterClockwise);
 
             // Act
             var actual = _factory.ConvolveArcs(arc1, arc2);
@@ -65,37 +68,40 @@ namespace Hilke.KineticConvolution.Tests
         public void When_calling_ConvolveArcs_With_opposite_orientations_Then_the_correct_result_Should_be_returned()
         {
             // Arrange arc1
-            var start1 = _factory.CreateDirection(2.0, 0.0);
-            var end1 = _factory.CreateDirection(0.0, 5.0);
-            var range1 = _factory.CreateDirectionRange(start1, end1, Orientation.CounterClockwise);
-
             var arc1 = _factory.CreateArc(
+                radius: 2.0,
                 weight: 1,
-                center: _factory.CreatePoint(1.0, 3.0),
-                directions: range1,
-                radius: 2.0);
+                centerX: 1.0,
+                centerY: 3.0,
+                directionStartX: 2.0,
+                directionStartY: 0.0,
+                directionEndX: 0.0,
+                directionEndY: 5.0,
+                orientation: Orientation.CounterClockwise);
 
             // Arrange arc2
-            var start2 = _factory.CreateDirection(1.0, 0.0);
-            var end2 = _factory.CreateDirection(0.0, 3.0);
-            var range2 = _factory.CreateDirectionRange(start2, end2, Orientation.Clockwise);
-
             var arc2 = _factory.CreateArc(
+                radius: 1.0,
                 weight: 2,
-                center: _factory.CreatePoint(5.0, 3.0),
-                directions: range2,
-                radius: 1.0);
+                centerX: 5.0,
+                centerY: 3.0,
+                directionStartX: 1.0,
+                directionStartY: 0.0,
+                directionEndX: 0.0,
+                directionEndY: 3.0,
+                orientation: Orientation.Clockwise);
 
-            var expectedStart = _factory.CreateDirection(-12.0, 0.0);
-            var expectedEnd = _factory.CreateDirection(0.0, -31.0);
-
-            var expectedRange = _factory.CreateDirectionRange(start2, end2, Orientation.CounterClockwise);
+            // Arrange expected
             var expected = _factory.CreateArc(
+                radius: 1.0,
                 weight: 2,
-                center: _factory.CreatePoint(6.0, 6.0),
-                directions: expectedRange,
-                radius: 1.0);
-
+                centerX: 6.0,
+                centerY: 6.0,
+                directionStartX: 12.0,
+                directionStartY: 0.0,
+                directionEndX: 0.0,
+                directionEndY: 31.0,
+                orientation: Orientation.CounterClockwise);
 
             // Act
             var actual = _factory.ConvolveArcs(arc1, arc2);
@@ -109,36 +115,40 @@ namespace Hilke.KineticConvolution.Tests
         public void When_calling_ConvolveArcs_With_same_clockwise_orientation_Then_the_correct_result_Should_be_returned()
         {
             // Arrange arc1
-            var start1 = _factory.CreateDirection(2.0, 0.0);
-            var end1 = _factory.CreateDirection(0.0, 5.0);
-            var range1 = _factory.CreateDirectionRange(start1, end1, Orientation.Clockwise);
-
             var arc1 = _factory.CreateArc(
+                radius: 2.0,
                 weight: 1,
-                center: _factory.CreatePoint(1.0, 3.0),
-                directions: range1,
-                radius: 2.0);
+                centerX: 1.0,
+                centerY: 3.0,
+                directionStartX: 2.0,
+                directionStartY: 0.0,
+                directionEndX: 0.0,
+                directionEndY: 5.0,
+                orientation: Orientation.Clockwise);
 
             // Arrange arc2
-            var start2 = _factory.CreateDirection(1.0, 0.0);
-            var end2 = _factory.CreateDirection(0.0, 3.0);
-            var range2 = _factory.CreateDirectionRange(start2, end2, Orientation.Clockwise);
-
             var arc2 = _factory.CreateArc(
+                radius: 1.0,
                 weight: 2,
-                center: _factory.CreatePoint(5.0, 3.0),
-                directions: range2,
-                radius: 1.0);
+                centerX: 5.0,
+                centerY: 3.0,
+                directionStartX: 1.0,
+                directionStartY: 0.0,
+                directionEndX: 0.0,
+                directionEndY: 3.0,
+                orientation: Orientation.Clockwise);
 
-            var expectedStart = _factory.CreateDirection(12.0, 0.0);
-            var expectedEnd = _factory.CreateDirection(0.0, 51.0);
-
-            var expectedRange = _factory.CreateDirectionRange(start2, end2, Orientation.Clockwise);
+            // Arrange expected
             var expected = _factory.CreateArc(
+                radius: 3.0,
                 weight: 2,
-                center: _factory.CreatePoint(6.0, 6.0),
-                directions: expectedRange,
-                radius: 3.0);
+                centerX: 6.0,
+                centerY: 6.0,
+                directionStartX: 12.0,
+                directionStartY: 0.0,
+                directionEndX: 0.0,
+                directionEndY: 51.0,
+                orientation: Orientation.Clockwise);
 
             // Act
             var actual = _factory.ConvolveArcs(arc1, arc2);
@@ -146,6 +156,43 @@ namespace Hilke.KineticConvolution.Tests
             // Assert
             actual.Should().HaveCount(1);
             actual.Single().Convolution.As<Arc<double>>().Should().BeEquivalentTo(expected);
+        }
+
+        [Test]
+        public void When_calling_ConvolveArcAndSegment_With_same_counterClockwise_orientation_Then_the_correct_result_Should_be_returned()
+        {
+            // Arrange arc
+            var arc = _factory.CreateArc(
+                radius: 2.0,
+                weight: 1,
+                centerX: 1.0,
+                centerY: 3.0,
+                directionStartX: 2.0,
+                directionStartY: 0.0,
+                directionEndX: 0.0,
+                directionEndY: 5.0,
+                orientation: Orientation.CounterClockwise);
+
+            // Arrange segment
+            var segment = _factory.CreateSegment(
+                startX: 10,
+                startY: 5,
+                endX: 10,
+                endY: 10,
+                weight: 4);
+
+            // Act
+            var actual = _factory.ConvolveArcAndSegment(arc, segment);
+            var expected = _factory.CreateSegment(
+                startX: 13,
+                startY: 8,
+                endX: 13,
+                endY: 13,
+                weight: 4);
+
+            // Assert
+            actual.Should().HaveCount(1);
+            actual.Single().Convolution.As<Segment<double>>().Should().BeEquivalentTo(expected);
         }
     }
 }
