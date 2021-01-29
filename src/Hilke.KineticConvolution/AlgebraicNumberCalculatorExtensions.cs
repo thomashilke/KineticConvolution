@@ -8,7 +8,7 @@ namespace Hilke.KineticConvolution
             this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             TAlgebraicNumber number)
         {
-            if (calculator == null)
+            if (calculator is null)
             {
                 throw new ArgumentNullException(nameof(calculator));
             }
@@ -20,7 +20,7 @@ namespace Hilke.KineticConvolution
             this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             TAlgebraicNumber number)
         {
-            if (calculator == null)
+            if (calculator is null)
             {
                 throw new ArgumentNullException(nameof(calculator));
             }
@@ -32,7 +32,7 @@ namespace Hilke.KineticConvolution
             this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             TAlgebraicNumber number)
         {
-            if (calculator == null)
+            if (calculator is null)
             {
                 throw new ArgumentNullException(nameof(calculator));
             }
@@ -44,7 +44,7 @@ namespace Hilke.KineticConvolution
             this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             TAlgebraicNumber number)
         {
-            if (calculator == null)
+            if (calculator is null)
             {
                 throw new ArgumentNullException(nameof(calculator));
             }
@@ -56,7 +56,7 @@ namespace Hilke.KineticConvolution
             this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             TAlgebraicNumber number)
         {
-            if (calculator == null)
+            if (calculator is null)
             {
                 throw new ArgumentNullException(nameof(calculator));
             }

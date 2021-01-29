@@ -1,6 +1,6 @@
 ﻿namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
 {
-    public class ConvolutionFactory : ConvolutionFactory<double>
+    public sealed class ConvolutionFactory : ConvolutionFactory<double>
     {
         /// <inheritdoc />
         public ConvolutionFactory()

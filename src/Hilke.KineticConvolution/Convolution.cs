@@ -3,8 +3,7 @@ using System.Collections.Generic;
 
 namespace Hilke.KineticConvolution
 {
-    public class Convolution<TAlgebraicNumber>
-        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
+    public sealed class Convolution<TAlgebraicNumber>
     {
         internal Convolution(
             Shape<TAlgebraicNumber> shape1,

@@ -17,15 +17,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
         public double Divide(double dividend, double divisor) => dividend / divisor;
 
         /// <inheritdoc />
-        public double Inverse(double number)
-        {
-            if (number != 0.0)
-            {
-                return 1.0 / number;
-            }
-
-            throw new InvalidOperationException("The inverse of 0.0 is undefined.");
-        }
+        public double Inverse(double number) => 1.0 / number;
 
         /// <inheritdoc />
         public double Opposite(double number) => -number;
@@ -34,16 +26,8 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
         public int Sign(double number) => Math.Sign(number);
 
         /// <inheritdoc />
-        public double SquareRoot(double number)
-        {
-            if (number >= 0.0)
-            {
-                return Math.Sqrt(number);
-            }
-
-            throw new InvalidOperationException("The square root of a negative number is undefined.");
-        }
-
+        public double SquareRoot(double number) => Math.Sqrt(number);
+        
         /// <inheritdoc />
         public double CreateConstant(int value) => value;
 

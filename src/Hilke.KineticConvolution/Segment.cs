@@ -4,8 +4,7 @@ using Fractions;
 
 namespace Hilke.KineticConvolution
 {
-    public class Segment<TAlgebraicNumber> : Tracing<TAlgebraicNumber>
-        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
+    public sealed class Segment<TAlgebraicNumber> : Tracing<TAlgebraicNumber>
     {
         internal Segment(
             IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,

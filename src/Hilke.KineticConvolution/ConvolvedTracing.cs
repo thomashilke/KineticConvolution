@@ -2,8 +2,7 @@ using System;
 
 namespace Hilke.KineticConvolution
 {
-    public class ConvolvedTracing<TAlgebraicNumber>
-        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
+    public sealed class ConvolvedTracing<TAlgebraicNumber>
     {
         internal ConvolvedTracing(
             Tracing<TAlgebraicNumber> convolution,

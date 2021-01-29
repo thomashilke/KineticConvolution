@@ -3,7 +3,6 @@ using System;
 namespace Hilke.KineticConvolution
 {
     public sealed class Direction<TAlgebraicNumber> : IEquatable<Direction<TAlgebraicNumber>>
-        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
         private readonly IAlgebraicNumberCalculator<TAlgebraicNumber> _calculator;
 
@@ -69,7 +68,7 @@ namespace Hilke.KineticConvolution
 
         public TAlgebraicNumber Determinant(Direction<TAlgebraicNumber> other)
         {
-            if (other == null)
+            if (other is null)
             {
                 throw new ArgumentNullException(nameof(other));
             }
@@ -146,7 +145,7 @@ namespace Hilke.KineticConvolution
 
         public bool BelongsTo(DirectionRange<TAlgebraicNumber> directions)
         {
-            if (directions == null)
+            if (directions is null)
             {
                 throw new ArgumentNullException(nameof(directions));
             }
@@ -171,18 +170,11 @@ namespace Hilke.KineticConvolution
                 _calculator.Divide(Y, length));
         }
 
-        public Direction<TAlgebraicNumber> Scale(TAlgebraicNumber scalar)
-        {
-            if (scalar == null)
-            {
-                throw new ArgumentNullException(nameof(scalar));
-            }
-
-            return new Direction<TAlgebraicNumber>(
+        public Direction<TAlgebraicNumber> Scale(TAlgebraicNumber scalar) =>
+            new Direction<TAlgebraicNumber>(
                 _calculator,
                 _calculator.Multiply(X, scalar),
                 _calculator.Multiply(Y, scalar));
-        }
 
         public Direction<TAlgebraicNumber> NormalDirection() =>
             new Direction<TAlgebraicNumber>(_calculator, _calculator.Opposite(Y), X);

@@ -5,8 +5,7 @@ using System.Linq;
 
 namespace Hilke.KineticConvolution
 {
-    public class DirectionRange<TAlgebraicNumber>
-        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
+    public sealed class DirectionRange<TAlgebraicNumber>
     {
         private readonly IAlgebraicNumberCalculator<TAlgebraicNumber> _calculator;
 
@@ -68,7 +67,7 @@ namespace Hilke.KineticConvolution
 
         public IEnumerable<DirectionRange<TAlgebraicNumber>> Intersection(DirectionRange<TAlgebraicNumber> other)
         {
-            if (other == null)
+            if (other is null)
             {
                 throw new ArgumentNullException(nameof(other));
             }

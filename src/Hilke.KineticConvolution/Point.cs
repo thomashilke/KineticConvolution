@@ -3,7 +3,6 @@ using System;
 namespace Hilke.KineticConvolution
 {
     public sealed class Point<TAlgebraicNumber> : IEquatable<Point<TAlgebraicNumber>>
-        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
         private readonly IAlgebraicNumberCalculator<TAlgebraicNumber> _calculator;
 

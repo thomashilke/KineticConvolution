@@ -5,7 +5,6 @@ using Fractions;
 namespace Hilke.KineticConvolution
 {
     public abstract class Tracing<TAlgebraicNumber>
-        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
         protected Tracing(
             IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
@@ -15,7 +14,7 @@ namespace Hilke.KineticConvolution
             Direction<TAlgebraicNumber> endDirection,
             Fraction weight)
         {
-            Calculator = calculator;
+            Calculator = calculator ?? throw new ArgumentNullException(nameof(start));
             Start = start ?? throw new ArgumentNullException(nameof(start));
             End = end ?? throw new ArgumentNullException(nameof(end));
             StartDirection = startDirection ?? throw new ArgumentNullException(nameof(startDirection));

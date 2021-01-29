@@ -4,7 +4,7 @@ using Fractions;
 
 namespace Hilke.KineticConvolution
 {
-    public interface IConvolutionFactory<TAlgebraicNumber> where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
+    public interface IConvolutionFactory<TAlgebraicNumber>
     {
         IAlgebraicNumberCalculator<TAlgebraicNumber> AlgebraicNumberCalculator { get; }
 

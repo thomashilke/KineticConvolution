@@ -4,8 +4,7 @@ using Fractions;
 
 namespace Hilke.KineticConvolution
 {
-    public class Arc<TAlgebraicNumber> : Tracing<TAlgebraicNumber>
-        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
+    public sealed class Arc<TAlgebraicNumber> : Tracing<TAlgebraicNumber>
     {
         internal Arc(
             IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,

@@ -7,9 +7,8 @@ using Fractions;
 namespace Hilke.KineticConvolution
 {
     public class ConvolutionFactory<TAlgebraicNumber> : IConvolutionFactory<TAlgebraicNumber>
-        where TAlgebraicNumber : IEquatable<TAlgebraicNumber>
     {
-        internal ConvolutionFactory(IAlgebraicNumberCalculator<TAlgebraicNumber> algebraicNumberCalculator) =>
+        public ConvolutionFactory(IAlgebraicNumberCalculator<TAlgebraicNumber> algebraicNumberCalculator) =>
             AlgebraicNumberCalculator = algebraicNumberCalculator
                                      ?? throw new ArgumentNullException(nameof(algebraicNumberCalculator));
 
@@ -33,12 +32,12 @@ namespace Hilke.KineticConvolution
             Point<TAlgebraicNumber> end,
             Fraction weight)
         {
-            if (start == null)
+            if (start is null)
             {
                 throw new ArgumentNullException(nameof(start));
             }
 
-            if (end == null)
+            if (end is null)
             {
                 throw new ArgumentNullException(nameof(end));
             }
@@ -58,17 +57,17 @@ namespace Hilke.KineticConvolution
             DirectionRange<TAlgebraicNumber> directions,
             TAlgebraicNumber radius)
         {
-            if (center == null)
+            if (center is null)
             {
                 throw new ArgumentNullException(nameof(center));
             }
 
-            if (directions == null)
+            if (directions is null)
             {
                 throw new ArgumentNullException(nameof(directions));
             }
 
-            if (radius == null)
+            if (radius is null)
             {
                 throw new ArgumentNullException(nameof(radius));
             }
@@ -153,10 +152,6 @@ namespace Hilke.KineticConvolution
                                .All(isContinuous => isContinuous);
             }
         }
-
-        public static IConvolutionFactory<TAlgebraicNumber> Create(
-            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator) =>
-            new ConvolutionFactory<TAlgebraicNumber>(calculator);
 
         internal IEnumerable<ConvolvedTracing<TAlgebraicNumber>> Convolve(
             Tracing<TAlgebraicNumber> tracing1,

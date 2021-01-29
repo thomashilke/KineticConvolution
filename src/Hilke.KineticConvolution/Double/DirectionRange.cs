@@ -61,7 +61,7 @@ namespace Hilke.KineticConvolution.Double
 
         public IEnumerable<DirectionRange> Intersection(DirectionRange other)
         {
-            if (other == null)
+            if (other is null)
             {
                 throw new ArgumentNullException(nameof(other));
             }

@@ -38,12 +38,12 @@ namespace Hilke.KineticConvolution.Double
             DirectionRange directions,
             double radius)
         {
-            if (center == null)
+            if (center is null)
             {
                 throw new ArgumentNullException(nameof(center));
             }
 
-            if (directions == null)
+            if (directions is null)
             {
                 throw new ArgumentNullException(nameof(directions));
             }
@@ -77,12 +77,12 @@ namespace Hilke.KineticConvolution.Double
             Point end,
             Fraction weight)
         {
-            if (start == null)
+            if (start is null)
             {
                 throw new ArgumentNullException(nameof(start));
             }
 
-            if (end == null)
+            if (end is null)
             {
                 throw new ArgumentNullException(nameof(end));
             }
