@@ -8,12 +8,12 @@ namespace Hilke.KineticConvolution.Double
             Direction d1,
             Direction d2)
         {
-            if (d1 == null)
+            if (d1 is null)
             {
                 throw new ArgumentNullException(nameof(d1));
             }
 
-            if (d2 == null)
+            if (d2 is null)
             {
                 throw new ArgumentNullException(nameof(d2));
             }

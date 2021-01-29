@@ -30,8 +30,7 @@ namespace Hilke.KineticConvolution.Double
 
         public Direction EndDirection { get; }
 
-        public bool IsG1ContinuousWith(Tracing next) =>
-            End == next.Start && EndDirection == next.StartDirection;
+        public bool IsG1ContinuousWith(Tracing next) => End == next.Start && EndDirection == next.StartDirection;
 
         public static Tracing CreateArc(
             Fraction weight,
@@ -39,12 +38,12 @@ namespace Hilke.KineticConvolution.Double
             DirectionRange directions,
             double radius)
         {
-            if (center == null)
+            if (center is null)
             {
                 throw new ArgumentNullException(nameof(center));
             }
 
-            if (directions == null)
+            if (directions is null)
             {
                 throw new ArgumentNullException(nameof(directions));
             }
@@ -78,12 +77,12 @@ namespace Hilke.KineticConvolution.Double
             Point end,
             Fraction weight)
         {
-            if (start == null)
+            if (start is null)
             {
                 throw new ArgumentNullException(nameof(start));
             }
 
-            if (end == null)
+            if (end is null)
             {
                 throw new ArgumentNullException(nameof(end));
             }

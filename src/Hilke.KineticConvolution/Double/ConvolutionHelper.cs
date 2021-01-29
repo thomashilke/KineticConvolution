@@ -17,9 +17,9 @@ namespace Hilke.KineticConvolution.Double
                 (Segment _, Segment _) =>
                     Enumerable.Empty<ConvolvedTracing>(),
                 _ => throw new NotSupportedException(
-                          "Only convolution between pairs of arcs and segments are supported, " +
-                         $"but got a tracing of type {tracing1.GetType()} and a tracing of type " +
-                         $"{tracing2.GetType()}.")
+                         "Only convolution between pairs of arcs and segments are supported, "
+                       + $"but got a tracing of type {tracing1.GetType()} and a tracing of type "
+                       + $"{tracing2.GetType()}.")
             };
 
         public static IEnumerable<ConvolvedTracing> ConvolveArcs(
@@ -84,8 +84,8 @@ namespace Hilke.KineticConvolution.Double
                         }
                         : Enumerable.Empty<ConvolvedTracing>(),
                 var orientation => throw new NotSupportedException(
-                     "Only clockwise and counterclockwise arc orientations are supported, " +
-                    $"but got {orientation}.")
+                                       "Only clockwise and counterclockwise arc orientations are supported, "
+                                     + $"but got {orientation}.")
             };
     }
 }

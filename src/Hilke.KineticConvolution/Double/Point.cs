@@ -36,7 +36,7 @@ namespace Hilke.KineticConvolution.Double
             var normalizedDirection = direction.Normalize();
 
             return new Point(
-                X + normalizedDirection.X  * length,
+                X + normalizedDirection.X * length,
                 Y + normalizedDirection.Y * length);
         }
 
@@ -45,8 +45,7 @@ namespace Hilke.KineticConvolution.Double
                 X - target.X,
                 Y - target.Y);
 
-        public Point Sum(Point point) =>
-            new Point(X + point.X, Y + point.Y);
+        public Point Sum(Point point) => new Point(X + point.X, Y + point.Y);
 
         /// <inheritdoc />
         public override bool Equals(object? obj)
@@ -78,10 +77,8 @@ namespace Hilke.KineticConvolution.Double
             }
         }
 
-        public static bool operator ==(Point? left, Point? right) =>
-            Equals(left, right);
+        public static bool operator ==(Point? left, Point? right) => Equals(left, right);
 
-        public static bool operator !=(Point? left, Point? right) =>
-            !Equals(left, right);
+        public static bool operator !=(Point? left, Point? right) => !Equals(left, right);
     }
 }

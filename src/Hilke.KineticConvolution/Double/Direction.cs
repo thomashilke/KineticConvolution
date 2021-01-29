@@ -70,8 +70,8 @@ namespace Hilke.KineticConvolution.Double
                 DirectionOrder.Equal => direction1,
                 var order =>
                     throw new NotSupportedException(
-                        $"Comparison between two directions should yield either {DirectionOrder.Before}, " +
-                        $"{DirectionOrder.Equal} or {DirectionOrder.After}, but got {(int)order}.")
+                        $"Comparison between two directions should yield either {DirectionOrder.Before}, "
+                      + $"{DirectionOrder.Equal} or {DirectionOrder.After}, but got {(int)order}.")
             };
 
         public Direction LastOf(
@@ -84,8 +84,8 @@ namespace Hilke.KineticConvolution.Double
                 DirectionOrder.Equal => direction1,
                 var order =>
                     throw new NotSupportedException(
-                        $"Comparison between two directions should yield either {DirectionOrder.Before}, " +
-                        $"{DirectionOrder.Equal} or {DirectionOrder.After}, but got {(int)order}.")
+                        $"Comparison between two directions should yield either {DirectionOrder.Before}, "
+                      + $"{DirectionOrder.Equal} or {DirectionOrder.After}, but got {(int)order}.")
             };
 
         public bool BelongsToShortestRange(DirectionRange directions)
@@ -119,7 +119,7 @@ namespace Hilke.KineticConvolution.Double
             return !(directions.IsShortestRange() ^ BelongsToShortestRange(directions));
         }
 
-        public Direction Opposite() => new Direction(- X, -Y);
+        public Direction Opposite() => new Direction(-X, -Y);
 
         public Direction Normalize()
         {
@@ -130,14 +130,12 @@ namespace Hilke.KineticConvolution.Double
                 Y / length);
         }
 
-        public Direction Scale(double scalar)
-        {
-            return new Direction(
+        public Direction Scale(double scalar) =>
+            new Direction(
                 X * scalar,
                 Y * scalar);
-        }
 
-        public Direction NormalDirection() => new Direction(- Y, X);
+        public Direction NormalDirection() => new Direction(-Y, X);
 
         /// <inheritdoc />
         public override bool Equals(object? obj)
@@ -159,10 +157,8 @@ namespace Hilke.KineticConvolution.Double
             }
         }
 
-        public static bool operator ==(Direction? left, Direction? right) =>
-            Equals(left, right);
+        public static bool operator ==(Direction? left, Direction? right) => Equals(left, right);
 
-        public static bool operator !=(Direction? left, Direction? right) =>
-            !Equals(left, right);
+        public static bool operator !=(Direction? left, Direction? right) => !Equals(left, right);
     }
 }

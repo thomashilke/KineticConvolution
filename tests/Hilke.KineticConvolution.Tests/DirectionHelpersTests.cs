@@ -1,5 +1,7 @@
 using FluentAssertions;
 
+using Hilke.KineticConvolution.DoubleAlgebraicNumber;
+
 using NUnit.Framework;
 
 namespace Hilke.KineticConvolution.Tests
@@ -7,21 +9,22 @@ namespace Hilke.KineticConvolution.Tests
     [TestFixture]
     public class DirectionHelpersTests
     {
-        private const double _equalityTolerance = 1.0e-9;
+        private const double EqualityTolerance = 1.0e-9;
 
         [Test]
         public void Direction_Determinant_Should_Have_Expected_Sign()
         {
-            var d1 = new Direction<DoubleNumber>(DoubleNumber.FromDouble(1.0), DoubleNumber.FromDouble(1.0));
-            var d2 = new Direction<DoubleNumber>(DoubleNumber.FromDouble(-1.0), DoubleNumber.FromDouble(1.0));
+            var factory = new ConvolutionFactory();
 
-            var determinant1 = DirectionHelper.Determinant(d1, d2);
-            var determinant2 = DirectionHelper.Determinant(d2, d1);
+            var d1 = factory.CreateDirection(1.0, 1.0);
+            var d2 = factory.CreateDirection(-1.0, 1.0);
 
-            (determinant1 as DoubleNumber).Value.Should().BeApproximately(2.0, _equalityTolerance);
+            var determinant1 = d1.Determinant(d2);
+            var determinant2 = d2.Determinant(d1);
 
-            determinant1.Sign().Should().Be(1);
-            determinant2.Sign().Should().Be(-1);
+            determinant1.Should().BeApproximately(2.0, EqualityTolerance);
+            determinant1.Should().BeGreaterThan(0.0);
+            determinant2.Should().BeLessThan(0.0);
         }
     }
 }
