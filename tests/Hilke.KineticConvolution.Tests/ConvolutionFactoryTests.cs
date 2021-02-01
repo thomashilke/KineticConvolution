@@ -21,7 +21,7 @@ namespace Hilke.KineticConvolution.Tests
         // Case 1
         [Test]
         public void
-            When_calling_ConvolveArcAndSegment_With_two_shapes_without_tangents_Then_the_result_Should_be_empty()    
+            When_calling_ConvolveArcAndSegment_With_two_shapes_without_tangents_Then_the_result_Should_be_empty()
         {
             // Arrange arc1
             var arc = _factory.CreateArc(
@@ -146,7 +146,7 @@ namespace Hilke.KineticConvolution.Tests
             // Arrange arc1
             var arc1 = _factory.CreateArc(
                 radius: 2.0,
-                weight: 1,
+                weight: 2,
                 centerX: 1.0,
                 centerY: 3.0,
                 directionStartX: 2.0,
@@ -158,7 +158,7 @@ namespace Hilke.KineticConvolution.Tests
             // Arrange arc2
             var arc2 = _factory.CreateArc(
                 radius: 3.0,
-                weight: 1,
+                weight: 3,
                 centerX: 5.0,
                 centerY: 3.0,
                 directionStartX: 1.0,
@@ -169,8 +169,8 @@ namespace Hilke.KineticConvolution.Tests
 
             // Arrange expected
             var expected = _factory.CreateArc(
-                radius: -1,
-                weight: 1,
+                radius: 1,
+                weight: 6,
                 centerX: 6,
                 centerY: 6,
                 directionStartX: -12,
@@ -184,7 +184,7 @@ namespace Hilke.KineticConvolution.Tests
 
             // Assert
             actual.Should().HaveCount(1);
-            actual.Single().Convolution.As<Segment<double>>().Should().BeEquivalentTo(expected);
+            actual.Single().Convolution.As<Arc<double>>().Should().BeEquivalentTo(expected);
         }
 
         // Case 5
