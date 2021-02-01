@@ -1,8 +1,10 @@
 ﻿using System.Linq;
 
-using NUnit.Framework;
-
 using FluentAssertions;
+
+using Hilke.KineticConvolution.DoubleAlgebraicNumber;
+
+using NUnit.Framework;
 
 namespace Hilke.KineticConvolution.Tests
 {
@@ -75,14 +77,17 @@ namespace Hilke.KineticConvolution.Tests
                 endY: 10,
                 weight: 4);
 
-            // Act
-            var actual = _factory.ConvolveArcAndSegment(arc, segment);
+            // Arrange expected
             var expected = _factory.CreateSegment(
                 startX: 13,
                 startY: 8,
                 endX: 13,
                 endY: 13,
                 weight: 20);
+
+            // Act
+            var actual = _factory.ConvolveArcAndSegment(arc, segment);
+
 
             // Assert
             actual.Should().HaveCount(1);
@@ -414,7 +419,7 @@ namespace Hilke.KineticConvolution.Tests
         [Test]
         public void When_calling_Convolve_With_two_segment_with_opposite_orientation_The_result_should_be_correct()
         {
-            // Arrange segment
+            // Arrange segment 1
             var segment1 = _factory.CreateSegment(
                 startX: 10,
                 startY: 5,
@@ -422,7 +427,7 @@ namespace Hilke.KineticConvolution.Tests
                 endY: 10,
                 weight: 4);
 
-            // Arrange segment
+            // Arrange segment 2
             var segment2 = _factory.CreateSegment(
                 startX: -1,
                 startY: 10,
