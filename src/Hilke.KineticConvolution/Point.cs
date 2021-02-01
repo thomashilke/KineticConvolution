@@ -6,7 +6,7 @@ namespace Hilke.KineticConvolution
     {
         private readonly IAlgebraicNumberCalculator<TAlgebraicNumber> _calculator;
 
-        internal Point(IAlgebraicNumberCalculator<TAlgebraicNumber> calculator, TAlgebraicNumber x, TAlgebraicNumber y)
+        public Point(IAlgebraicNumberCalculator<TAlgebraicNumber> calculator, TAlgebraicNumber x, TAlgebraicNumber y)
         {
             _calculator = calculator ?? throw new ArgumentNullException(nameof(calculator));
             X = x ?? throw new ArgumentNullException(nameof(x));

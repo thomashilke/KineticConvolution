@@ -6,7 +6,7 @@ namespace Hilke.KineticConvolution
 {
     public sealed class Arc<TAlgebraicNumber> : Tracing<TAlgebraicNumber>
     {
-        internal Arc(
+        public Arc(
             IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             Fraction weight,
             Point<TAlgebraicNumber> center,

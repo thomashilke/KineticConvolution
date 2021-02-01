@@ -6,7 +6,7 @@ namespace Hilke.KineticConvolution
 {
     public sealed class Segment<TAlgebraicNumber> : Tracing<TAlgebraicNumber>
     {
-        internal Segment(
+        public Segment(
             IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             Point<TAlgebraicNumber> start,
             Point<TAlgebraicNumber> end,

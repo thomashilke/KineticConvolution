@@ -5,7 +5,7 @@ namespace Hilke.KineticConvolution
 {
     public sealed class Shape<TAlgebraicNumber>
     {
-        internal Shape(IReadOnlyList<Tracing<TAlgebraicNumber>> tracings) => Tracings = tracings;
+        public Shape(IReadOnlyList<Tracing<TAlgebraicNumber>> tracings) => Tracings = tracings;
 
         public IReadOnlyList<Tracing<TAlgebraicNumber>> Tracings { get; }
     }
