@@ -27,7 +27,6 @@ namespace Hilke.KineticConvolution
             new DirectionRange<TAlgebraicNumber>(AlgebraicNumberCalculator, start, end, orientation);
 
         public Segment<TAlgebraicNumber> CreateSegment(
-            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             Point<TAlgebraicNumber> start,
             Point<TAlgebraicNumber> end,
             Fraction weight)
@@ -48,7 +47,7 @@ namespace Hilke.KineticConvolution
             }
 
             var direction = start.DirectionTo(end);
-            return new Segment<TAlgebraicNumber>(calculator, start, end, direction, direction, weight);
+            return new Segment<TAlgebraicNumber>(AlgebraicNumberCalculator, start, end, direction, direction, weight);
         }
 
         public Segment<TAlgebraicNumber> CreateSegment(
@@ -58,7 +57,6 @@ namespace Hilke.KineticConvolution
             TAlgebraicNumber endX,
             TAlgebraicNumber endY) =>
             CreateSegment(
-                AlgebraicNumberCalculator,
                 CreatePoint(startX, startY),
                 CreatePoint(endX, endY),
                 weight);
@@ -226,7 +224,6 @@ namespace Hilke.KineticConvolution
                         {
                             new ConvolvedTracing<TAlgebraicNumber>(
                                 CreateSegment(
-                                    AlgebraicNumberCalculator,
                                     segment.Start.Sum(
                                         arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
                                     segment.End.Sum(
@@ -242,7 +239,6 @@ namespace Hilke.KineticConvolution
                         {
                             new ConvolvedTracing<TAlgebraicNumber>(
                                 CreateSegment(
-                                    AlgebraicNumberCalculator,
                                     segment.Start.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
                                     segment.End.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
                                     arc.Weight * segment.Weight),
