@@ -18,10 +18,16 @@ namespace Hilke.KineticConvolution
             Orientation orientation);
 
         Segment<TAlgebraicNumber> CreateSegment(
-            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             Point<TAlgebraicNumber> start,
             Point<TAlgebraicNumber> end,
             Fraction weight);
+
+        public Segment<TAlgebraicNumber> CreateSegment(
+            Fraction weight,
+            TAlgebraicNumber startX,
+            TAlgebraicNumber startY,
+            TAlgebraicNumber endX,
+            TAlgebraicNumber endY);
 
         Arc<TAlgebraicNumber> CreateArc(
             Fraction weight,
