@@ -133,7 +133,7 @@ namespace Hilke.KineticConvolution
                     && _calculator.IsStrictlyPositive(Determinant(directions.End));
             }
 
-            if (_calculator.IsStrictlyNegative(determinant))
+            if (_calculator.IsNegative(determinant))
             {
                 return
                     _calculator.IsStrictlyNegative(directions.Start.Determinant(this))

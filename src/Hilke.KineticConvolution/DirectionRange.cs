@@ -41,7 +41,7 @@ namespace Hilke.KineticConvolution
             Orientation switch
             {
                 Orientation.Clockwise =>
-                    _calculator.IsStrictlyNegative(Start.Determinant(End)),
+                    _calculator.IsNegative(Start.Determinant(End)),
                 Orientation.CounterClockwise =>
                     _calculator.IsStrictlyPositive(Start.Determinant(End)),
                 var orientation => throw new NotSupportedException(
