@@ -8,11 +8,21 @@ namespace Hilke.KineticConvolution
 {
     public class ConvolutionFactory<TAlgebraicNumber> : IConvolutionFactory<TAlgebraicNumber>
     {
-        public ConvolutionFactory(IAlgebraicNumberCalculator<TAlgebraicNumber> algebraicNumberCalculator) =>
+        public ConvolutionFactory(IAlgebraicNumberCalculator<TAlgebraicNumber> algebraicNumberCalculator)
+        {
             AlgebraicNumberCalculator = algebraicNumberCalculator
                                      ?? throw new ArgumentNullException(nameof(algebraicNumberCalculator));
 
+            Zero = algebraicNumberCalculator.CreateConstant(0);
+
+            One = algebraicNumberCalculator.CreateConstant(1);
+        }
+
         public IAlgebraicNumberCalculator<TAlgebraicNumber> AlgebraicNumberCalculator { get; }
+
+        public TAlgebraicNumber Zero { get; }
+
+        public TAlgebraicNumber One { get; }
 
         public Point<TAlgebraicNumber> CreatePoint(TAlgebraicNumber x, TAlgebraicNumber y) =>
             new Point<TAlgebraicNumber>(AlgebraicNumberCalculator, x, y);

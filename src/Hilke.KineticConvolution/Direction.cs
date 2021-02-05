@@ -143,11 +143,31 @@ namespace Hilke.KineticConvolution
             return false;
         }
 
+        public bool StrictlyBelongsTo(DirectionRange<TAlgebraicNumber> directions)
+        {
+            if (directions is null)
+            {
+                throw new ArgumentNullException(nameof(directions));
+            }
+
+            if (Equals(directions.Start) || Equals(directions.End))
+            {
+                return false;
+            }
+
+            return !(directions.IsShortestRange() ^ BelongsToShortestRange(directions));
+        }
+
         public bool BelongsTo(DirectionRange<TAlgebraicNumber> directions)
         {
             if (directions is null)
             {
                 throw new ArgumentNullException(nameof(directions));
+            }
+
+            if (Equals(directions.Start) || Equals(directions.End))
+            {
+                return true;
             }
 
             return !(directions.IsShortestRange() ^ BelongsToShortestRange(directions));
