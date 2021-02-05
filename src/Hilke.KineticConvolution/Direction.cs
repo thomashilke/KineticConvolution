@@ -150,6 +150,11 @@ namespace Hilke.KineticConvolution
                 throw new ArgumentNullException(nameof(directions));
             }
 
+            if (Equals(directions.Start) || Equals(directions.End))
+            {
+                return true;
+            }
+
             return !(directions.IsShortestRange() ^ BelongsToShortestRange(directions));
         }
 

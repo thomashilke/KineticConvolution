@@ -47,8 +47,8 @@ namespace Hilke.KineticConvolution
         public Direction<TAlgebraicNumber> DirectionTo(Point<TAlgebraicNumber> target) =>
             new Direction<TAlgebraicNumber>(
                 _calculator,
-                _calculator.Subtract(X, target.X),
-                _calculator.Subtract(Y, target.Y));
+                _calculator.Subtract(target.X, X),
+                _calculator.Subtract(target.Y, Y));
 
         public Point<TAlgebraicNumber> Sum(Point<TAlgebraicNumber> point2) =>
             new Point<TAlgebraicNumber>(_calculator, _calculator.Add(X, point2.X), _calculator.Add(Y, point2.Y));
