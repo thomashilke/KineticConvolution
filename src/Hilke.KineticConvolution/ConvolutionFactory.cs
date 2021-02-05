@@ -196,18 +196,18 @@ namespace Hilke.KineticConvolution
             }
 
             return arc1.Directions.Intersection(arc2.Directions.Opposite())
-                       .Select(range =>
-                       {
-                           var signedRadius = AlgebraicNumberCalculator.Subtract(arc1.Radius, arc2.Radius);
-                               return CreateArc(
-                                   arc1.Weight * arc2.Weight,
-                                   arc1.Center.Sum(arc2.Center),
-                                   AlgebraicNumberCalculator.IsStrictlyNegative(signedRadius)
-                                       ? range.Opposite()
-                                       : range,
-                                   Abs(signedRadius));
-                           })
-                       .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
+                .Select(range =>
+                {
+                    var signedRadius = AlgebraicNumberCalculator.Subtract(arc1.Radius, arc2.Radius);
+                    return CreateArc(
+                        arc1.Weight * arc2.Weight,
+                        arc1.Center.Sum(arc2.Center),
+                        AlgebraicNumberCalculator.IsStrictlyNegative(signedRadius)
+                            ? range.Opposite()
+                            : range,
+                        Abs(signedRadius));
+                })
+                .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
         }
 
         private TAlgebraicNumber Abs(TAlgebraicNumber value) =>
