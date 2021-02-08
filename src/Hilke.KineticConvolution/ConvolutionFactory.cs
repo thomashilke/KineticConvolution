@@ -130,6 +130,16 @@ namespace Hilke.KineticConvolution
             Shape<TAlgebraicNumber> shape1,
             Shape<TAlgebraicNumber> shape2)
         {
+            if (shape1 is null)
+            {
+                throw new ArgumentNullException(nameof(shape1));
+            }
+
+            if (shape2 is null)
+            {
+                throw new ArgumentNullException(nameof(shape2));
+            }
+
             var convolutions =
                 from tracing1 in shape1.Tracings
                 from tracing2 in shape2.Tracings
