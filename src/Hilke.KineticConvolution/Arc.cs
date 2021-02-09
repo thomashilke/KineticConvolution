@@ -5,7 +5,7 @@ using Fractions;
 
 namespace Hilke.KineticConvolution
 {
-    [DebuggerDisplay("Arc(Center: {Center}, {Directions}, Radius: {Radius}, Weight: {Weight})")]
+    [DebuggerDisplay("Arc(Center: {Center}, Directions: {Directions}, Radius: {Radius}, Weight: {Weight})")]
     public sealed class Arc<TAlgebraicNumber> : Tracing<TAlgebraicNumber>
     {
         internal Arc(

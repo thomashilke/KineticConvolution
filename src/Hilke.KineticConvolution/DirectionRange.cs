@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Hilke.KineticConvolution
 {
-    [DebuggerDisplay("DirectionRange: Start {Start} End {End} Orientation: {Orientation}")]
+    [DebuggerDisplay("DirectionRange(Start: {Start}, End: {End}, Orientation: {Orientation})")]
     public sealed class DirectionRange<TAlgebraicNumber>
     {
         private readonly IAlgebraicNumberCalculator<TAlgebraicNumber> _calculator;
