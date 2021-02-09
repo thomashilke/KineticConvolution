@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Hilke.KineticConvolution
 {
+    [DebuggerDisplay("({X}, {Y})")]
     public sealed class Point<TAlgebraicNumber> : IEquatable<Point<TAlgebraicNumber>>
     {
         private readonly IAlgebraicNumberCalculator<TAlgebraicNumber> _calculator;
