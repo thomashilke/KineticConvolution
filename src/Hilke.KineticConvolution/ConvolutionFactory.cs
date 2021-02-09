@@ -197,7 +197,8 @@ namespace Hilke.KineticConvolution
             {
                 return arc1.Directions.Intersection(arc2.Directions)
                            .Select(
-                               range => CreateArc(arc1.Center.Sum(arc2.Center),
+                               range => CreateArc(
+                                   arc1.Center.Sum(arc2.Center),
                                    range,
                                    AlgebraicNumberCalculator.Add(arc1.Radius, arc2.Radius),
                                    arc1.Weight * arc2.Weight))
