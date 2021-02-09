@@ -20,26 +20,26 @@ namespace Hilke.KineticConvolution.Tests
             var convolutionFactory = new ConvolutionFactory();
 
             var arc1 = convolutionFactory.CreateArc(
-                1,
-                1.0,
-                2.0,
-                1.0,
-                0.0,
-                0.0,
-                1.0,
-                Orientation.CounterClockwise,
-                radius1);
+                centerX: 1.0,
+                centerY: 2.0,
+                directionStartX: 1.0,
+                directionStartY: 0.0,
+                directionEndX: 0.0,
+                directionEndY: 1.0,
+                orientation: Orientation.CounterClockwise,
+                radius: radius1,
+                weight: 1);
 
             var arc2 = convolutionFactory.CreateArc(
-                1,
-                2.0,
-                1.0,
-                1.0,
-                0.5,
-                0.5,
-                1.0,
-                Orientation.CounterClockwise,
-                radius2);
+                centerX: 2.0,
+                centerY: 1.0,
+                directionStartX: 1.0,
+                directionStartY: 0.5,
+                directionEndX: 0.5,
+                directionEndY: 1.0,
+                orientation: Orientation.CounterClockwise,
+                radius: radius2,
+                weight: 1);
 
             var convolution = convolutionFactory.Convolve(arc1, arc2).ToList();
 

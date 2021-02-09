@@ -4,8 +4,32 @@ using Hilke.KineticConvolution.DoubleAlgebraicNumber;
 
 using NUnit.Framework;
 
+using System.Collections.Generic;
+using System.Linq;
+
 namespace Hilke.KineticConvolution.Tests
 {
+    internal static class DirectionRangeTestCaseDataSource
+    {
+        public static IEnumerable<TestCaseData> TestCases()
+        {
+            var factory = new ConvolutionFactory();
+
+            yield return new TestCaseData(
+                Orientation.CounterClockwise, Enumerable.Empty<DirectionRange<double>>());
+
+            yield return new TestCaseData(
+                Orientation.Clockwise,
+                new []
+                {
+                    factory.CreateDirectionRange(
+                        factory.CreateDirection(0, 1),
+                        factory.CreateDirection(0, -1),
+                        Orientation.Clockwise)
+                });
+        }
+    }
+
     [TestFixture]
     public class DirectionRangeExtensionsTests
     {
@@ -47,6 +71,26 @@ namespace Hilke.KineticConvolution.Tests
 
             longestRange1.IsShortestRange().Should().BeFalse();
             longestRange2.IsShortestRange().Should().BeFalse();
+        }
+
+        [TestCaseSource(
+            typeof(DirectionRangeTestCaseDataSource),
+            nameof(DirectionRangeTestCaseDataSource.TestCases))]
+        public void When_Start_Direction_Coincide_With_End_Then_Expected_Range_Should_Be_Returned(
+            Orientation orientation,
+            IEnumerable<DirectionRange<double>> expectedRange)
+        {
+            var factory = new ConvolutionFactory();
+
+            var d1 = factory.CreateDirection(0.0, 1.0);
+            var d2 = factory.CreateDirection(0.0, -1.0);
+
+            var leftHalfPlan = factory.CreateDirectionRange(d1, d2, Orientation.Clockwise);
+            var rightHalfPlan = factory.CreateDirectionRange(d1, d2, orientation);
+
+            var intersection = leftHalfPlan.Intersection(rightHalfPlan);
+
+            intersection.Should().BeEquivalentTo(expectedRange);
         }
     }
 }

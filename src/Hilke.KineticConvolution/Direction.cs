@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Hilke.KineticConvolution
 {
+    [DebuggerDisplay("Direction({X}, {Y})")]
     public sealed class Direction<TAlgebraicNumber> : IEquatable<Direction<TAlgebraicNumber>>
     {
         private readonly IAlgebraicNumberCalculator<TAlgebraicNumber> _calculator;
@@ -215,7 +217,7 @@ namespace Hilke.KineticConvolution
         {
             unchecked
             {
-                return (X.GetHashCode() * 397) ^ Y.GetHashCode();
+                return (X!.GetHashCode() * 397) ^ Y!.GetHashCode();
             }
         }
 

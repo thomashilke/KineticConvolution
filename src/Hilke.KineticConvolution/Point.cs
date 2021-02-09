@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Hilke.KineticConvolution
 {
+    [DebuggerDisplay("({X}, {Y})")]
     public sealed class Point<TAlgebraicNumber> : IEquatable<Point<TAlgebraicNumber>>
     {
         private readonly IAlgebraicNumberCalculator<TAlgebraicNumber> _calculator;
@@ -30,8 +32,8 @@ namespace Hilke.KineticConvolution
                 return true;
             }
 
-            return X.Equals(other.X)
-                && Y.Equals(other.Y);
+            return X!.Equals(other.X)
+                && Y!.Equals(other.Y);
         }
 
         public Point<TAlgebraicNumber> Translate(Direction<TAlgebraicNumber> direction, TAlgebraicNumber length)
@@ -79,7 +81,7 @@ namespace Hilke.KineticConvolution
         {
             unchecked
             {
-                return (X.GetHashCode() * 397) ^ Y.GetHashCode();
+                return (X!.GetHashCode() * 397) ^ Y!.GetHashCode();
             }
         }
 

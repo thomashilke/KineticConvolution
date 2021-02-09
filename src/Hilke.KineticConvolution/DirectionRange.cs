@@ -1,10 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 
 namespace Hilke.KineticConvolution
 {
+    [DebuggerDisplay("DirectionRange(Start: {Start}, End: {End}, Orientation: {Orientation})")]
     public sealed class DirectionRange<TAlgebraicNumber>
     {
         private readonly IAlgebraicNumberCalculator<TAlgebraicNumber> _calculator;
@@ -104,11 +106,14 @@ namespace Hilke.KineticConvolution
 
             if (range.Start.BelongsTo(this))
             {
-                yield return new DirectionRange<TAlgebraicNumber>(
-                    _calculator,
-                    range.Start,
-                    Start.FirstOf(End, range.End),
-                    Orientation.CounterClockwise);
+                if (range.Start != End)
+                {
+                    yield return new DirectionRange<TAlgebraicNumber>(
+                        _calculator,
+                        range.Start,
+                        Start.FirstOf(End, range.End),
+                        Orientation.CounterClockwise);
+                }
 
                 if (Start.CompareTo(range.Start, range.End) == DirectionOrder.Before
                  && End.CompareTo(range.End, Start) == DirectionOrder.Before)

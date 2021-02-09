@@ -8,6 +8,10 @@ namespace Hilke.KineticConvolution
     {
         IAlgebraicNumberCalculator<TAlgebraicNumber> AlgebraicNumberCalculator { get; }
 
+        TAlgebraicNumber Zero { get; }
+
+        TAlgebraicNumber One { get; }
+
         Point<TAlgebraicNumber> CreatePoint(TAlgebraicNumber x, TAlgebraicNumber y);
 
         Direction<TAlgebraicNumber> CreateDirection(TAlgebraicNumber x, TAlgebraicNumber y);
@@ -22,21 +26,20 @@ namespace Hilke.KineticConvolution
             Point<TAlgebraicNumber> end,
             Fraction weight);
 
-        public Segment<TAlgebraicNumber> CreateSegment(
-            Fraction weight,
+        Segment<TAlgebraicNumber> CreateSegment(
             TAlgebraicNumber startX,
             TAlgebraicNumber startY,
             TAlgebraicNumber endX,
-            TAlgebraicNumber endY);
+            TAlgebraicNumber endY,
+            Fraction weight);
 
         Arc<TAlgebraicNumber> CreateArc(
-            Fraction weight,
             Point<TAlgebraicNumber> center,
             DirectionRange<TAlgebraicNumber> directions,
-            TAlgebraicNumber radius);
+            TAlgebraicNumber radius,
+            Fraction weight);
 
         Arc<TAlgebraicNumber> CreateArc(
-            Fraction weight,
             TAlgebraicNumber centerX,
             TAlgebraicNumber centerY,
             TAlgebraicNumber directionStartX,
@@ -44,7 +47,8 @@ namespace Hilke.KineticConvolution
             TAlgebraicNumber directionEndX,
             TAlgebraicNumber directionEndY,
             Orientation orientation,
-            TAlgebraicNumber radius);
+            TAlgebraicNumber radius,
+            Fraction weight);
 
         Convolution<TAlgebraicNumber> ConvolveShapes(
             Shape<TAlgebraicNumber> shape1,
