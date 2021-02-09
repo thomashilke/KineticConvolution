@@ -1,7 +1,9 @@
 using System;
+using System.Diagnostics;
 
 namespace Hilke.KineticConvolution
 {
+    [DebuggerDisplay("Convolution(Convolution: {Convolution}, Parent1: {Parent1}, Parent2: {Parent2})")]
     public sealed class ConvolvedTracing<TAlgebraicNumber>
     {
         public ConvolvedTracing(
