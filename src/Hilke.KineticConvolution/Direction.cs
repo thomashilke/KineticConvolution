@@ -215,7 +215,7 @@ namespace Hilke.KineticConvolution
         {
             unchecked
             {
-                return (X.GetHashCode() * 397) ^ Y.GetHashCode();
+                return (X!.GetHashCode() * 397) ^ Y!.GetHashCode();
             }
         }
 
