@@ -9,7 +9,7 @@ using System.Linq;
 
 namespace Hilke.KineticConvolution.Tests
 {
-    internal class DirectionRangeTestCaseDataSource
+    internal static class DirectionRangeTestCaseDataSource
     {
         public static IEnumerable<TestCaseData> TestCases()
         {

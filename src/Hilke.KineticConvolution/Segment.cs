@@ -1,11 +1,10 @@
-using System;
 using System.Diagnostics;
 
 using Fractions;
 
 namespace Hilke.KineticConvolution
 {
-    [DebuggerDisplay("Segment(Start: {Start}, End: {End}, StartDirection: {StartDirection}, EndDirection: {EndDirection}, Weight: {Weight})")]
+    [DebuggerDisplay("Segment(Start: {Start}, End: {End}, Direction: {StartDirection}, Weight: {Weight})")]
     public sealed class Segment<TAlgebraicNumber> : Tracing<TAlgebraicNumber>
     {
         internal Segment(
