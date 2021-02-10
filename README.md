@@ -37,6 +37,13 @@ convolution:
 Here, `tracing` is the polygonal segment that arose from the
 convolution of `parent1` from `shape1` and `parent2` from `shape2`.
 
+Instance of `Shape<T>`, as well as every other objects must be
+instantiated through a factory instance of
+`ConvolutionFactory()`. More about the reasons for this design is
+given in section Factory and algebraic numbers below.
+
+# Factory and algebraic numbers
+
 # References
 [Gui83]: L. Guibas, L. Ramshaw and J. Stolfi, ["A kinetic framework for computational geometry,"](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4568066&isnumber=4568049) 24th Annual Symposium on Foundations of Computer Science (sfcs 1983), Tucson, AZ, USA, 1983, pp. 100-111, doi: 10.1109/SFCS.1983.1.
 
