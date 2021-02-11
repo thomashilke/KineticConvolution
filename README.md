@@ -3,6 +3,8 @@ This repository offer an implementation of the concept of kinetic
 convolution of polygonal tracings, as introduced in [Gui83] and
 extended in [Mil07].
 
+![kinetic convolution of two polygonal tracings](/images/minkowski-sum.png)
+
 # Usage
 Add the NuGet reference to the project:
 ```PowerShell
@@ -14,6 +16,12 @@ and import the namespace in your source file:
     using Hilke.KineticConvolution;
 ```
 
+If you want to use the implementation of algebraic number over the
+`double` data type, import
+```C#
+    using Hilke.KineticConvolution.DoubleAlgebraicNumber;
+```
+
 Given `shape1` and `shape2` of type `Shape<T>` which represent two
 polygonal tracings, the kinetic convolution of those two tracings is
 obtained by calling
@@ -21,6 +29,9 @@ obtained by calling
     var factory = new ConvolutionFactory();
     var convolution = factory.Convolve(shape1, shape2);
 ```
+Note that if `shape1` and `shape2` represent the boundary of two
+convex domains, then the kinetic convolution of `shape1` and `shape2`
+is exactly the boundary of the Minkowski sum of the two domains.
 
 The result of the kinetic convolution of the two shape is a collection
 of `ConvolutionTracings`, each of which holds references to both
