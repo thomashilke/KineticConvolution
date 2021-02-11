@@ -92,7 +92,7 @@ namespace Hilke.KineticConvolution.Tests
 
             // Assert
             actual.Should().HaveCount(1);
-            actual.Single().As<Segment<double>>().Should().BeEquivalentTo(expected);
+            actual.Single().Should().BeOfType<Segment<double>>().And.BeEquivalentTo(expected);
         }
 
         // Case 3
