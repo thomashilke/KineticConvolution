@@ -1,5 +1,3 @@
-using System.Linq;
-
 using FluentAssertions;
 
 using Hilke.KineticConvolution.DoubleAlgebraicNumber;
@@ -11,6 +9,15 @@ namespace Hilke.KineticConvolution.Tests
     [TestFixture]
     public class AlgebraicNumberCalculatorTests
     {
+        private IAlgebraicNumberCalculator<double> _calculator;
+
+        [SetUp]
+        public void SetUp()
+        {
+            var factory = new ConvolutionFactory();
+            _calculator = factory.AlgebraicNumberCalculator;
+        }
+
         [TestCase(0.0, 0.0)]
         [TestCase(0.0, 1.0)]
         [TestCase(-1.0, 0.0)]
@@ -18,19 +25,15 @@ namespace Hilke.KineticConvolution.Tests
         public void When_Number1_Is_Smaller_Than_Number2_Then_IsSmallerThan_Should_Return_True(
             double doubleNumber1, double doubleNumber2)
         {
-            // arrange
-            var factory = new ConvolutionFactory();
+            // Arrange
+            var number1 = _calculator.CreateConstant(doubleNumber1);
+            var number2 = _calculator.CreateConstant(doubleNumber2);
 
-            var calculator = factory.AlgebraicNumberCalculator;
-
-            var number1 = calculator.CreateConstant(doubleNumber1);
-            var number2 = calculator.CreateConstant(doubleNumber2);
-
-            // act
+            // Act
             var comparison =
-                calculator.IsSmallerThan(number1, number2);
+                _calculator.IsSmallerThan(number1, number2);
 
-            // assert
+            // Assert
             comparison.Should().BeTrue();
         }
 
@@ -39,18 +42,14 @@ namespace Hilke.KineticConvolution.Tests
         public void When_Number1_Is_Strictly_Greater_Than_Number2_Then_IsSmallerThan_Should_Return_False(
             double doubleNumber1, double doubleNumber2)
         {
-            // arrange
-            var factory = new ConvolutionFactory();
+            // Arrange
+            var number1 = _calculator.CreateConstant(doubleNumber1);
+            var number2 = _calculator.CreateConstant(doubleNumber2);
 
-            var calculator = factory.AlgebraicNumberCalculator;
+            // Act
+            var comparison = _calculator.IsSmallerThan(number1, number2);
 
-            var number1 = calculator.CreateConstant(doubleNumber1);
-            var number2 = calculator.CreateConstant(doubleNumber2);
-
-            // act
-            var comparison = calculator.IsSmallerThan(number1, number2);
-
-            // assert
+            // Assert
             comparison.Should().BeFalse();
         }
 
@@ -61,19 +60,15 @@ namespace Hilke.KineticConvolution.Tests
         public void When_Number1_Is_Greater_Than_Number2_Then_IsGreaterThan_Should_Return_True(
             double doubleNumber1, double doubleNumber2)
         {
-            // arrange
-            var factory = new ConvolutionFactory();
+            // Arrange
+            var number1 = _calculator.CreateConstant(doubleNumber1);
+            var number2 = _calculator.CreateConstant(doubleNumber2);
 
-            var calculator = factory.AlgebraicNumberCalculator;
-
-            var number1 = calculator.CreateConstant(doubleNumber1);
-            var number2 = calculator.CreateConstant(doubleNumber2);
-
-            // act
+            // Act
             var comparison =
-                calculator.IsGreaterThan(number1, number2);
+                _calculator.IsGreaterThan(number1, number2);
 
-            // assert
+            // Assert
             comparison.Should().BeTrue();
         }
 
@@ -82,18 +77,14 @@ namespace Hilke.KineticConvolution.Tests
         public void When_Number1_Is_Strictly_Smaller_Than_Number2_Then_IsGreaterThan_Should_Return_False(
             double doubleNumber1, double doubleNumber2)
         {
-            // arrange
-            var factory = new ConvolutionFactory();
+            // Arrange
+            var number1 = _calculator.CreateConstant(doubleNumber1);
+            var number2 = _calculator.CreateConstant(doubleNumber2);
 
-            var calculator = factory.AlgebraicNumberCalculator;
+            // Act
+            var comparison = _calculator.IsGreaterThan(number1, number2);
 
-            var number1 = calculator.CreateConstant(doubleNumber1);
-            var number2 = calculator.CreateConstant(doubleNumber2);
-
-            // act
-            var comparison = calculator.IsGreaterThan(number1, number2);
-
-            // assert
+            // Assert
             comparison.Should().BeFalse();
         }
 
@@ -103,19 +94,15 @@ namespace Hilke.KineticConvolution.Tests
         public void When_Number1_Is_Strictly_Greater_Than_Number2_Then_IsStrictlyGreaterThan_Should_Return_True(
             double doubleNumber1, double doubleNumber2)
         {
-            // arrange
-            var factory = new ConvolutionFactory();
+            // Arrange
+            var number1 = _calculator.CreateConstant(doubleNumber1);
+            var number2 = _calculator.CreateConstant(doubleNumber2);
 
-            var calculator = factory.AlgebraicNumberCalculator;
-
-            var number1 = calculator.CreateConstant(doubleNumber1);
-            var number2 = calculator.CreateConstant(doubleNumber2);
-
-            // act
+            // Act
             var comparison =
-                calculator.IsStrictlyGreaterThan(number1, number2);
+                _calculator.IsStrictlyGreaterThan(number1, number2);
 
-            // assert
+            // Assert
             comparison.Should().BeTrue();
         }
 
@@ -125,18 +112,14 @@ namespace Hilke.KineticConvolution.Tests
         public void When_Number1_Is_Smaller_Than_Number2_Then_IsStrictlyGreaterThan_Should_Return_False(
             double doubleNumber1, double doubleNumber2)
         {
-            // arrange
-            var factory = new ConvolutionFactory();
+            // Arrange
+            var number1 = _calculator.CreateConstant(doubleNumber1);
+            var number2 = _calculator.CreateConstant(doubleNumber2);
 
-            var calculator = factory.AlgebraicNumberCalculator;
+            // Act
+            var comparison = _calculator.IsStrictlyGreaterThan(number1, number2);
 
-            var number1 = calculator.CreateConstant(doubleNumber1);
-            var number2 = calculator.CreateConstant(doubleNumber2);
-
-            // act
-            var comparison = calculator.IsStrictlyGreaterThan(number1, number2);
-
-            // assert
+            // Assert
             comparison.Should().BeFalse();
         }
 
@@ -146,19 +129,15 @@ namespace Hilke.KineticConvolution.Tests
         public void When_Number1_Is_Strictly_Smaller_Than_Number2_Then_IsStrictlySmallerThan_Should_Return_True(
             double doubleNumber1, double doubleNumber2)
         {
-            // arrange
-            var factory = new ConvolutionFactory();
+            // Arrange
+            var number1 = _calculator.CreateConstant(doubleNumber1);
+            var number2 = _calculator.CreateConstant(doubleNumber2);
 
-            var calculator = factory.AlgebraicNumberCalculator;
-
-            var number1 = calculator.CreateConstant(doubleNumber1);
-            var number2 = calculator.CreateConstant(doubleNumber2);
-
-            // act
+            // Act
             var comparison =
-                calculator.IsStrictlySmallerThan(number1, number2);
+                _calculator.IsStrictlySmallerThan(number1, number2);
 
-            // assert
+            // Assert
             comparison.Should().BeTrue();
         }
 
@@ -168,18 +147,14 @@ namespace Hilke.KineticConvolution.Tests
         public void When_Number1_Is_Greater_Than_Number2_Then_IsStrictlySmallerThan_Should_Return_False(
             double doubleNumber1, double doubleNumber2)
         {
-            // arrange
-            var factory = new ConvolutionFactory();
+            // Arrange
+            var number1 = _calculator.CreateConstant(doubleNumber1);
+            var number2 = _calculator.CreateConstant(doubleNumber2);
 
-            var calculator = factory.AlgebraicNumberCalculator;
+            // Act
+            var comparison = _calculator.IsStrictlySmallerThan(number1, number2);
 
-            var number1 = calculator.CreateConstant(doubleNumber1);
-            var number2 = calculator.CreateConstant(doubleNumber2);
-
-            // act
-            var comparison = calculator.IsStrictlySmallerThan(number1, number2);
-
-            // assert
+            // Assert
             comparison.Should().BeFalse();
         }
 
@@ -187,19 +162,15 @@ namespace Hilke.KineticConvolution.Tests
         [TestCase(0.0, 0.0)]
         [TestCase(-0.0, 0.0)]
         [TestCase(1.0, 1.0)]
-        public void When_(double doubleNumber, double expectedAbsoluteValue)
+        public void Number_Absolute_Value_Should_Have_Expected_Value(double doubleNumber, double expectedAbsoluteValue)
         {
-            // arrange
-            var factory = new ConvolutionFactory();
+            // Arrange
+            var number = _calculator.CreateConstant(doubleNumber);
 
-            var calculator = factory.AlgebraicNumberCalculator;
+            // Act
+            var absoluteValue = _calculator.Abs(number);
 
-            var number = calculator.CreateConstant(doubleNumber);
-
-            // act
-            var absoluteValue = calculator.Abs(number);
-
-            // assert
+            // Assert
             absoluteValue.Should().Be(expectedAbsoluteValue);
         }
 
@@ -211,18 +182,14 @@ namespace Hilke.KineticConvolution.Tests
         public void When_Numbers_Are_Equal_Then_AreEqual_Should_Return_Expected_Result(
             double doubleNumber1, double doubleNumber2, bool number1EqualsNumber2Expectation)
         {
-            // arrange
-            var factory = new ConvolutionFactory();
+            // Arrange
+            var number1 = _calculator.CreateConstant(doubleNumber1);
+            var number2 = _calculator.CreateConstant(doubleNumber2);
 
-            var calculator = factory.AlgebraicNumberCalculator;
+            // Act
+            var number1EqualsNumber2 = _calculator.AreEqual(number1, number2);
 
-            var number1 = calculator.CreateConstant(doubleNumber1);
-            var number2 = calculator.CreateConstant(doubleNumber2);
-
-            // act
-            var number1EqualsNumber2 = calculator.AreEqual(number1, number2);
-
-            // assert
+            // Assert
             number1EqualsNumber2.Should().Be(number1EqualsNumber2Expectation);
         }
 
@@ -237,19 +204,15 @@ namespace Hilke.KineticConvolution.Tests
             double doubleTolerance,
             bool numberAreCloseExpectation)
         {
-            // arrange
-            var factory = new ConvolutionFactory();
+            // Arrange
+            var number1 = _calculator.CreateConstant(doubleNumber1);
+            var number2 = _calculator.CreateConstant(doubleNumber2);
+            var tolerance = _calculator.CreateConstant(doubleTolerance);
 
-            var calculator = factory.AlgebraicNumberCalculator;
+            // Act
+            var number1IsCloseToNumber2 = _calculator.AreClose(number1, number2, tolerance);
 
-            var number1 = calculator.CreateConstant(doubleNumber1);
-            var number2 = calculator.CreateConstant(doubleNumber2);
-            var tolerance = calculator.CreateConstant(doubleTolerance);
-
-            // act
-            var number1IsCloseToNumber2 = calculator.AreClose(number1, number2, tolerance);
-
-            // assert
+            // Assert
             number1IsCloseToNumber2.Should().Be(numberAreCloseExpectation);
         }
     }
