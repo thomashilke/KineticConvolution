@@ -22,18 +22,7 @@ namespace Hilke.KineticConvolution
         /// <inheritdoc />
         public bool Equals(Point<TAlgebraicNumber>? other)
         {
-            if (other is null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            return X!.Equals(other.X)
-                && Y!.Equals(other.Y);
+            return Equals(other as object);
         }
 
         public Point<TAlgebraicNumber> Translate(Direction<TAlgebraicNumber> direction, TAlgebraicNumber length)
@@ -56,21 +45,22 @@ namespace Hilke.KineticConvolution
             new Point<TAlgebraicNumber>(_calculator, _calculator.Add(X, point2.X), _calculator.Add(Y, point2.Y));
 
         /// <inheritdoc />
-        public override bool Equals(object? obj)
+        public override bool Equals(object? other)
         {
-            if (obj is null)
+            if (other is null)
             {
                 return false;
             }
 
-            if (ReferenceEquals(this, obj))
+            if (ReferenceEquals(this, other))
             {
                 return true;
             }
 
-            if (obj is Point<TAlgebraicNumber> point)
+            if (other is Point<TAlgebraicNumber> point)
             {
-                return Equals(point);
+                return _calculator.AreEqual(X, point.X)
+                && _calculator.AreEqual(Y, point.Y);
             }
 
             return false;
