@@ -211,5 +211,47 @@ namespace Hilke.KineticConvolution.Tests
             // Assert
             number1IsCloseToNumber2.Should().Be(numberAreCloseExpectation);
         }
+
+        [TestCase(-1, 1, ExpectedResult = -1)]
+        [TestCase(1, 1, ExpectedResult = 1)]
+        [TestCase(1, -1, ExpectedResult = -1)]
+        public double When_Calling_Min_Given_Parameter_Should_Return_Expected_Result(
+            double number1, double number2) =>
+            _calculator.Min(number1, number2);
+
+        [TestCase(-1, 1, ExpectedResult = 1)]
+        [TestCase(1, 1, ExpectedResult = 1)]
+        [TestCase(1, -1, ExpectedResult = 1)]
+        public double When_Calling_Max_Given_Parameter_Should_Return_Expected_Result(
+            double number1, double number2) =>
+            _calculator.Max(number1, number2);
+
+        [TestCase(-1.0, 1.0)]
+        [TestCase(2.0, 2.0)]
+        [TestCase(0.0, 0.0)]
+        [TestCase(1.0, -10.0)]
+        public void When_Calling_Sort_Given_Parameter_Should_Return_Expected_Result(
+            double number1, double number2)
+        {
+            // Act
+            var pair = _calculator.Sort(number1, number2);
+
+            // Assert
+            pair.Item1.Should().BeLessOrEqualTo(pair.Item2);
+        }
+
+        [TestCase(-2, -3, -1, ExpectedResult = true)]
+        [TestCase(-2, -1, -3, ExpectedResult = false)]
+        [TestCase(-1, -2, -3, ExpectedResult = false)]
+        [TestCase(-1, -3, -2, ExpectedResult = false)]
+        [TestCase(2, 3, 1, ExpectedResult = false)]
+        [TestCase(2, 1, 3, ExpectedResult = true)]
+        [TestCase(1, 2, 3, ExpectedResult = false)]
+        [TestCase(1, 3, 2, ExpectedResult = false)]
+        public bool When_Calling_IsInsideRange_Given_Parameter_Should_Return_Expected_Result(
+            double number,
+            double lowerBound,
+            double higherBound) =>
+            _calculator.IsInsideRange(number, lowerBound, higherBound);
     }
 }

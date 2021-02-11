@@ -157,5 +157,78 @@ namespace Hilke.KineticConvolution
             var absoluteDifference = calculator.Abs(calculator.Subtract(number2, number1));
             return calculator.IsSmallerThan(absoluteDifference, tolerance);
         }
+
+        public static TAlgebraicNumber Min<TAlgebraicNumber>(
+            this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            TAlgebraicNumber first,
+            TAlgebraicNumber second)
+        {
+            if (calculator is null)
+            {
+                throw new ArgumentNullException(nameof(calculator));
+            }
+
+            return calculator.IsStrictlySmallerThan(first, second) ? first : second;
+        }
+
+        public static TAlgebraicNumber Max<TAlgebraicNumber>(
+            this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            TAlgebraicNumber first,
+            TAlgebraicNumber second)
+        {
+            if (calculator is null)
+            {
+                throw new ArgumentNullException(nameof(calculator));
+            }
+
+            return calculator.IsStrictlySmallerThan(first, second) ? second : first;
+        }
+
+        public static (TAlgebraicNumber first, TAlgebraicNumber second)
+            Sort<TAlgebraicNumber>(
+                this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+                TAlgebraicNumber first,
+                TAlgebraicNumber second)
+        {
+            if (calculator is null)
+            {
+                throw new ArgumentNullException(nameof(calculator));
+            }
+
+            return calculator.IsStrictlySmallerThan(first, second) ? (first, second) : (second, first);
+        }
+
+        public static bool IsInsideRange<TAlgebraicNumber>(
+            this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            TAlgebraicNumber number,
+            TAlgebraicNumber lowerBound,
+            TAlgebraicNumber upperBound,
+            bool lowerBoundIncluded = true,
+            bool upperBoundIncluded = true)
+        {
+            if (calculator is null)
+            {
+                throw new ArgumentNullException(nameof(calculator));
+            }
+
+            var isGreaterThanLowerBound =
+                lowerBoundIncluded
+                    ? calculator.IsGreaterThan(number, lowerBound)
+                    : calculator.IsStrictlyGreaterThan(number, lowerBound);
+
+            var isSmallerThanUpperBound =
+                upperBoundIncluded
+                    ? calculator.IsSmallerThan(number, upperBound)
+                    : calculator.IsStrictlySmallerThan(number, lowerBound);
+
+            return isGreaterThanLowerBound && isSmallerThanUpperBound;
+        }
+
+        public static bool IsStrictlyInsideRange<TAlgebraicNumber>(
+            this IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            TAlgebraicNumber number,
+            TAlgebraicNumber lowerBound,
+            TAlgebraicNumber upperBound) =>
+            IsInsideRange(calculator, number, lowerBound, upperBound, false, false);
     }
 }
