@@ -30,8 +30,7 @@ namespace Hilke.KineticConvolution.Tests
             var number2 = _calculator.CreateConstant(doubleNumber2);
 
             // Act
-            var comparison =
-                _calculator.IsSmallerThan(number1, number2);
+            var comparison = _calculator.IsSmallerThan(number1, number2);
 
             // Assert
             comparison.Should().BeTrue();
@@ -65,8 +64,7 @@ namespace Hilke.KineticConvolution.Tests
             var number2 = _calculator.CreateConstant(doubleNumber2);
 
             // Act
-            var comparison =
-                _calculator.IsGreaterThan(number1, number2);
+            var comparison = _calculator.IsGreaterThan(number1, number2);
 
             // Assert
             comparison.Should().BeTrue();
@@ -99,8 +97,7 @@ namespace Hilke.KineticConvolution.Tests
             var number2 = _calculator.CreateConstant(doubleNumber2);
 
             // Act
-            var comparison =
-                _calculator.IsStrictlyGreaterThan(number1, number2);
+            var comparison = _calculator.IsStrictlyGreaterThan(number1, number2);
 
             // Assert
             comparison.Should().BeTrue();
@@ -134,8 +131,7 @@ namespace Hilke.KineticConvolution.Tests
             var number2 = _calculator.CreateConstant(doubleNumber2);
 
             // Act
-            var comparison =
-                _calculator.IsStrictlySmallerThan(number1, number2);
+            var comparison = _calculator.IsStrictlySmallerThan(number1, number2);
 
             // Assert
             comparison.Should().BeTrue();
