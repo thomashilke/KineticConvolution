@@ -43,6 +43,44 @@ instantiated through a factory instance of
 given in section Factory and algebraic numbers below.
 
 # Factory and algebraic numbers
+A fundamental initial requirement of this implementation was the
+ability to leave the choice of the underlying number type to the
+clients of the library. They are free to choose to represent the
+point and direction coodinates, arc radii, intersection location
+coordinates, etc, with the type of their choice, by providing the
+proper type parameter for `TAlgebraicNumber`, and implementing the
+interface `IAlgebraicNumberCalculator`.
+
+Unfortunately, the C# language do not allow to overload algebraic
+operators on interfaces (or any operator, for that matter). The
+architecture that combines a generic type parameter
+`TAlgebraicNumber` along with an object instance of type
+`IAlgebraicNumberCalculator` which encapsulate the operation to
+manipulate instance of `TAlgebraicNumber` is a workaround to this
+limitation of the language.
+
+In this case, `IAlgebraicNumberCalculator` encapsulate the concept of
+(constructible numbers)[https://en.wikipedia.org/wiki/Constructible_number] which is
+a subset of (algebraic
+numbers)[https://en.wikipedia.org/wiki/Constructible_number]. Hence an
+instance of `TAlgebraicNumber` is an object that can be summed,
+subtracted, multiplied, divided, taken the square root, and whose sign
+can be inspected.
+
+As a convenience, an implementation of approximate number based on the
+floating type `double` is provided by
+`DoubleAlgebaicNumber.DoubleAlgebraicNumberCalculator`. However, it is
+only an approximation of algebraic numbers, as it is a well known fact
+than `double` numbers cannot represent every constructible number. As
+a consequence, there isn't any guarantee of robustness for any geometrical
+predicate with this implementation.
+
+Most of the types defined in this project depends on the generic type
+parameter `TAlgebraicNumber` and need to manipulate them. To alleviate
+the need to pass an instance of the calculator to the constructor of
+all these object, a calculator is instantiated in the factory, and
+object instances are created through the factory's methodes
+`CreatePoint`, `CreateSegment`, etc.
 
 # References
 [Gui83]: L. Guibas, L. Ramshaw and J. Stolfi, ["A kinetic framework for computational geometry,"](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4568066&isnumber=4568049) 24th Annual Symposium on Foundations of Computer Science (sfcs 1983), Tucson, AZ, USA, 1983, pp. 100-111, doi: 10.1109/SFCS.1983.1.
