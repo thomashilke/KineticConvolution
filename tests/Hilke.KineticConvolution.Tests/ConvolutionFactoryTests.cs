@@ -456,11 +456,11 @@ namespace Hilke.KineticConvolution.Tests
         }
 
         [Test]
-        public void When_Two_Shapes_Are_Convolved_Then_Parent1_Should_Belong_To_Shap1_And_Parent2_Should_Belong_To_Shape2()
+        public void When_Two_Shapes_Are_Convolved_Then_Parent1_Should_Belong_To_Shape1_And_Parent2_Should_Belong_To_Shape2()
         {
             // Arrange
-            var shape1 = CreateShape1();
-            var shape2 = CreateShape2();
+            var shape1 = createShape1();
+            var shape2 = createShape2();
 
             // Act
             var convolution = _factory.ConvolveShapes(shape1, shape2);
@@ -474,7 +474,7 @@ namespace Hilke.KineticConvolution.Tests
                 .ForEach(convolvedTracing =>
                     shape2.Tracings.Contains(convolvedTracing.Parent2).Should().BeTrue());
 
-            Shape<double> CreateShape1()
+            Shape<double> createShape1()
             {
                 var weight = new Fraction(1, 2);
 
@@ -516,7 +516,7 @@ namespace Hilke.KineticConvolution.Tests
                     });
             }
 
-            Shape<double> CreateShape2()
+            Shape<double> createShape2()
             {
                 var weight = new Fraction(1, 2);
 
