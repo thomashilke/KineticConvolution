@@ -2,6 +2,8 @@
 
 using FluentAssertions;
 
+using Fractions;
+
 using Hilke.KineticConvolution.DoubleAlgebraicNumber;
 
 using NUnit.Framework;
@@ -88,10 +90,9 @@ namespace Hilke.KineticConvolution.Tests
             // Act
             var actual = _factory.ConvolveArcAndSegment(arc, segment);
 
-
             // Assert
             actual.Should().HaveCount(1);
-            actual.Single().Convolution.As<Segment<double>>().Should().BeEquivalentTo(expected);
+            actual.Single().As<Segment<double>>().Should().BeEquivalentTo(expected);
         }
 
         // Case 3
@@ -141,6 +142,8 @@ namespace Hilke.KineticConvolution.Tests
             // Assert
             actual.Should().HaveCount(1);
             actual.Single().Convolution.As<Arc<double>>().Should().BeEquivalentTo(expected);
+            actual.Single().Parent1.Should().BeSameAs(arc1);
+            actual.Single().Parent2.Should().BeSameAs(arc2);
         }
 
         // Case 4
@@ -190,6 +193,8 @@ namespace Hilke.KineticConvolution.Tests
             // Assert
             actual.Should().HaveCount(1);
             actual.Single().Convolution.As<Arc<double>>().Should().BeEquivalentTo(expected);
+            actual.Single().Parent1.Should().BeSameAs(arc1);
+            actual.Single().Parent2.Should().BeSameAs(arc2);
         }
 
         // Case 5
@@ -239,6 +244,8 @@ namespace Hilke.KineticConvolution.Tests
             // Assert
             actual.Should().HaveCount(1);
             actual.Single().Convolution.As<Arc<double>>().Should().BeEquivalentTo(expected);
+            actual.Single().Parent1.Should().BeSameAs(arc1);
+            actual.Single().Parent2.Should().BeSameAs(arc2);
         }
 
         // Case 6
@@ -288,6 +295,8 @@ namespace Hilke.KineticConvolution.Tests
             // Assert
             actual.Should().HaveCount(1);
             actual.Single().Convolution.As<Arc<double>>().Should().BeEquivalentTo(expected);
+            actual.Single().Parent1.Should().BeSameAs(arc1);
+            actual.Single().Parent2.Should().BeSameAs(arc2);
         }
 
         // Case 7
@@ -337,6 +346,8 @@ namespace Hilke.KineticConvolution.Tests
             // Assert
             actual.Should().HaveCount(1);
             actual.Single().Convolution.As<Arc<double>>().Should().BeEquivalentTo(expected);
+            actual.Single().Parent1.Should().BeSameAs(arc1);
+            actual.Single().Parent2.Should().BeSameAs(arc2);
         }
 
         // Case 8
@@ -386,6 +397,8 @@ namespace Hilke.KineticConvolution.Tests
             // Assert
             actual.Should().HaveCount(1);
             actual.Single().Convolution.As<Arc<double>>().Should().BeEquivalentTo(expected);
+            actual.Single().Parent1.Should().BeSameAs(arc1);
+            actual.Single().Parent2.Should().BeSameAs(arc2);
         }
 
         // Case 9
@@ -440,6 +453,119 @@ namespace Hilke.KineticConvolution.Tests
 
             // Assert
             actual.Should().BeEmpty();
+        }
+
+        [Test]
+        public void When_Two_Shapes_Are_Convolved_Then_Parent1_Should_Belong_To_Shap1_And_Parent2_Should_Belong_To_Shape2()
+        {
+            // Arrange
+            var shape1 = CreateShape1();
+            var shape2 = CreateShape2();
+
+            // Act
+            var convolution = _factory.ConvolveShapes(shape1, shape2);
+
+            // Assert
+            convolution.ConvolvedTracings.ToList()
+                .ForEach(convolvedTracing =>
+                    shape1.Tracings.Contains(convolvedTracing.Parent1).Should().BeTrue());
+
+            convolution.ConvolvedTracings.ToList()
+                .ForEach(convolvedTracing =>
+                    shape2.Tracings.Contains(convolvedTracing.Parent2).Should().BeTrue());
+
+            Shape<double> CreateShape1()
+            {
+                var weight = new Fraction(1, 2);
+
+                var d1 = _factory.CreateDirection(-1, 2);
+                var d2 = _factory.CreateDirection(-1, -2);
+                var d3 = _factory.CreateDirection(2, 0);
+
+                var c1 = _factory.CreatePoint(1, 0);
+                var c2 = _factory.CreatePoint(0, 2);
+                var c3 = _factory.CreatePoint(-1, 0);
+
+                var range1 = _factory.CreateDirectionRange(
+                    d3.NormalDirection().Opposite(),
+                    d1.NormalDirection().Opposite(),
+                    Orientation.CounterClockwise);
+
+                var range2 = _factory.CreateDirectionRange(
+                    d1.NormalDirection().Opposite(),
+                    d2.NormalDirection().Opposite(),
+                    Orientation.CounterClockwise);
+
+                var range3 = _factory.CreateDirectionRange(
+                    d2.NormalDirection().Opposite(),
+                    d3.NormalDirection().Opposite(),
+                    Orientation.CounterClockwise);
+
+                var arc1 = _factory.CreateArc(c1, range1, 1.0, weight);
+                var arc2 = _factory.CreateArc(c2, range2, 1.0, weight);
+                var arc3 = _factory.CreateArc(c3, range3, 1.0, weight);
+
+                var segment1 = _factory.CreateSegment(arc1.End, arc2.Start, weight);
+                var segment2 = _factory.CreateSegment(arc2.End, arc3.Start, weight);
+                var segment3 = _factory.CreateSegment(arc3.End, arc1.Start, weight);
+
+                return _factory.CreateShape(
+                    new Tracing<double>[]
+                    {
+                        arc1, segment1, arc2, segment2, arc3, segment3
+                    });
+            }
+
+            Shape<double> CreateShape2()
+            {
+                var weight = new Fraction(1, 2);
+
+                var d1 = _factory.CreateDirection(0, 3);
+                var d2 = _factory.CreateDirection(-3, 0);
+                var d3 = _factory.CreateDirection(0, -3);
+                var d4 = _factory.CreateDirection(3, 0);
+
+                var c1 = _factory.CreatePoint(3, 0);
+                var c2 = _factory.CreatePoint(3, 3);
+                var c3 = _factory.CreatePoint(0, 3);
+                var c4 = _factory.CreatePoint(0, 0);
+
+                var range1 = _factory.CreateDirectionRange(
+                    d4.NormalDirection().Opposite(),
+                    d1.NormalDirection().Opposite(),
+                    Orientation.CounterClockwise);
+
+                var range2 = _factory.CreateDirectionRange(
+                    d1.NormalDirection().Opposite(),
+                    d2.NormalDirection().Opposite(),
+                    Orientation.CounterClockwise);
+
+                var range3 = _factory.CreateDirectionRange(
+                    d2.NormalDirection().Opposite(),
+                    d3.NormalDirection().Opposite(),
+                    Orientation.CounterClockwise);
+
+                var range4 = _factory.CreateDirectionRange(
+                    d3.NormalDirection().Opposite(),
+                    d4.NormalDirection().Opposite(),
+                    Orientation.CounterClockwise);
+
+                var arc1 = _factory.CreateArc(c1, range1, 1.0, weight);
+                var arc2 = _factory.CreateArc(c2, range2, 1.0, weight);
+                var arc3 = _factory.CreateArc(c3, range3, 1.0, weight);
+                var arc4 = _factory.CreateArc(c4, range4, 1.0, weight);
+
+                var segment1 = _factory.CreateSegment(arc1.End, arc2.Start, weight);
+                var segment2 = _factory.CreateSegment(arc2.End, arc3.Start, weight);
+                var segment3 = _factory.CreateSegment(arc3.End, arc4.Start, weight);
+                var segment4 = _factory.CreateSegment(arc4.End, arc1.Start, weight);
+
+                return _factory.CreateShape(
+                    new Tracing<double>[]
+                    {
+                        arc1, segment1, arc2, segment2, arc3, segment3, arc4, segment4
+                    });
+            }
         }
     }
 }
