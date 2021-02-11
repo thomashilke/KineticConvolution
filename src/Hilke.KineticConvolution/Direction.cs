@@ -185,7 +185,7 @@ namespace Hilke.KineticConvolution
             new Direction<TAlgebraicNumber>(_calculator, _calculator.Opposite(Y), X);
 
         /// <inheritdoc />
-        public override bool Equals (object? other)
+        public override bool Equals(object? other)
         {
             if (other is null)
             {
@@ -195,11 +195,6 @@ namespace Hilke.KineticConvolution
             if (ReferenceEquals(this, other))
             {
                 return true;
-            }
-
-            if (GetType() != other.GetType())
-            {
-                return false;
             }
 
             if (other is Direction<TAlgebraicNumber> direction)

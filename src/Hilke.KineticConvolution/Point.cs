@@ -57,15 +57,10 @@ namespace Hilke.KineticConvolution
                 return true;
             }
 
-            if (GetType() != other.GetType())
-            {
-                return false;
-            }
-
             if (other is Point<TAlgebraicNumber> point)
             {
                 return _calculator.AreEqual(X, point.X)
-                && _calculator.AreEqual(Y, point.Y);
+                    && _calculator.AreEqual(Y, point.Y);
             }
 
             return false;
