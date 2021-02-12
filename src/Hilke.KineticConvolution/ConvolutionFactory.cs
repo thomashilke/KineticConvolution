@@ -179,10 +179,18 @@ namespace Hilke.KineticConvolution
             (tracing1, tracing2) switch
             {
                 (Arc<TAlgebraicNumber> arc1, Arc<TAlgebraicNumber> arc2) => ConvolveArcs(arc1, arc2),
-                (Arc<TAlgebraicNumber> arc, Segment<TAlgebraicNumber> segment) => ConvolveArcAndSegment(arc, segment),
-                (Segment<TAlgebraicNumber> segment, Arc<TAlgebraicNumber> arc) => ConvolveArcAndSegment(arc, segment),
+
+                (Arc<TAlgebraicNumber> arc, Segment<TAlgebraicNumber> segment) =>
+                    ConvolveArcAndSegment(arc, segment)
+                        .Select(tracing => new ConvolvedTracing<TAlgebraicNumber>(tracing, arc, segment)),
+
+                (Segment<TAlgebraicNumber> segment, Arc<TAlgebraicNumber> arc) =>
+                    ConvolveArcAndSegment(arc, segment)
+                        .Select(tracing => new ConvolvedTracing<TAlgebraicNumber>(tracing, segment, arc)),
+
                 (Segment<TAlgebraicNumber> _, Segment<TAlgebraicNumber> _) =>
                     Enumerable.Empty<ConvolvedTracing<TAlgebraicNumber>>(),
+
                 _ => throw new NotSupportedException(
                          "Only convolution between pairs of arcs and segments are supported, "
                        + $"but got a tracing of type {tracing1.GetType()} and a tracing of type "
@@ -223,7 +231,7 @@ namespace Hilke.KineticConvolution
         private TAlgebraicNumber Abs(TAlgebraicNumber value) =>
             AlgebraicNumberCalculator.IsStrictlyNegative(value) ? AlgebraicNumberCalculator.Opposite(value) : value;
 
-        internal IEnumerable<ConvolvedTracing<TAlgebraicNumber>> ConvolveArcAndSegment(
+        internal IEnumerable<Tracing<TAlgebraicNumber>> ConvolveArcAndSegment(
             Arc<TAlgebraicNumber> arc,
             Segment<TAlgebraicNumber> segment) =>
             arc.Directions.Orientation switch
@@ -232,30 +240,24 @@ namespace Hilke.KineticConvolution
                     segment.NormalDirection().Opposite().BelongsTo(arc.Directions)
                         ? new[]
                         {
-                            new ConvolvedTracing<TAlgebraicNumber>(
-                                CreateSegment(
-                                    segment.Start.Sum(
-                                        arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
-                                    segment.End.Sum(
-                                        arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
-                                    arc.Weight * segment.Weight),
-                                arc,
-                                segment)
+                            CreateSegment(
+                                segment.Start.Sum(
+                                    arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
+                                segment.End.Sum(
+                                    arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
+                                arc.Weight * segment.Weight),
                         }
-                        : Enumerable.Empty<ConvolvedTracing<TAlgebraicNumber>>(),
+                        : Enumerable.Empty<Tracing<TAlgebraicNumber>>(),
                 Orientation.Clockwise =>
                     segment.NormalDirection().BelongsTo(arc.Directions)
                         ? new[]
                         {
-                            new ConvolvedTracing<TAlgebraicNumber>(
-                                CreateSegment(
-                                    segment.Start.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
-                                    segment.End.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
-                                    arc.Weight * segment.Weight),
-                                arc,
-                                segment)
+                            CreateSegment(
+                                segment.Start.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
+                                segment.End.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
+                                arc.Weight * segment.Weight),
                         }
-                        : Enumerable.Empty<ConvolvedTracing<TAlgebraicNumber>>(),
+                        : Enumerable.Empty<Tracing<TAlgebraicNumber>>(),
                 var orientation => throw new NotSupportedException(
                                        "Only clockwise and counterclockwise arc orientations are supported, "
                                      + $"but got {orientation}.")
