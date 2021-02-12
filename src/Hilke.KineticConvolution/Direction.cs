@@ -48,24 +48,7 @@ namespace Hilke.KineticConvolution
         /// <inheritdoc />
         public bool Equals(Direction<TAlgebraicNumber>? other)
         {
-            if (other is null)
-            {
-                return false;
-            }
-
-            if (ReferenceEquals(this, other))
-            {
-                return true;
-            }
-
-            if (GetType() != other.GetType())
-            {
-                return false;
-            }
-
-            return _calculator.IsZero(Determinant(other))
-                && _calculator.Sign(X) == _calculator.Sign(other.X)
-                && _calculator.Sign(Y) == _calculator.Sign(other.Y);
+            return Equals(other as object);
         }
 
         public TAlgebraicNumber Determinant(Direction<TAlgebraicNumber> other)
@@ -202,11 +185,23 @@ namespace Hilke.KineticConvolution
             new Direction<TAlgebraicNumber>(_calculator, _calculator.Opposite(Y), X);
 
         /// <inheritdoc />
-        public override bool Equals(object? obj)
+        public override bool Equals(object? other)
         {
-            if (obj is Direction<TAlgebraicNumber> direction)
+            if (other is null)
             {
-                return Equals(direction);
+                return false;
+            }
+
+            if (ReferenceEquals(this, other))
+            {
+                return true;
+            }
+
+            if (other is Direction<TAlgebraicNumber> direction)
+            {
+                return _calculator.IsZero(Determinant(direction))
+                    && _calculator.Sign(X) == _calculator.Sign(direction.X)
+                    && _calculator.Sign(Y) == _calculator.Sign(direction.Y);
             }
 
             return false;
