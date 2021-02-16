@@ -157,20 +157,7 @@ namespace Hilke.KineticConvolution
                 throw new ArgumentException("There should be at least one tracing.", nameof(tracings));
             }
 
-            if (!isG1Continuous(tracingsEnumerated))
-            {
-                throw new ArgumentException("The tracings should be continuous.", nameof(tracings));
-            }
-
             return new Shape<TAlgebraicNumber>(tracingsEnumerated);
-
-            static bool isG1Continuous(IReadOnlyList<Tracing<TAlgebraicNumber>> tracings)
-            {
-                return tracings.Zip(
-                                   tracings.Skip(1).Concat(new[] {tracings.First()}),
-                                   (right, left) => right.IsG1ContinuousWith(left))
-                               .All(isContinuous => isContinuous);
-            }
         }
 
         internal IEnumerable<ConvolvedTracing<TAlgebraicNumber>> Convolve(
