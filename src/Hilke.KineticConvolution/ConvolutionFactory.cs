@@ -140,6 +140,16 @@ namespace Hilke.KineticConvolution
             Shape<TAlgebraicNumber> shape1,
             Shape<TAlgebraicNumber> shape2)
         {
+            if (!shape1.IsG1Continuous())
+            {
+                throw new ArgumentException("Both shapes must be G1 continuous. Shape 1 was not continuous.", nameof(shape1));
+            }
+
+            if (!shape2.IsG1Continuous())
+            {
+                throw new ArgumentException("Both shapes must be G1 continuous. Shape 2 was not continuous.", nameof(shape2));
+            }
+
             var convolutions =
                 from tracing1 in shape1.Tracings
                 from tracing2 in shape2.Tracings
