@@ -45,19 +45,19 @@ namespace Hilke.KineticConvolution
             {
                 return false;
             }
-            else
+
+            return Orientation switch
             {
-                return Orientation switch
-                {
-                    Orientation.Clockwise =>
-                        _calculator.IsNegative(Start.Determinant(End)),
-                    Orientation.CounterClockwise =>
-                        _calculator.IsStrictlyPositive(Start.Determinant(End)),
-                    var orientation => throw new NotSupportedException(
-                                           "Only clockwise and counterclockwise arc orientations are supported, "
-                                         + $"but got {orientation}.")
-                };
-            }
+                Orientation.Clockwise =>
+                    _calculator.IsNegative(Start.Determinant(End)),
+
+                Orientation.CounterClockwise =>
+                    _calculator.IsStrictlyPositive(Start.Determinant(End)),
+
+                var orientation => throw new NotSupportedException(
+                        "Only clockwise and counterclockwise arc orientations are supported, "
+                        + $"but got {orientation}.")
+            };
         }
 
         public DirectionRange<TAlgebraicNumber> Reverse() =>
