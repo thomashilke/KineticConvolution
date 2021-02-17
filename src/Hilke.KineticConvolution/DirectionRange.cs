@@ -39,17 +39,26 @@ namespace Hilke.KineticConvolution
 
         public Orientation Orientation { get; }
 
-        public bool IsShortestRange() =>
-            Orientation switch
+        public bool IsShortestRange()
+        {
+            if (Start == End)
+            {
+                return false;
+            }
+
+            return Orientation switch
             {
                 Orientation.Clockwise =>
                     _calculator.IsNegative(Start.Determinant(End)),
+
                 Orientation.CounterClockwise =>
                     _calculator.IsStrictlyPositive(Start.Determinant(End)),
+
                 var orientation => throw new NotSupportedException(
-                                       "Only clockwise and counterclockwise arc orientations are supported, "
-                                     + $"but got {orientation}.")
+                        "Only clockwise and counterclockwise arc orientations are supported, "
+                        + $"but got {orientation}.")
             };
+        }
 
         public DirectionRange<TAlgebraicNumber> Reverse() =>
             new DirectionRange<TAlgebraicNumber>(
