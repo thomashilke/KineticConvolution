@@ -72,8 +72,12 @@ namespace Hilke.KineticConvolution.Tests
             // Act
             var westBelongsToClockwiseRange = west.BelongsTo(clockwiseRange);
             var westBelongsToCounterClockwiseRange = west.BelongsTo(counterClockwiseRange);
+            var eastBelongsToClockwiseRange = east.BelongsTo(clockwiseRange);
+            var eastBelongsToCounterClockwiseRange = east.BelongsTo(counterClockwiseRange);
 
             // Assert
+            westBelongsToClockwiseRange.Should().BeTrue();
+            westBelongsToCounterClockwiseRange.Should().BeTrue();
             westBelongsToClockwiseRange.Should().BeTrue();
             westBelongsToCounterClockwiseRange.Should().BeTrue();
         }
