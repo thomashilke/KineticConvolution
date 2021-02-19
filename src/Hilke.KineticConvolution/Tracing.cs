@@ -10,15 +10,15 @@ namespace Hilke.KineticConvolution
             IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             Point<TAlgebraicNumber> start,
             Point<TAlgebraicNumber> end,
-            Direction<TAlgebraicNumber> startDirection,
-            Direction<TAlgebraicNumber> endDirection,
+            Direction<TAlgebraicNumber> startTangentDirection,
+            Direction<TAlgebraicNumber> endTangentDirection,
             Fraction weight)
         {
             Calculator = calculator ?? throw new ArgumentNullException(nameof(start));
             Start = start ?? throw new ArgumentNullException(nameof(start));
             End = end ?? throw new ArgumentNullException(nameof(end));
-            StartDirection = startDirection ?? throw new ArgumentNullException(nameof(startDirection));
-            EndDirection = endDirection ?? throw new ArgumentNullException(nameof(endDirection));
+            StartTangentDirection = startTangentDirection ?? throw new ArgumentNullException(nameof(startTangentDirection));
+            EndTangentDirection = endTangentDirection ?? throw new ArgumentNullException(nameof(endTangentDirection));
             Weight = weight;
         }
 
@@ -28,13 +28,13 @@ namespace Hilke.KineticConvolution
 
         public Point<TAlgebraicNumber> End { get; }
 
-        public Direction<TAlgebraicNumber> StartDirection { get; }
+        public Direction<TAlgebraicNumber> StartTangentDirection { get; }
 
-        public Direction<TAlgebraicNumber> EndDirection { get; }
+        public Direction<TAlgebraicNumber> EndTangentDirection { get; }
 
         protected IAlgebraicNumberCalculator<TAlgebraicNumber> Calculator { get; }
 
         public bool IsG1ContinuousWith(Tracing<TAlgebraicNumber> next) =>
-            End == next.Start && EndDirection == next.StartDirection;
+            End == next.Start && EndTangentDirection == next.StartTangentDirection;
     }
 }
