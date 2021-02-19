@@ -200,8 +200,10 @@ namespace Hilke.KineticConvolution
             if (other is Direction<TAlgebraicNumber> direction)
             {
                 return _calculator.IsZero(Determinant(direction))
-                    && _calculator.Sign(X) == _calculator.Sign(direction.X)
-                    && _calculator.Sign(Y) == _calculator.Sign(direction.Y);
+                    && _calculator.IsStrictlyPositive(
+                        _calculator.Add(
+                            _calculator.Multiply(X, direction.X),
+                            _calculator.Multiply(Y, direction.Y)));
             }
 
             return false;
