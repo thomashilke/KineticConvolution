@@ -85,7 +85,7 @@ namespace Hilke.KineticConvolution.Tests
                 startY: 8,
                 endX: 13,
                 endY: 13,
-                weight: 20);
+                weight: 10);
 
             // Act
             var actual = _factory.ConvolveArcAndSegment(arc, segment);
