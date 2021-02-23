@@ -16,8 +16,8 @@ and import the namespace in your source file:
     using Hilke.KineticConvolution;
 ```
 
-If you want to use the implementation of algebraic number over the
-`double` data type, import
+If you want to use the `double` data type as an (approximate)
+implementation of algebraic numbers, import
 ```C#
     using Hilke.KineticConvolution.DoubleAlgebraicNumber;
 ```
