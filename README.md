@@ -92,9 +92,9 @@ encapsulate the operation to manipulate instance of `TAlgebraicNumber`
 is a workaround to this limitation of the language.
 
 In this case, `IAlgebraicNumberCalculator` encapsulate the concept of
-(constructible numbers)[https://en.wikipedia.org/wiki/Constructible_number] which is
-a subset of (algebraic
-numbers)[https://en.wikipedia.org/wiki/Constructible_number]. Hence an
+[constructible numbers](https://en.wikipedia.org/wiki/Constructible_number) which is
+a subset of [algebraic
+numbers](https://en.wikipedia.org/wiki/Constructible_number). Hence an
 instance of `TAlgebraicNumber` is an object that can be summed,
 subtracted, multiplied, divided, taken the square root of, and whose sign
 can be inspected.
