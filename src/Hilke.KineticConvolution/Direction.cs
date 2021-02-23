@@ -108,7 +108,7 @@ namespace Hilke.KineticConvolution
                       + $"{DirectionOrder.Equal} or {DirectionOrder.After}, but got {(int)order}.")
             };
 
-        public bool BelongsToShortestRange(DirectionRange<TAlgebraicNumber> directions)
+        internal bool BelongsToShortestRange(DirectionRange<TAlgebraicNumber> directions)
         {
             var determinant = directions.Start.Determinant(directions.End);
 

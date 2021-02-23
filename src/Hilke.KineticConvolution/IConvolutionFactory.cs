@@ -1,6 +1,4 @@
-﻿using System;
-
-using Fractions;
+﻿using Fractions;
 
 namespace Hilke.KineticConvolution
 {

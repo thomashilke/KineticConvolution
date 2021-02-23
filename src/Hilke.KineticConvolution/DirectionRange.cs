@@ -18,6 +18,7 @@ namespace Hilke.KineticConvolution
             Orientation orientation)
         {
             _calculator = calculator ?? throw new ArgumentNullException(nameof(calculator));
+
             Start = start ?? throw new ArgumentNullException(nameof(start));
 
             End = end ?? throw new ArgumentNullException(nameof(end));
@@ -39,7 +40,7 @@ namespace Hilke.KineticConvolution
 
         public Orientation Orientation { get; }
 
-        public bool IsShortestRange()
+        internal bool IsShortestRange()
         {
             if (Start == End)
             {

@@ -11,23 +11,18 @@ namespace Hilke.KineticConvolution
             IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             Point<TAlgebraicNumber> start,
             Point<TAlgebraicNumber> end,
-            Direction<TAlgebraicNumber> startDirection,
-            Direction<TAlgebraicNumber> endDirection,
+            Direction<TAlgebraicNumber> startTangentDirection,
+            Direction<TAlgebraicNumber> endTangentDirection,
             Fraction weight)
-            : base(calculator, start, end, startDirection, endDirection, weight)
+            : base(calculator, start, end, startTangentDirection, endTangentDirection, weight)
         {
-            Direction = new Direction<TAlgebraicNumber>(
-                Calculator,
-                Calculator.Subtract(End.X, Start.X),
-                Calculator.Subtract(End.Y, Start.Y));
-
             NormalDirection = new Direction<TAlgebraicNumber>(
                 Calculator,
-                Calculator.Opposite(Direction.Y),
-                Direction.X);
+                Calculator.Opposite(startTangentDirection.Y),
+                startTangentDirection.X);
         }
 
-        public Direction<TAlgebraicNumber> Direction { get; }
+        public Direction<TAlgebraicNumber> Direction => StartTangentDirection;
 
         public Direction<TAlgebraicNumber> NormalDirection { get; }
     }

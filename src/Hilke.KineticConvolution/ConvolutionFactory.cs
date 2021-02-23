@@ -107,14 +107,14 @@ namespace Hilke.KineticConvolution
 
             return new Arc<TAlgebraicNumber>(
                 AlgebraicNumberCalculator,
-                weight,
                 center,
                 directions,
                 radius,
                 start,
                 end,
                 startDirection,
-                endDirection);
+                endDirection,
+                weight);
         }
 
         public Arc<TAlgebraicNumber> CreateArc(
