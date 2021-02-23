@@ -16,10 +16,28 @@ and import the namespace in your source file:
     using Hilke.KineticConvolution;
 ```
 
+You are then required to provide an implementation of the interface
+`IAlgebraicNumberCalculator<TAlgebraicNumber>` according to your
+requirements to model the algebraic, or constructible, numbers. These
+numbers form the field whose elements will be used to describe all
+geometric entities, such as `Direction`, `Arc` and `Segment`.
+
 If you want to use the `double` data type as an (approximate)
-implementation of algebraic numbers, import
+implementation of algebraic numbers,  import
 ```C#
     using Hilke.KineticConvolution.DoubleAlgebraicNumber;
+```
+and create an instance of
+`DoubleAlgebraicNumber.DoubleAlgebraicNumberCalculator` that can then
+be used to create geometric entities:
+```C#
+    var calculator = new DoubleAlgebraicNumberCalculator();
+    var factory = new ConvolutionFactory<double>(calculator);
+
+    var segment = factory.CreateSegment(
+        startX: 0.0, startY: 0.0,
+        endX: 1.0, endY: 2.0,
+        weight: new Fraction(2, 3));
 ```
 
 Given `shape1` and `shape2` of type `Shape<T>` which represent two
@@ -33,10 +51,10 @@ Note that if `shape1` and `shape2` represent the boundary of two
 convex domains, then the kinetic convolution of `shape1` and `shape2`
 is exactly the boundary of the Minkowski sum of the two domains.
 
-The result of the kinetic convolution of `shape1` and `shape2` is a collection
-of `ConvolutionTracings`, each of which holds references to both
-parent tracings, one from `shape1` and one from `shape2`, as well as the tracing that results from the
-convolution:
+The result of the kinetic convolution of `shape1` and `shape2` is a
+collection of `ConvolutionTracings`, each of which holds references to
+both parent tracings, one from `shape1` and one from `shape2`, as well
+as the tracing that results from the convolution:
 ```C#
     foreach (var convolvedTracing in Convolution.ConvolvedTracings)
     {
@@ -50,8 +68,11 @@ convolution of `parent1` from `shape1` and `parent2` from `shape2`.
 
 Instance of `Shape<T>`, as well as every other objects must be
 instantiated through a factory instance of
-`IConvolutionFactory<TAlgebraicNumber>`. More about the reasons for this design is
-given in section Factory and algebraic numbers below. As a convenience, an implementation of `IConvolutionFactory<double>` is provided by `DoubleAlgebraicNumber.ConvolutionFactory` that can be used as-is.
+`IConvolutionFactory<TAlgebraicNumber>`. More about the reasons for
+this design is given in section Factory and algebraic numbers
+below. As a convenience, an implementation of
+`IConvolutionFactory<double>` is provided by
+`DoubleAlgebraicNumber.ConvolutionFactory` that can be used as-is.
 
 # Factory and algebraic numbers
 A fundamental initial requirement of this implementation was the
@@ -63,12 +84,12 @@ proper type parameter for `TAlgebraicNumber`, and implementing the
 interface `IAlgebraicNumberCalculator`.
 
 Unfortunately, the C# language do not allow to overload algebraic
-operators on interfaces (or any operator, for that matter), and do not allow arithmetic operations involving generic types. The
-architecture that combines a generic type parameter
-`TAlgebraicNumber` along with an object instance of type
-`IAlgebraicNumberCalculator` which encapsulate the operation to
-manipulate instance of `TAlgebraicNumber` is a workaround to this
-limitation of the language.
+operators on interfaces (or any operator, for that matter), and do not
+allow arithmetic operations involving generic types. The architecture
+that combines a generic type parameter `TAlgebraicNumber` along with
+an object instance of type `IAlgebraicNumberCalculator` which
+encapsulate the operation to manipulate instance of `TAlgebraicNumber`
+is a workaround to this limitation of the language.
 
 In this case, `IAlgebraicNumberCalculator` encapsulate the concept of
 (constructible numbers)[https://en.wikipedia.org/wiki/Constructible_number] which is
@@ -78,13 +99,13 @@ instance of `TAlgebraicNumber` is an object that can be summed,
 subtracted, multiplied, divided, taken the square root of, and whose sign
 can be inspected.
 
-As a convenience, an implementation of approximate algebraic number based on the
-floating type `double` is provided by
+As a convenience, an implementation of approximate algebraic number
+based on the floating type `double` is provided by
 `DoubleAlgebaicNumber.DoubleAlgebraicNumberCalculator`. However, it is
 only an approximation of algebraic numbers, as it is a well known fact
 than `double` numbers cannot represent every constructible number. As
-a consequence, there isn't any guarantee of robustness for any geometrical
-predicate with this implementation.
+a consequence, there isn't any guarantee of robustness for any
+geometrical predicate with this implementation.
 
 Most of the types defined in this project depends on the generic type
 parameter `TAlgebraicNumber` and need to manipulate them. To alleviate
