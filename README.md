@@ -83,15 +83,15 @@ coordinates, etc, with the type of their choice, by providing the
 proper type parameter for `TAlgebraicNumber`, and implementing the
 interface `IAlgebraicNumberCalculator`.
 
-Unfortunately, the C# language do not allow to overload algebraic
-operators on interfaces (or any operator, for that matter), and do not
+Unfortunately, the C# language does not allow overloading algebraic
+operators (or any operator, for that matter) on interfaces, and does not
 allow arithmetic operations involving generic types. The architecture
 that combines a generic type parameter `TAlgebraicNumber` along with
 an object instance of type `IAlgebraicNumberCalculator` which
-encapsulate the operation to manipulate instance of `TAlgebraicNumber`
+abstracts away the  manipulation of instances of `TAlgebraicNumber`
 is a workaround to this limitation of the language.
 
-In this case, `IAlgebraicNumberCalculator` encapsulate the concept of
+In this case, `IAlgebraicNumberCalculator` models the concept of
 [constructible numbers](https://en.wikipedia.org/wiki/Constructible_number) which is
 a subset of [algebraic
 numbers](https://en.wikipedia.org/wiki/Constructible_number). Hence an
@@ -108,11 +108,11 @@ a consequence, there isn't any guarantee of robustness for any
 geometrical predicate with this implementation.
 
 Most of the types defined in this project depends on the generic type
-parameter `TAlgebraicNumber` and need to manipulate them. To alleviate
-the need to pass an instance of the calculator to the constructor of
-all these object, a calculator is instantiated in the factory, and
-object instances are created through the factory's methodes
-`CreatePoint`, `CreateSegment`, etc.
+parameter `TAlgebraicNumber` and need to manipulate instances of
+`TAlgebraicNumber`. To alleviate the need to pass an instance of the
+calculator to the constructor of all these object, a calculator is
+instantiated in the factory, and object instances are created through
+the factory's methodes `CreatePoint`, `CreateSegment`, etc.
 
 # References
 [Gui83]: L. Guibas, L. Ramshaw and J. Stolfi, ["A kinetic framework for computational geometry,"](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4568066&isnumber=4568049) 24th Annual Symposium on Foundations of Computer Science (sfcs 1983), Tucson, AZ, USA, 1983, pp. 100-111, doi: 10.1109/SFCS.1983.1.
