@@ -1,7 +1,7 @@
 # Kinetic Convolution of Polygonal Tracings
 This repository offer an implementation of the concept of kinetic
-convolution of polygonal tracings, as introduced in [Gui83] and
-extended in [Mil07].
+convolution of polygonal tracings, as introduced in [[Gui83]](#references) and
+extended in [[Mil07]](#references).
 
 ![kinetic convolution of two polygonal tracings](/images/minkowski-sum.png)
 
