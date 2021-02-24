@@ -140,5 +140,21 @@ namespace Hilke.KineticConvolution.Tests
             Direction<double> direction2,
             bool expectedAreEquals) =>
         direction1.Equals(direction2).Should().Be(expectedAreEquals);
+
+        [Test]
+        public void When_Direction1_Is_Before_Direction2_Then_Direction1_Compare_To_direction2_Should_Be_Before()
+        {
+            var reference = _factory.CreateDirection(1.0, 0.0);
+
+            var direction1 = _factory.CreateDirection(-1.0, 0.0);
+            var direction2 = _factory.CreateDirection(1.0, -5.0);
+            var direction3 = _factory.CreateDirection(0.0, 1.0);
+            var direction4 = _factory.CreateDirection(-1.0, 1.0);
+
+            var order1 = reference.CompareTo(direction1, direction2);
+            var order2 = reference.CompareTo(direction3, direction4);
+
+            order2.Should().Be(DirectionOrder.Before);
+        }
     }
 }

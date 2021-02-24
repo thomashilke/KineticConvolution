@@ -114,19 +114,16 @@ namespace Hilke.KineticConvolution
                 throw new ArgumentException("The direction range must be counterclockwise.", nameof(range));
             }
 
-            if (range.Start.BelongsTo(this))
+            if (range.Start.StrictlyBelongsTo(this))
             {
-                if (range.Start != End)
-                {
-                    yield return new DirectionRange<TAlgebraicNumber>(
-                        _calculator,
-                        range.Start,
-                        Start.FirstOf(End, range.End),
-                        Orientation.CounterClockwise);
-                }
+                yield return new DirectionRange<TAlgebraicNumber>(
+                    _calculator,
+                    range.Start,
+                    Start.FirstOf(End, range.End),
+                    Orientation.CounterClockwise);
 
-                if (Start.CompareTo(range.Start, range.End) == DirectionOrder.Before
-                 && End.CompareTo(range.End, Start) == DirectionOrder.Before)
+                if (Start.CompareTo(range.Start, range.End) == DirectionOrder.After
+                 && End.CompareTo(range.End, Start) == DirectionOrder.After)
                 {
                     yield return new DirectionRange<TAlgebraicNumber>(
                         _calculator,
@@ -135,7 +132,7 @@ namespace Hilke.KineticConvolution
                         Orientation.CounterClockwise);
                 }
             }
-            else if (range.Start.CompareTo(range.End, Start) == DirectionOrder.Before)
+            else if (range.Start.CompareTo(range.End, Start) == DirectionOrder.After)
             {
                 yield return new DirectionRange<TAlgebraicNumber>(
                     _calculator,

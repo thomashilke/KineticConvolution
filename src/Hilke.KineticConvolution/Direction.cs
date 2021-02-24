@@ -65,9 +65,29 @@ namespace Hilke.KineticConvolution
 
         public DirectionOrder CompareTo(Direction<TAlgebraicNumber> direction1, Direction<TAlgebraicNumber> direction2)
         {
+            if (direction1 is null)
+            {
+                throw new ArgumentNullException(nameof(direction1));
+            }
+
+            if (direction2 is null)
+            {
+                throw new ArgumentNullException(nameof(direction2));
+            }
+
             if (direction1.Equals(direction2))
             {
                 return DirectionOrder.Equal;
+            }
+
+            if (Equals(direction1))
+            {
+                return DirectionOrder.Before;
+            }
+
+            if (Equals(direction2))
+            {
+                return DirectionOrder.After;
             }
 
             return direction1.BelongsTo(
@@ -76,8 +96,8 @@ namespace Hilke.KineticConvolution
                            this,
                            direction2,
                            Orientation.CounterClockwise))
-                       ? DirectionOrder.After
-                       : DirectionOrder.Before;
+                       ? DirectionOrder.Before
+                       : DirectionOrder.After;
         }
 
         public Direction<TAlgebraicNumber> FirstOf(
@@ -85,8 +105,8 @@ namespace Hilke.KineticConvolution
             Direction<TAlgebraicNumber> direction2) =>
             CompareTo(direction1, direction2) switch
             {
-                DirectionOrder.Before => direction2,
-                DirectionOrder.After => direction1,
+                DirectionOrder.Before => direction1,
+                DirectionOrder.After => direction2,
                 DirectionOrder.Equal => direction1,
                 var order =>
                     throw new NotSupportedException(
@@ -99,8 +119,8 @@ namespace Hilke.KineticConvolution
             Direction<TAlgebraicNumber> direction2) =>
             CompareTo(direction1, direction2) switch
             {
-                DirectionOrder.Before => direction1,
-                DirectionOrder.After => direction2,
+                DirectionOrder.Before => direction2,
+                DirectionOrder.After => direction1,
                 DirectionOrder.Equal => direction1,
                 var order =>
                     throw new NotSupportedException(
