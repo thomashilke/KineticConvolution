@@ -135,7 +135,7 @@ namespace Hilke.KineticConvolution.Tests
         }
 
         [TestCaseSource(nameof(DirectionEqualityTestCaseSource))]
-        public void When_test_equality_of_directions(
+        public void When_Directions_Are_Given_Then_Directions_Equality_Should_Be_As_Expected(
             Direction<double> direction1,
             Direction<double> direction2,
             bool expectedAreEquals) =>
