@@ -46,10 +46,8 @@ namespace Hilke.KineticConvolution
         public TAlgebraicNumber Y { get; }
 
         /// <inheritdoc />
-        public bool Equals(Direction<TAlgebraicNumber>? other)
-        {
-            return Equals(other as object);
-        }
+        public bool Equals(Direction<TAlgebraicNumber>? other) =>
+            Equals(other as object);
 
         public TAlgebraicNumber Determinant(Direction<TAlgebraicNumber> other)
         {
@@ -63,38 +61,38 @@ namespace Hilke.KineticConvolution
             return _calculator.Subtract(a, b);
         }
 
-        public DirectionOrder CompareTo(Direction<TAlgebraicNumber> direction1, Direction<TAlgebraicNumber> direction2)
+        public DirectionOrder CompareTo(Direction<TAlgebraicNumber> direction, Direction<TAlgebraicNumber> referenceDirection)
         {
-            if (direction1 is null)
+            if (direction is null)
             {
-                throw new ArgumentNullException(nameof(direction1));
+                throw new ArgumentNullException(nameof(direction));
             }
 
-            if (direction2 is null)
+            if (referenceDirection is null)
             {
-                throw new ArgumentNullException(nameof(direction2));
+                throw new ArgumentNullException(nameof(referenceDirection));
             }
 
-            if (direction1.Equals(direction2))
+            if (Equals(direction))
             {
                 return DirectionOrder.Equal;
             }
 
-            if (Equals(direction1))
-            {
-                return DirectionOrder.Before;
-            }
-
-            if (Equals(direction2))
+            if (referenceDirection.Equals(direction))
             {
                 return DirectionOrder.After;
             }
 
-            return direction1.BelongsTo(
+            if (Equals(referenceDirection))
+            {
+                return DirectionOrder.Before;
+            }
+
+            return BelongsTo(
                        new DirectionRange<TAlgebraicNumber>(
                            _calculator,
-                           this,
-                           direction2,
+                           referenceDirection,
+                           direction,
                            Orientation.CounterClockwise))
                        ? DirectionOrder.Before
                        : DirectionOrder.After;
@@ -103,7 +101,7 @@ namespace Hilke.KineticConvolution
         public Direction<TAlgebraicNumber> FirstOf(
             Direction<TAlgebraicNumber> direction1,
             Direction<TAlgebraicNumber> direction2) =>
-            CompareTo(direction1, direction2) switch
+            direction1.CompareTo(direction2, this) switch
             {
                 DirectionOrder.Before => direction1,
                 DirectionOrder.After => direction2,
@@ -117,7 +115,7 @@ namespace Hilke.KineticConvolution
         public Direction<TAlgebraicNumber> LastOf(
             Direction<TAlgebraicNumber> direction1,
             Direction<TAlgebraicNumber> direction2) =>
-            CompareTo(direction1, direction2) switch
+            direction1.CompareTo(direction2, this) switch
             {
                 DirectionOrder.Before => direction2,
                 DirectionOrder.After => direction1,
