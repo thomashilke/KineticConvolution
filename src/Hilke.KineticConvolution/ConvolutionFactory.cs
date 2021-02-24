@@ -254,7 +254,7 @@ namespace Hilke.KineticConvolution
                 ? new Fraction(1, 2) * arc.Weight * segment.Weight
                 : arc.Weight * segment.Weight;
 
-            if (segment.NormalDirection.Opposite().BelongsTo(arc.Directions))
+            if (segmentNormalDirection.BelongsTo(arc.Directions))
             {
                 return new[]
                 {

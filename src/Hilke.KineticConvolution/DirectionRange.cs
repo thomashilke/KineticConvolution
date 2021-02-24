@@ -119,7 +119,7 @@ namespace Hilke.KineticConvolution
                 yield return new DirectionRange<TAlgebraicNumber>(
                     _calculator,
                     range.Start,
-                    Start.FirstOf(End, range.End),
+                    range.Start.FirstOf(End, range.End),
                     Orientation.CounterClockwise);
 
                 if (Start.CompareTo(range.Start, range.End) == DirectionOrder.After
