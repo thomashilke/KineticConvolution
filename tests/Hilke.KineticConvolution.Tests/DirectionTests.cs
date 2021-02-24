@@ -12,13 +12,7 @@ namespace Hilke.KineticConvolution.Tests
     [TestFixture]
     public class DirectionTests
     {
-        private static ConvolutionFactory _factory;
-
-        [OneTimeSetUp]
-        public void OneTimeSetUp()
-        {
-            _factory = new ConvolutionFactory();
-        }
+        private static ConvolutionFactory _factory = new ConvolutionFactory();
 
         [Test]
         public void When_Direction_Is_Given_Then_It_Should_Belongs_To_The_Expected_Half_Plan()
@@ -87,19 +81,17 @@ namespace Hilke.KineticConvolution.Tests
 
         private static IEnumerable<TestCaseData> DirectionEqualityTestCaseSource()
         {
-            var factory = new ConvolutionFactory();
-
             yield return new TestCaseData(
-                factory.CreateDirection(1.0, 2.0),
-                factory.CreateDirection(2.0, 4.0),
+                _factory.CreateDirection(1.0, 2.0),
+                _factory.CreateDirection(2.0, 4.0),
                 true).SetName("When_Directions_Only_Change_In_Length_Then_Directions_Should_Be_Equal");
 
-            var equalityTolerance = 1.0e-9;
+            const double equalityTolerance = 1.0e-9;
 
-            var north = factory.CreateDirection(0.0, 1.0);
-            var east = factory.CreateDirection(5.0, 0.0);
-            var south = factory.CreateDirection(0.0, -1.0);
-            var west = factory.CreateDirection(-5.0, 0.0);
+            var north = _factory.CreateDirection(0.0, 1.0);
+            var east = _factory.CreateDirection(5.0, 0.0);
+            var south = _factory.CreateDirection(0.0, -1.0);
+            var west = _factory.CreateDirection(-5.0, 0.0);
 
             var cardinalDirections = new [] {north, east, south, west};
 
@@ -135,10 +127,10 @@ namespace Hilke.KineticConvolution.Tests
 
             IEnumerable<Direction<double>> perturb(Direction<double> direction, double tolerance)
             {
-                yield return factory.CreateDirection(direction.X + tolerance, direction.Y + tolerance);
-                yield return factory.CreateDirection(direction.X - tolerance, direction.Y - tolerance);
-                yield return factory.CreateDirection(direction.X + tolerance, direction.Y - tolerance);
-                yield return factory.CreateDirection(direction.X - tolerance, direction.Y + tolerance);
+                yield return _factory.CreateDirection(direction.X + tolerance, direction.Y + tolerance);
+                yield return _factory.CreateDirection(direction.X - tolerance, direction.Y - tolerance);
+                yield return _factory.CreateDirection(direction.X + tolerance, direction.Y - tolerance);
+                yield return _factory.CreateDirection(direction.X - tolerance, direction.Y + tolerance);
             }
         }
 
