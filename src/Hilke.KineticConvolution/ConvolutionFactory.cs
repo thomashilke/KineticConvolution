@@ -96,14 +96,14 @@ namespace Hilke.KineticConvolution
             var end = center.Translate(directions.End, radius);
 
             var startNormalDirection = directions.Start.NormalDirection();
-            var startDirection = directions.Orientation == Orientation.Clockwise
-                                     ? startNormalDirection.Opposite()
-                                     : startNormalDirection;
+            var startTangentDirection = directions.Orientation == Orientation.Clockwise
+                ? startNormalDirection.Opposite()
+                : startNormalDirection;
 
             var endNormalDirection = directions.End.NormalDirection();
-            var endDirection = directions.Orientation == Orientation.Clockwise
-                                   ? endNormalDirection.Opposite()
-                                   : endNormalDirection;
+            var endTangentDirection = directions.Orientation == Orientation.Clockwise
+                ? endNormalDirection.Opposite()
+                : endNormalDirection;
 
             return new Arc<TAlgebraicNumber>(
                 AlgebraicNumberCalculator,
@@ -112,8 +112,8 @@ namespace Hilke.KineticConvolution
                 radius,
                 start,
                 end,
-                startDirection,
-                endDirection,
+                startTangentDirection,
+                endTangentDirection,
                 weight);
         }
 
