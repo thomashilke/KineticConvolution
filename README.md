@@ -122,7 +122,7 @@ convolution of a unit disk with a straight line. The two shapes being
 convex, the result is the boundary of the Minkowski sum of the two
 shapes.
 
-```
+```C#
 using Fractions;
 
 using Hilke.KineticConvolution;
