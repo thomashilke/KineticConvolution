@@ -1,5 +1,7 @@
 ﻿using Fractions;
 
+using System.Collections.Generic;
+
 namespace Hilke.KineticConvolution
 {
     public interface IConvolutionFactory<TAlgebraicNumber>
@@ -51,5 +53,8 @@ namespace Hilke.KineticConvolution
         Convolution<TAlgebraicNumber> ConvolveShapes(
             Shape<TAlgebraicNumber> shape1,
             Shape<TAlgebraicNumber> shape2);
+
+        Shape<TAlgebraicNumber> CreateShape(
+            IEnumerable<Tracing<TAlgebraicNumber>> tracings);
     }
 }

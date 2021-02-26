@@ -222,14 +222,11 @@ namespace Hilke.KineticConvolution
                         AlgebraicNumberCalculator.IsStrictlyNegative(signedRadius)
                             ? range.Opposite()
                             : range,
-                        Abs(signedRadius),
+                        AlgebraicNumberCalculator.Abs(signedRadius),
                         arc1.Weight * arc2.Weight);
                 })
                 .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
         }
-
-        private TAlgebraicNumber Abs(TAlgebraicNumber value) =>
-            AlgebraicNumberCalculator.IsStrictlyNegative(value) ? AlgebraicNumberCalculator.Opposite(value) : value;
 
         internal IEnumerable<Tracing<TAlgebraicNumber>> ConvolveArcAndSegment(
             Arc<TAlgebraicNumber> arc,
