@@ -10,15 +10,15 @@ namespace Hilke.KineticConvolution
     {
         internal Arc(
             IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
-            Fraction weight,
             Point<TAlgebraicNumber> center,
             DirectionRange<TAlgebraicNumber> directions,
             TAlgebraicNumber radius,
             Point<TAlgebraicNumber> start,
             Point<TAlgebraicNumber> end,
-            Direction<TAlgebraicNumber> startDirection,
-            Direction<TAlgebraicNumber> endDirection)
-            : base(calculator, start, end, startDirection, endDirection, weight)
+            Direction<TAlgebraicNumber> startTangentDirection,
+            Direction<TAlgebraicNumber> endTangentDirection,
+            Fraction weight)
+            : base(calculator, start, end, startTangentDirection, endTangentDirection, weight)
         {
             Center = center ?? throw new ArgumentNullException(nameof(center));
             Directions = directions ?? throw new ArgumentNullException(nameof(directions));

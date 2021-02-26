@@ -18,6 +18,7 @@ namespace Hilke.KineticConvolution
             Orientation orientation)
         {
             _calculator = calculator ?? throw new ArgumentNullException(nameof(calculator));
+
             Start = start ?? throw new ArgumentNullException(nameof(start));
 
             End = end ?? throw new ArgumentNullException(nameof(end));
@@ -39,7 +40,7 @@ namespace Hilke.KineticConvolution
 
         public Orientation Orientation { get; }
 
-        public bool IsShortestRange()
+        internal bool IsShortestRange()
         {
             if (Start == End)
             {
@@ -113,19 +114,16 @@ namespace Hilke.KineticConvolution
                 throw new ArgumentException("The direction range must be counterclockwise.", nameof(range));
             }
 
-            if (range.Start.BelongsTo(this))
+            if (range.Start.StrictlyBelongsTo(this))
             {
-                if (range.Start != End)
-                {
-                    yield return new DirectionRange<TAlgebraicNumber>(
-                        _calculator,
-                        range.Start,
-                        Start.FirstOf(End, range.End),
-                        Orientation.CounterClockwise);
-                }
+                yield return new DirectionRange<TAlgebraicNumber>(
+                    _calculator,
+                    range.Start,
+                    range.Start.FirstOf(End, range.End),
+                    Orientation.CounterClockwise);
 
-                if (Start.CompareTo(range.Start, range.End) == DirectionOrder.Before
-                 && End.CompareTo(range.End, Start) == DirectionOrder.Before)
+                if (range.Start.CompareTo(range.End, Start) == DirectionOrder.After
+                    && range.End.CompareTo(Start, End) == DirectionOrder.After)
                 {
                     yield return new DirectionRange<TAlgebraicNumber>(
                         _calculator,
@@ -134,7 +132,7 @@ namespace Hilke.KineticConvolution
                         Orientation.CounterClockwise);
                 }
             }
-            else if (range.Start.CompareTo(range.End, Start) == DirectionOrder.Before)
+            else if (range.End.CompareTo(Start, range.Start) == DirectionOrder.After)
             {
                 yield return new DirectionRange<TAlgebraicNumber>(
                     _calculator,

@@ -96,25 +96,25 @@ namespace Hilke.KineticConvolution
             var end = center.Translate(directions.End, radius);
 
             var startNormalDirection = directions.Start.NormalDirection();
-            var startDirection = directions.Orientation == Orientation.Clockwise
-                                     ? startNormalDirection.Opposite()
-                                     : startNormalDirection;
+            var startTangentDirection = directions.Orientation == Orientation.Clockwise
+                ? startNormalDirection.Opposite()
+                : startNormalDirection;
 
             var endNormalDirection = directions.End.NormalDirection();
-            var endDirection = directions.Orientation == Orientation.Clockwise
-                                   ? endNormalDirection.Opposite()
-                                   : endNormalDirection;
+            var endTangentDirection = directions.Orientation == Orientation.Clockwise
+                ? endNormalDirection.Opposite()
+                : endNormalDirection;
 
             return new Arc<TAlgebraicNumber>(
                 AlgebraicNumberCalculator,
-                weight,
                 center,
                 directions,
                 radius,
                 start,
                 end,
-                startDirection,
-                endDirection);
+                startTangentDirection,
+                endTangentDirection,
+                weight);
         }
 
         public Arc<TAlgebraicNumber> CreateArc(
@@ -167,7 +167,7 @@ namespace Hilke.KineticConvolution
             static bool isG1Continuous(IReadOnlyList<Tracing<TAlgebraicNumber>> tracings)
             {
                 return tracings.Zip(
-                                   tracings.Skip(1).Concat(new[] {tracings.First()}),
+                                   tracings.Skip(1).Append(tracings.First()),
                                    (right, left) => right.IsG1ContinuousWith(left))
                                .All(isContinuous => isContinuous);
             }
@@ -222,45 +222,49 @@ namespace Hilke.KineticConvolution
                         AlgebraicNumberCalculator.IsStrictlyNegative(signedRadius)
                             ? range.Opposite()
                             : range,
-                        Abs(signedRadius),
+                        AlgebraicNumberCalculator.Abs(signedRadius),
                         arc1.Weight * arc2.Weight);
                 })
                 .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
         }
 
-        private TAlgebraicNumber Abs(TAlgebraicNumber value) =>
-            AlgebraicNumberCalculator.IsStrictlyNegative(value) ? AlgebraicNumberCalculator.Opposite(value) : value;
-
         internal IEnumerable<Tracing<TAlgebraicNumber>> ConvolveArcAndSegment(
             Arc<TAlgebraicNumber> arc,
-            Segment<TAlgebraicNumber> segment) =>
-            arc.Directions.Orientation switch
+            Segment<TAlgebraicNumber> segment)
+        {
+            var segmentNormalDirection = arc.Directions.Orientation switch
+                {
+                    Orientation.CounterClockwise => segment.NormalDirection.Opposite(),
+
+                    Orientation.Clockwise => segment.NormalDirection,
+
+                    _ => throw new NotSupportedException(
+                        "Only clockwise and counterclockwise arc orientations are supported, "
+                        + $"but got {arc.Directions.Orientation}.")
+                };
+
+            var segmentNormalDirectionIsStart = segmentNormalDirection == arc.Directions.Start;
+            var segmentNormalDirectionIsEnd = segmentNormalDirection == arc.Directions.End;
+
+            var isSegmentConvolvedWithOneArcExtremity =
+                segmentNormalDirectionIsStart ^ segmentNormalDirectionIsEnd;
+
+            var convolutionWeight = isSegmentConvolvedWithOneArcExtremity
+                ? new Fraction(1, 2) * arc.Weight * segment.Weight
+                : arc.Weight * segment.Weight;
+
+            if (segmentNormalDirection.BelongsTo(arc.Directions))
             {
-                Orientation.CounterClockwise =>
-                    segment.NormalDirection().Opposite().BelongsTo(arc.Directions)
-                        ? new[]
-                        {
-                            CreateSegment(
-                                segment.Start.Sum(
-                                    arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
-                                segment.End.Sum(
-                                    arc.Center.Translate(segment.NormalDirection().Opposite(), arc.Radius)),
-                                arc.Weight * segment.Weight),
-                        }
-                        : Enumerable.Empty<Tracing<TAlgebraicNumber>>(),
-                Orientation.Clockwise =>
-                    segment.NormalDirection().BelongsTo(arc.Directions)
-                        ? new[]
-                        {
-                            CreateSegment(
-                                segment.Start.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
-                                segment.End.Sum(arc.Center.Translate(segment.NormalDirection(), arc.Radius)),
-                                arc.Weight * segment.Weight),
-                        }
-                        : Enumerable.Empty<Tracing<TAlgebraicNumber>>(),
-                var orientation => throw new NotSupportedException(
-                                       "Only clockwise and counterclockwise arc orientations are supported, "
-                                     + $"but got {orientation}.")
-            };
+                return new[]
+                {
+                    CreateSegment(
+                        segment.Start.Sum(arc.Center.Translate(segmentNormalDirection, arc.Radius)),
+                        segment.End.Sum(arc.Center.Translate(segmentNormalDirection, arc.Radius)),
+                        convolutionWeight),
+                };
+            }
+
+            return Enumerable.Empty<Tracing<TAlgebraicNumber>>();
+        }
     }
 }
