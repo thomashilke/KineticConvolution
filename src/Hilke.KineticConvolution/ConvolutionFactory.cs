@@ -243,11 +243,13 @@ namespace Hilke.KineticConvolution
                         + $"but got {arc.Directions.Orientation}.")
                 };
 
-            var isSegmentConvolvedWithArcExtremity =
-                segmentNormalDirection == arc.Directions.Start ||
-                segmentNormalDirection == arc.Directions.End;
+            var segmentNormalDirectionIsStart = segmentNormalDirection == arc.Directions.Start;
+            var segmentNormalDirectionIsEnd = segmentNormalDirection == arc.Directions.End;
 
-            var convolutionWeight = isSegmentConvolvedWithArcExtremity
+            var isSegmentConvolvedWithOneArcExtremity =
+                segmentNormalDirectionIsStart ^ segmentNormalDirectionIsEnd;
+
+            var convolutionWeight = isSegmentConvolvedWithOneArcExtremity
                 ? new Fraction(1, 2) * arc.Weight * segment.Weight
                 : arc.Weight * segment.Weight;
 
