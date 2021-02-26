@@ -1,7 +1,8 @@
 # Kinetic Convolution of Polygonal Tracings
-This repository offer an implementation of the concept of kinetic
+This repository offers an implementation of the concept of kinetic
 convolution of polygonal tracings, as introduced in [[Gui83]](#references) and
-extended in [[Mil07]](#references).
+extended in [[Mil07]](#references). A complete working example is
+provided for the impatient in section [Working Example](#working-example).
 
 ![kinetic convolution of two polygonal tracings](/images/minkowski-sum.png)
 
@@ -13,6 +14,7 @@ Add the NuGet reference to the project:
 
 and import the namespace in your source file:
 ```C#
+    using Fractions;
     using Hilke.KineticConvolution;
 ```
 
@@ -45,7 +47,7 @@ polygonal tracings, the kinetic convolution of those two tracings is
 obtained by calling
 ```C#
     var factory = new ConvolutionFactory();
-    var convolution = factory.Convolve(shape1, shape2);
+    var convolution = factory.ConvolveShapes(shape1, shape2);
 ```
 Note that if `shape1` and `shape2` represent the boundary of two
 convex domains, then the kinetic convolution of `shape1` and `shape2`
@@ -56,7 +58,7 @@ collection of `ConvolutionTracings`, each of which holds references to
 both parent tracings, one from `shape1` and one from `shape2`, as well
 as the tracing that results from the convolution:
 ```C#
-    foreach (var convolvedTracing in Convolution.ConvolvedTracings)
+    foreach (var convolvedTracing in convolution.ConvolvedTracings)
     {
         var parent1 = convolvedTracing.Parent1;
         var parent2 = convolvedTracing.Parent2;
@@ -107,12 +109,109 @@ than `double` numbers cannot represent every constructible number. As
 a consequence, there isn't any guarantee of robustness for any
 geometrical predicate with this implementation.
 
-Most of the types defined in this project depends on the generic type
+Most of the types defined in this project depend on the generic type
 parameter `TAlgebraicNumber` and need to manipulate instances of
 `TAlgebraicNumber`. To alleviate the need to pass an instance of the
-calculator to the constructor of all these object, a calculator is
+calculator to the constructor of all these objects, a calculator is
 instantiated in the factory, and object instances are created through
-the factory's methodes `CreatePoint`, `CreateSegment`, etc.
+the factory's methods `CreatePoint`, `CreateSegment`, etc.
+
+# Working example
+The following example demonstrates the library usage to compute the
+convolution of a unit disk with a straight line. The two shapes being
+convex, the result is the boundary of the Minkowski sum of the two
+shapes.
+
+```C#
+using Fractions;
+
+using Hilke.KineticConvolution;
+using Hilke.KineticConvolution.DoubleAlgebraicNumber;
+
+using System;
+using System.Collections.Generic;
+
+namespace Rollomatic.Conv
+{
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            var factory = new ConvolutionFactory();
+
+            var disk = CreateDiskShape(factory);
+
+            var pathShape = CreatePathShape(factory);
+
+            var minkowskiSum = factory.ConvolveShapes(disk, pathShape);
+
+            foreach (var convolvedTracing in minkowskiSum.ConvolvedTracings)
+            {
+                switch (convolvedTracing.Convolution)
+                {
+                    case Arc<double> arc: Console.WriteLine(
+                        $"Boundary arc: center ({arc.Center.X}, {arc.Center.Y}), radius {arc.Radius}, " +
+                        $"start ({arc.Start.X}, {arc.Start.Y}), end ({arc.End.X}, {arc.End.Y})");
+                        break;
+
+                    case Segment<double> segment: Console.WriteLine(
+                        $"Boundary segment: start ({segment.Start.X}, {segment.Start.Y}), end ({segment.End.X}, {segment.End.Y})");
+                        break;
+
+                    default:
+                        throw new InvalidOperationException("Unexpected tracing encountered.");
+                }
+            }
+        }
+
+        static Shape<double> CreateDiskShape(ConvolutionFactory factory)
+        {
+            var eastDirection = factory.CreateDirection(1.0, 0.0);
+
+            var diskArc = factory.CreateArc(
+                center: factory.CreatePoint(0.0, 0.0),
+                directions: factory.CreateDirectionRange(eastDirection, eastDirection, Orientation.CounterClockwise),
+                radius: 1.0,
+                weight: 1);
+
+            return factory.CreateShape(new[] { diskArc });
+        }
+
+        static Shape<double> CreatePathShape(ConvolutionFactory factory)
+        {
+            var pathSegment = factory.CreateSegment(
+                startX: 0.0, startY: 0.0,
+                endX: 1.0, endY: 2.0,
+                weight: 1);
+
+            var pathReverseSegment = factory.CreateSegment(
+                startX: 1.0, startY: 2.0,
+                endX: 0.0, endY: 0.0,
+                weight: 1);
+
+            var smoothingArc1 = factory.CreateArc(
+                pathSegment.Start,
+                factory.CreateDirectionRange(
+                    pathReverseSegment.Direction().NormalDirection().Opposite(),
+                    pathSegment.Direction().NormalDirection().Opposite(),
+                    Orientation.CounterClockwise),
+                0.0,
+                1);
+
+            var smoothingArc2 = factory.CreateArc(
+                pathReverseSegment.Start,
+                factory.CreateDirectionRange(
+                    pathSegment.Direction().NormalDirection().Opposite(),
+                    pathReverseSegment.Direction().NormalDirection().Opposite(),
+                    Orientation.CounterClockwise),
+                0.0,
+                1);
+
+            return factory.CreateShape(new Tracing<double>[] { smoothingArc1, pathSegment, smoothingArc2, pathReverseSegment });
+        }
+    }
+}
+```
 
 # References
 [Gui83]: L. Guibas, L. Ramshaw and J. Stolfi, ["A kinetic framework for computational geometry,"](https://ieeexplore.ieee.org/stamp/stamp.jsp?tp=&arnumber=4568066&isnumber=4568049) 24th Annual Symposium on Foundations of Computer Science (sfcs 1983), Tucson, AZ, USA, 1983, pp. 100-111, doi: 10.1109/SFCS.1983.1.
