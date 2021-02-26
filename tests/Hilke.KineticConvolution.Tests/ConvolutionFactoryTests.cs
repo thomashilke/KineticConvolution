@@ -619,5 +619,67 @@ namespace Hilke.KineticConvolution.Tests
             convolution3.Single().Convolution.Should().BeOfType(typeof(Segment<double>));
             convolution3.Single().Convolution.Weight.Should().Be(1);
         }
+
+        [Test]
+        public void Working_Example_From_Readme_Should_Compile_And_Produce_Correct_Results()
+        {
+            var factory = new ConvolutionFactory();
+
+            var disk = CreateDiskShape(factory);
+
+            var pathShape = CreatePathShape(factory);
+
+            var minkowskiSum = factory.ConvolveShapes(disk, pathShape);
+
+            minkowskiSum.ConvolvedTracings.Should().HaveCount(5);
+
+            static Shape<double> CreateDiskShape(ConvolutionFactory factory)
+            {
+                var eastDirection = factory.CreateDirection(1.0, 0.0);
+
+                var diskArc = factory.CreateArc(
+                    center: factory.CreatePoint(0.0, 0.0),
+                    directions: factory.CreateDirectionRange(eastDirection, eastDirection, Orientation.CounterClockwise),
+                    radius: 1.0,
+                    weight: 1);
+
+                return factory.CreateShape(new[] { diskArc });
+            }
+
+            static Shape<double> CreatePathShape(ConvolutionFactory factory)
+            {
+                var pathSegment = factory.CreateSegment(
+                    startX: 0.0, startY: 0.0,
+                    endX: 1.0, endY: 2.0,
+                    weight: 1);
+
+                var pathReverseSegment = factory.CreateSegment(
+                    startX: 1.0, startY: 2.0,
+                    endX: 0.0, endY: 0.0,
+                    weight: 1);
+
+                var smoothingArc1 = factory.CreateArc(
+                    pathSegment.Start,
+                    factory.CreateDirectionRange(
+                        pathReverseSegment.Direction.NormalDirection().Opposite(),
+                        pathSegment.Direction.NormalDirection().Opposite(),
+                        Orientation.CounterClockwise),
+                    0.0,
+                    1);
+
+                var smoothingArc2 = factory.CreateArc(
+                    pathReverseSegment.Start,
+                    factory.CreateDirectionRange(
+                        pathSegment.Direction.NormalDirection().Opposite(),
+                        pathReverseSegment.Direction.NormalDirection().Opposite(),
+                        Orientation.CounterClockwise),
+                    0.0,
+                    1);
+
+                return factory.CreateShape(
+                    new Tracing<double>[]
+                    { smoothingArc1, pathSegment, smoothingArc2, pathReverseSegment });
+            }
+        }
     }
 }
