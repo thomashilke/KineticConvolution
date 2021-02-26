@@ -117,7 +117,7 @@ instantiated in the factory, and object instances are created through
 the factory's methodes `CreatePoint`, `CreateSegment`, etc.
 
 # Working example
-The following example demonstrate the library usage to compute the
+The following example demonstrates the library usage to compute the
 convolution of a unit disk with a straight line. The two shapes being
 convex, the result is the boundary of the Minkowski sum of the two
 shapes.
