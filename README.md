@@ -114,7 +114,7 @@ parameter `TAlgebraicNumber` and need to manipulate instances of
 `TAlgebraicNumber`. To alleviate the need to pass an instance of the
 calculator to the constructor of all these objects, a calculator is
 instantiated in the factory, and object instances are created through
-the factory's methodes `CreatePoint`, `CreateSegment`, etc.
+the factory's methods `CreatePoint`, `CreateSegment`, etc.
 
 # Working example
 The following example demonstrates the library usage to compute the
