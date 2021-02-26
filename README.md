@@ -109,10 +109,10 @@ than `double` numbers cannot represent every constructible number. As
 a consequence, there isn't any guarantee of robustness for any
 geometrical predicate with this implementation.
 
-Most of the types defined in this project depends on the generic type
+Most of the types defined in this project depend on the generic type
 parameter `TAlgebraicNumber` and need to manipulate instances of
 `TAlgebraicNumber`. To alleviate the need to pass an instance of the
-calculator to the constructor of all these object, a calculator is
+calculator to the constructor of all these objects, a calculator is
 instantiated in the factory, and object instances are created through
 the factory's methodes `CreatePoint`, `CreateSegment`, etc.
 
