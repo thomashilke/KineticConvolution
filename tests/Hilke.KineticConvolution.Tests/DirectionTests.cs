@@ -16,12 +16,12 @@ namespace Hilke.KineticConvolution.Tests
     [TestFixture]
     public class DirectionTests
     {
-        private static readonly ConvolutionFactory _factory = new ConvolutionFactory();
+        private static readonly ConvolutionFactory Factory = new();
         private Direction<double> _subject;
 
         [OneTimeSetUp]
         public void OneTimeSetUp() =>
-            _subject = new Direction<double>(_factory.AlgebraicNumberCalculator, x: 100.5, y: 50.0);
+            _subject = new Direction<double>(Factory.AlgebraicNumberCalculator, x: 100.5, y: 50.0);
 
         [Test]
         public void When_calling_Direction_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
@@ -38,7 +38,7 @@ namespace Hilke.KineticConvolution.Tests
         public void When_calling_Direction_With_x_and_y_components_equal_to_zero_Then_an_ArgumentException_Should_be_thrown()
         {
             // Arrange
-            Action action = () => _ = new Direction<double>(_factory.AlgebraicNumberCalculator, x: 0.0, y: 0.0);
+            Action action = () => _ = new Direction<double>(Factory.AlgebraicNumberCalculator, x: 0.0, y: 0.0);
 
             // Assert
             action.Should()
@@ -80,7 +80,6 @@ namespace Hilke.KineticConvolution.Tests
                   .And.ParamName.Should().Be(expected: "other");
         }
 
-        [Test]
         [TestCaseSource(
             typeof(DirectionTestCaseDataSource),
             nameof(DirectionTestCaseDataSource.TestCases))]
@@ -127,7 +126,7 @@ namespace Hilke.KineticConvolution.Tests
         public void When_calling_CompareTo_with_null_direction_Then_an_ArgumentNullException_Should_be_thrown()
         {
             // Arrange
-            var reference = new Direction<double>(_factory.AlgebraicNumberCalculator, x: 0.5, y: 0.5);
+            var reference = new Direction<double>(Factory.AlgebraicNumberCalculator, x: 0.5, y: 0.5);
             Action action = () => _subject.CompareTo(null!, reference);
 
             // Assert
@@ -141,7 +140,7 @@ namespace Hilke.KineticConvolution.Tests
         public void When_calling_CompareTo_with_null_referenceDirection_Then_an_ArgumentNullException_Should_be_thrown()
         {
             // Arrange
-            var direction = new Direction<double>(_factory.AlgebraicNumberCalculator, x: 1.0, y: 0.0);
+            var direction = new Direction<double>(Factory.AlgebraicNumberCalculator, x: 1.0, y: 0.0);
             Action action = () => _subject.CompareTo(direction, null!);
 
             // Assert
@@ -181,8 +180,8 @@ namespace Hilke.KineticConvolution.Tests
         public void When_calling_GetHashCode_on_distinct_object_with_same_values_Then_the_hashes_Should_be_equal()
         {
             // Arrange
-            var direction1 = new Direction<double>(_factory.AlgebraicNumberCalculator, x: 33.5, y: 12.738);
-            var direction2 = new Direction<double>(_factory.AlgebraicNumberCalculator, x: 33.5, y: 12.738);
+            var direction1 = new Direction<double>(Factory.AlgebraicNumberCalculator, x: 33.5, y: 12.738);
+            var direction2 = new Direction<double>(Factory.AlgebraicNumberCalculator, x: 33.5, y: 12.738);
 
             // Act
             var actual = direction1.GetHashCode();
@@ -197,8 +196,8 @@ namespace Hilke.KineticConvolution.Tests
         public void When_calling_GetHashCode_on_distinct_object_with_different_values_Then_the_hashes_Should_be_different()
         {
             // Arrange
-            var direction1 = new Direction<double>(_factory.AlgebraicNumberCalculator, x: 33.5, y: 3.5);
-            var direction2 = new Direction<double>(_factory.AlgebraicNumberCalculator, x: -3.5, y: 12.738);
+            var direction1 = new Direction<double>(Factory.AlgebraicNumberCalculator, x: 33.5, y: 3.5);
+            var direction2 = new Direction<double>(Factory.AlgebraicNumberCalculator, x: -3.5, y: 12.738);
 
             // Act
             var actual = direction1.GetHashCode();
@@ -214,7 +213,7 @@ namespace Hilke.KineticConvolution.Tests
         {
             // Arrange
             const double scaleFactor = 2.0;
-            var expected = new Direction<double>(_factory.AlgebraicNumberCalculator, scaleFactor * _subject.X, scaleFactor * _subject.Y);
+            var expected = new Direction<double>(Factory.AlgebraicNumberCalculator, scaleFactor * _subject.X, scaleFactor * _subject.Y);
 
             // Act
             var actual = _subject.Scale(scaleFactor);
@@ -239,14 +238,14 @@ namespace Hilke.KineticConvolution.Tests
         [Test]
         public void When_Direction_Is_Given_Then_It_Should_Belongs_To_The_Expected_Half_Plan()
         {
-            var east = _factory.CreateDirection(x: 3.0, y: 0.0);
-            var west = _factory.CreateDirection(x: -2.0, y: 0.0);
+            var east = Factory.CreateDirection(x: 3.0, y: 0.0);
+            var west = Factory.CreateDirection(x: -2.0, y: 0.0);
 
-            var lowerHalfPlan = _factory.CreateDirectionRange(east, west, Orientation.Clockwise);
-            var upperHalfPlan = _factory.CreateDirectionRange(east, west, Orientation.CounterClockwise);
+            var lowerHalfPlan = Factory.CreateDirectionRange(east, west, Orientation.Clockwise);
+            var upperHalfPlan = Factory.CreateDirectionRange(east, west, Orientation.CounterClockwise);
 
-            var directionInUpperHalfPlan = _factory.CreateDirection(x: -5.0, y: 0.5);
-            var directionInLowerHalfPlan = _factory.CreateDirection(x: -5.0, y: -0.5);
+            var directionInUpperHalfPlan = Factory.CreateDirection(x: -5.0, y: 0.5);
+            var directionInLowerHalfPlan = Factory.CreateDirection(x: -5.0, y: -0.5);
 
             directionInUpperHalfPlan.BelongsTo(upperHalfPlan).Should().BeTrue();
 
@@ -257,11 +256,11 @@ namespace Hilke.KineticConvolution.Tests
         [Test]
         public void When_Direction_Is_One_DirectionRange_Extremity_Then_Direction_Should_Not_Belongs_Strictly_To_DirectionRange()
         {
-            var east = _factory.CreateDirection(x: 1.0, y: 0.0);
-            var north = _factory.CreateDirection(x: 0.0, y: 1.0);
+            var east = Factory.CreateDirection(x: 1.0, y: 0.0);
+            var north = Factory.CreateDirection(x: 0.0, y: 1.0);
 
-            var directionRange1 = _factory.CreateDirectionRange(east, north, Orientation.CounterClockwise);
-            var directionRange2 = _factory.CreateDirectionRange(east, north, Orientation.Clockwise);
+            var directionRange1 = Factory.CreateDirectionRange(east, north, Orientation.CounterClockwise);
+            var directionRange2 = Factory.CreateDirectionRange(east, north, Orientation.Clockwise);
 
             east.BelongsTo(directionRange1).Should().BeTrue();
             east.BelongsTo(directionRange2).Should().BeTrue();
@@ -278,13 +277,13 @@ namespace Hilke.KineticConvolution.Tests
         public void When_DirectionRange_Is_The_Complete_Circle_Then_All_Directions_Should_Belong_To_It()
         {
             // Arrange
-            var east = _factory.CreateDirection(x: 5.0, y: 0.0);
-            var west = _factory.CreateDirection(x: -5.0, y: 0.0);
+            var east = Factory.CreateDirection(x: 5.0, y: 0.0);
+            var west = Factory.CreateDirection(x: -5.0, y: 0.0);
 
-            var clockwiseRange = _factory.CreateDirectionRange
+            var clockwiseRange = Factory.CreateDirectionRange
                 (east, east, Orientation.Clockwise);
 
-            var counterClockwiseRange = _factory.CreateDirectionRange(
+            var counterClockwiseRange = Factory.CreateDirectionRange(
                 east, east, Orientation.CounterClockwise);
 
             // Act
@@ -303,23 +302,22 @@ namespace Hilke.KineticConvolution.Tests
         private static IEnumerable<TestCaseData> DirectionEqualityTestCaseSource()
         {
             yield return new TestCaseData(
-                _factory.CreateDirection(x: 1.0, y: 2.0),
-                _factory.CreateDirection(x: 2.0, y: 4.0),
-                arg3: true).SetName(name: "When_Directions_Only_Change_In_Length_Then_Directions_Should_Be_Equal");
+                Factory.CreateDirection(x: 1.0, y: 2.0),
+                Factory.CreateDirection(x: 2.0, y: 4.0),
+                arg3: true);
 
             const double equalityTolerance = 1.0e-9;
 
-            var north = _factory.CreateDirection(x: 0.0, y: 1.0);
-            var east = _factory.CreateDirection(x: 5.0, y: 0.0);
-            var south = _factory.CreateDirection(x: 0.0, y: -1.0);
-            var west = _factory.CreateDirection(x: -5.0, y: 0.0);
+            var north = Factory.CreateDirection(x: 0.0, y: 1.0);
+            var east = Factory.CreateDirection(x: 5.0, y: 0.0);
+            var south = Factory.CreateDirection(x: 0.0, y: -1.0);
+            var west = Factory.CreateDirection(x: -5.0, y: 0.0);
 
             var cardinalDirections = new [] {north, east, south, west};
 
             foreach (var cardinalDirection in cardinalDirections)
             {
-                yield return new TestCaseData(cardinalDirection, cardinalDirection, arg3: true)
-                    .SetName(name: "When_Direction_Is_A_Cardinal_Direction_Then_It_Should_Equals_Itself");
+                yield return new TestCaseData(cardinalDirection, cardinalDirection, arg3: true);
             }
 
             foreach (var directions in cardinalDirections
@@ -327,8 +325,7 @@ namespace Hilke.KineticConvolution.Tests
                     perturb(direction, 0.1 * equalityTolerance)
                     .Select(perturbedDirection => (direction, perturbedDirection))))
             {
-                yield return new TestCaseData(directions.direction, directions.perturbedDirection, arg3: true)
-                    .SetName(name: "When_Directions_Are_Perturbed_Within_Tolerance_Then_They_Should_Equal");
+                yield return new TestCaseData(directions.direction, directions.perturbedDirection, arg3: true);
             }
 
             foreach (var directions in cardinalDirections
@@ -336,22 +333,19 @@ namespace Hilke.KineticConvolution.Tests
                     perturb(direction, 10000.0 * equalityTolerance)
                     .Select(perturbedDirection => (direction, perturbedDirection))))
             {
-                yield return new TestCaseData(directions.direction, directions.perturbedDirection, arg3: false)
-                    .SetName(name: "When_Directions_Are_Perturbed_Beyond_Tolerance_Then_They_Should_Not_Equal");
+                yield return new TestCaseData(directions.direction, directions.perturbedDirection, arg3: false);
             }
 
-            yield return new TestCaseData(north, south, arg3: false)
-                .SetName(name: "When_Directions_Are_Opposite_Then_Directions_Should_Not_Equal");
+            yield return new TestCaseData(north, south, arg3: false);
 
-            yield return new TestCaseData(west, east, arg3: false)
-                .SetName(name: "When_Directions_Are_Opposite_Then_Directions_Should_Not_Equal");
+            yield return new TestCaseData(west, east, arg3: false);
 
             IEnumerable<Direction<double>> perturb(Direction<double> direction, double tolerance)
             {
-                yield return _factory.CreateDirection(direction.X + tolerance, direction.Y + tolerance);
-                yield return _factory.CreateDirection(direction.X - tolerance, direction.Y - tolerance);
-                yield return _factory.CreateDirection(direction.X + tolerance, direction.Y - tolerance);
-                yield return _factory.CreateDirection(direction.X - tolerance, direction.Y + tolerance);
+                yield return Factory.CreateDirection(direction.X + tolerance, direction.Y + tolerance);
+                yield return Factory.CreateDirection(direction.X - tolerance, direction.Y - tolerance);
+                yield return Factory.CreateDirection(direction.X + tolerance, direction.Y - tolerance);
+                yield return Factory.CreateDirection(direction.X - tolerance, direction.Y + tolerance);
             }
         }
 
@@ -364,12 +358,12 @@ namespace Hilke.KineticConvolution.Tests
 
         private static IEnumerable<TestCaseData> _directionComparisonTestCaseSource()
         {
-            var reference = _factory.CreateDirection(x: 1.0, y: 0.0);
+            var reference = Factory.CreateDirection(x: 1.0, y: 0.0);
 
-            var direction1 = _factory.CreateDirection(x: -1.0, y: 0.0);
-            var direction2 = _factory.CreateDirection(x: 1.0, y: -5.0);
-            var direction3 = _factory.CreateDirection(x: 0.0, y: 1.0);
-            var direction4 = _factory.CreateDirection(x: -1.0, y: 1.0);
+            var direction1 = Factory.CreateDirection(x: -1.0, y: 0.0);
+            var direction2 = Factory.CreateDirection(x: 1.0, y: -5.0);
+            var direction3 = Factory.CreateDirection(x: 0.0, y: 1.0);
+            var direction4 = Factory.CreateDirection(x: -1.0, y: 1.0);
 
             yield return new TestCaseData(direction1, direction2, reference, DirectionOrder.Before);
             yield return new TestCaseData(direction3, direction4, reference, DirectionOrder.Before);

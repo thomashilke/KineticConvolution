@@ -37,7 +37,6 @@ namespace Hilke.KineticConvolution.Tests
                   .Be(expected: "other");
         }
 
-        [Test]
         [TestCaseSource(
             typeof(DirectionRangeTestCaseDataSource),
             nameof(DirectionRangeTestCaseDataSource.TestCases))]

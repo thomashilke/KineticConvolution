@@ -683,6 +683,8 @@ namespace Hilke.KineticConvolution.Tests
                     { smoothingArc1, pathSegment, smoothingArc2, pathReverseSegment });
             }
         }
+
+        [Test]
         public void When_calling_CreateSegment_with_null_start_Then_an_ArgumentNullException_Should_be_thrown()
         {
             // Arrange
@@ -735,8 +737,7 @@ namespace Hilke.KineticConvolution.Tests
             Action action = () => _factory.CreateSegment(start, end, weight);
 
             // Assert
-            action.Should()
-                  .NotThrow();
+            action.Should().NotThrow();
         }
 
         [Test]
