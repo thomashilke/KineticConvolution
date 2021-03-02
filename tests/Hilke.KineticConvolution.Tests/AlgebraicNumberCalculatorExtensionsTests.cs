@@ -1,3 +1,5 @@
+using System;
+
 using FluentAssertions;
 
 using Hilke.KineticConvolution.DoubleAlgebraicNumber;
@@ -16,6 +18,228 @@ namespace Hilke.KineticConvolution.Tests
         {
             var factory = new ConvolutionFactory();
             _calculator = factory.AlgebraicNumberCalculator;
+        }
+
+        [Test]
+        public void When_calling_IsZero_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.IsZero(null!, 3.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_IsStrictlyPositive_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.IsStrictlyPositive(null!, 3.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_IsPositive_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.IsPositive(null!, 3.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+
+        [Test]
+        public void When_calling_IsStrictlyNegative_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.IsStrictlyNegative(null!, 3.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_IsNegative_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.IsNegative(null!, 3.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_IsSmallerThan_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.IsSmallerThan(null!, 3.5, 1.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_IsGreaterThan_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.IsGreaterThan(null!, 3.5, 1.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_IsStrictlySmallerThan_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.IsStrictlySmallerThan(null!, 3.5, 1.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_IsStrictlyGreaterThan_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.IsStrictlyGreaterThan(null!, 3.5, 1.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_Abs_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.Abs(null!, -1.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_AreEqual_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.AreEqual(null!, -1.5, -1.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_Min_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.Min(null!, -1.5, -1.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_Max_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.Max(null!, -1.5, -1.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_Sort_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.Sort(null!, -1.5, -1.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_IsInsideRange_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.IsInsideRange(null!, -1.5, 0.0, -1.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_IsStrictlyInsideRange_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.IsStrictlyInsideRange(null!, -1.5, 0.0, -1.5);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
+        }
+
+        [Test]
+        public void When_calling_AreClose_With_null_calculator_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => AlgebraicNumberCalculatorExtensions.AreClose(null!, -1.5, -1.4, 0.1);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentNullException>()
+                  .And.ParamName.Should()
+                  .Be("calculator");
         }
 
         [TestCase(0.0, 0.0)]

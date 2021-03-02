@@ -20,10 +20,8 @@ namespace Hilke.KineticConvolution
         public TAlgebraicNumber Y { get; }
 
         /// <inheritdoc />
-        public bool Equals(Point<TAlgebraicNumber>? other)
-        {
-            return Equals(other as object);
-        }
+        public bool Equals(Point<TAlgebraicNumber>? other) =>
+            Equals(other as object);
 
         public Point<TAlgebraicNumber> Translate(Direction<TAlgebraicNumber> direction, TAlgebraicNumber length)
         {

@@ -1,4 +1,6 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 using FluentAssertions;
 
@@ -88,7 +90,7 @@ namespace Hilke.KineticConvolution.Tests
                 weight: 10);
 
             // Act
-            var actual = _factory.ConvolveArcAndSegment(arc, segment);
+            var actual = _factory.ConvolveArcAndSegment(arc, segment).ToList();
 
             // Assert
             actual.Should().HaveCount(1);
@@ -137,7 +139,7 @@ namespace Hilke.KineticConvolution.Tests
                 orientation: Orientation.CounterClockwise);
 
             // Act
-            var actual = _factory.ConvolveArcs(arc1, arc2);
+            var actual = _factory.ConvolveArcs(arc1, arc2).ToList();
 
             // Assert
             actual.Should().HaveCount(1);
@@ -188,7 +190,7 @@ namespace Hilke.KineticConvolution.Tests
                 orientation: Orientation.CounterClockwise);
 
             // Act
-            var actual = _factory.ConvolveArcs(arc1, arc2);
+            var actual = _factory.ConvolveArcs(arc1, arc2).ToList();
 
             // Assert
             actual.Should().HaveCount(1);
@@ -239,7 +241,7 @@ namespace Hilke.KineticConvolution.Tests
                 orientation: Orientation.CounterClockwise);
 
             // Act
-            var actual = _factory.ConvolveArcs(arc1, arc2);
+            var actual = _factory.ConvolveArcs(arc1, arc2).ToList();
 
             // Assert
             actual.Should().HaveCount(1);
@@ -290,7 +292,7 @@ namespace Hilke.KineticConvolution.Tests
                 orientation: Orientation.Clockwise);
 
             // Act
-            var actual = _factory.ConvolveArcs(arc1, arc2);
+            var actual = _factory.ConvolveArcs(arc1, arc2).ToList();
 
             // Assert
             actual.Should().HaveCount(1);
@@ -341,7 +343,7 @@ namespace Hilke.KineticConvolution.Tests
                 orientation: Orientation.CounterClockwise);
 
             // Act
-            var actual = _factory.ConvolveArcs(arc1, arc2);
+            var actual = _factory.ConvolveArcs(arc1, arc2).ToList();
 
             // Assert
             actual.Should().HaveCount(1);
@@ -392,7 +394,7 @@ namespace Hilke.KineticConvolution.Tests
                 orientation: Orientation.CounterClockwise);
 
             // Act
-            var actual = _factory.ConvolveArcs(arc1, arc2);
+            var actual = _factory.ConvolveArcs(arc1, arc2).ToList();
 
             // Assert
             actual.Should().HaveCount(1);
@@ -680,6 +682,217 @@ namespace Hilke.KineticConvolution.Tests
                     new Tracing<double>[]
                     { smoothingArc1, pathSegment, smoothingArc2, pathReverseSegment });
             }
+        }
+
+        [Test]
+        public void When_calling_CreateSegment_with_null_start_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            var end = _factory.CreatePoint(x: 100.0, y: 0.5);
+            var weight = new Fraction(numerator: 1, denominator: 2);
+
+            Action action = () => _factory.CreateSegment(null!, end, weight);
+
+            // Assert
+            action.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be(expected: "start");
+        }
+
+        [Test]
+        public void When_calling_CreateSegment_with_null_end_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            var start = _factory.CreatePoint(x: 100.0, y: 0.5);
+            var weight = new Fraction(numerator: 1, denominator: 2);
+
+            Action action = () => _factory.CreateSegment(start, null!, weight);
+
+            // Assert
+            action.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be(expected: "end");
+        }
+
+        [Test]
+        public void When_calling_CreateSegment_with_two_points_with_same_values_Then_an_ArgumentException_Should_be_thrown()
+        {
+            // Arrange
+            var start = _factory.CreatePoint(x: 100.0, y: 50.0);
+            var end = _factory.CreatePoint(start.X, start.Y);
+            var weight = new Fraction(numerator: 1, denominator: 2);
+
+            Action action = () => _factory.CreateSegment(start, end, weight);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentException>()
+                  .WithMessage("The start point cannot be the same as end point. (Parameter 'start')");
+        }
+
+        [Test]
+        public void When_calling_CreateSegment_with_valid_parameter_Then_no_exception_should_be_thrown()
+        {
+            // Arrange
+            var start = _factory.CreatePoint(x: 100.0, y: 50.0);
+            var end = _factory.CreatePoint(-15.5, 123.83);
+            var weight = new Fraction(numerator: 1, denominator: 2);
+
+            Action action = () => _factory.CreateSegment(start, end, weight);
+
+            // Assert
+            action.Should().NotThrow();
+        }
+
+        [Test]
+        public void When_calling_CreateArc_with_null_center_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            var directions = _factory.CreateDirectionRange(
+                _factory.CreateDirection(x: 1.0, y: 0.0),
+                _factory.CreateDirection(x: 0.0, y: 1.0),
+                Orientation.CounterClockwise);
+            const double radius = 2.0;
+            var weight = new Fraction(numerator: 1, denominator: 2);
+
+            Action action = () => _factory.CreateArc(null!, directions, radius, weight);
+
+            // Assert
+            action.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("center");
+        }
+
+        [Test]
+        public void When_calling_CreateArc_with_null_directions_Then_an_ArgumentNullException_Should_be_thrown()
+        {
+            // Arrange
+            var center = _factory.CreatePoint(10.0, -5.0);
+            const double radius = 2.0;
+            var weight = new Fraction(numerator: 1, denominator: 2);
+
+            Action action = () => _factory.CreateArc(center, null!, radius, weight);
+
+            // Assert
+            action.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("directions");
+        }
+
+        [Test]
+        public void When_calling_ConvolveArcAndSegment_with_clockwise_arc_and_compatible_directions_Then_the_correct_result_should_be_returned()
+        {
+            // Arrange
+            var arc = _factory.CreateArc(
+                centerX: 1.0,
+                centerY: 3.0,
+                directionStartX: 0.0,
+                directionStartY: 5.0,
+                directionEndX: 2.0,
+                directionEndY: 0.0,
+                Orientation.Clockwise,
+                radius: 2.0,
+                new Fraction(numerator: 1, denominator: 1));
+
+            var segment = _factory.CreateSegment(
+                startX: 10.0,
+                startY: 10.0,
+                endX: 10.0,
+                endY: 5.0,
+                new Fraction(numerator: 1, denominator: 1));
+
+            var expected = _factory.CreateSegment(
+                startX: 13.0,
+                startY: 13.0,
+                endX: 13.0,
+                endY: 8.0,
+                new Fraction(numerator: 1, denominator: 2));
+
+            // Act
+            var actual = _factory.ConvolveArcAndSegment(arc, segment);
+
+            // Assert
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [Test]
+        public void When_calling_CreateShapes_with_no_tracings_Then_an_ArgumentException_Should_be_thrown()
+        {
+            // Arrange
+            Action action = () => _factory.CreateShape(Enumerable.Empty<Tracing<double>>());
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentException>()
+                  .WithMessage("There should be at least one tracing. (Parameter 'tracings')");
+        }
+
+        [Test]
+        public void When_calling_CreateShapes_with_non_G1Continuous_tracings_Then_an_ArgumentException_Should_be_thrown()
+        {
+            // Arrange
+            var nonG1Tracings = new List<Tracing<double>>
+            {
+                _factory.CreateSegment(
+                    startX: 0.0,
+                    startY: 0.0,
+                    endX: 1.0,
+                    endY: 0.0,
+                    new Fraction(numerator: 1, denominator: 1)),
+                _factory.CreateSegment(
+                    startX: 10.0,
+                    startY: 0.0,
+                    endX: 11.0,
+                    endY: 0.0,
+                    new Fraction(numerator: 1, denominator: 1))
+            };
+            Action action = () => _factory.CreateShape(nonG1Tracings);
+
+            // Assert
+            action.Should()
+                  .ThrowExactly<ArgumentException>()
+                  .WithMessage("The tracings should be continuous. (Parameter 'tracings')");
+        }
+
+        [Test]
+        public void When_calling_ConvolveArcAndSegment_with_clockwise_arc_and_non_compatible_directions_Then_the_correct_result_should_be_returned()
+        {
+            // Arrange
+            var arc = _factory.CreateArc(
+                centerX: 1.0,
+                centerY: 3.0,
+                directionStartX: 0.0,
+                directionStartY: 5.0,
+                directionEndX: 2.0,
+                directionEndY: 0.0,
+                Orientation.Clockwise,
+                radius: 2.0,
+                new Fraction(numerator: 1, denominator: 1));
+
+            var segment = _factory.CreateSegment(
+                startX: 10.0,
+                startY: 5.0,
+                endX: 10.0,
+                endY: 10.0,
+                new Fraction(numerator: 1, denominator: 1));
+
+            // Act
+            var actual = _factory.ConvolveArcAndSegment(arc, segment);
+
+            // Assert
+            actual.Should().BeEmpty();
+        }
+
+        [Test]
+        public void When_calling_Zero_Then_value_zero_Should_be_returned()
+        {
+            // Act
+            var actual = _factory.Zero;
+
+            // Assert
+            actual.Should().Be(0.0);
+        }
+
+        [Test]
+        public void When_calling_One_Then_value_one_Should_be_returned()
+        {
+            // Act
+            var actual = _factory.One;
+
+            // Assert
+            actual.Should().Be(1.0);
         }
     }
 }
