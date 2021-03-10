@@ -223,7 +223,7 @@ namespace Hilke.KineticConvolution
                             ? range.Opposite()
                             : range,
                         AlgebraicNumberCalculator.Abs(signedRadius),
-                        arc1.Weight * arc2.Weight);
+                        -1 * arc1.Weight * arc2.Weight);
                 })
                 .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
         }
@@ -249,9 +249,12 @@ namespace Hilke.KineticConvolution
             var isSegmentConvolvedWithOneArcExtremity =
                 segmentNormalDirectionIsStart ^ segmentNormalDirectionIsEnd;
 
+            var weightSign = arc.Directions.Orientation == Orientation.CounterClockwise
+                ? 1 : -1;
+
             var convolutionWeight = isSegmentConvolvedWithOneArcExtremity
-                ? new Fraction(1, 2) * arc.Weight * segment.Weight
-                : arc.Weight * segment.Weight;
+                ? new Fraction(1, 2) * weightSign * arc.Weight * segment.Weight
+                : weightSign * arc.Weight * segment.Weight;
 
             if (segmentNormalDirection.BelongsTo(arc.Directions))
             {

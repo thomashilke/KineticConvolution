@@ -180,7 +180,7 @@ namespace Hilke.KineticConvolution.Tests
             // Arrange expected
             var expected = _factory.CreateArc(
                 radius: 1,
-                weight: 6,
+                weight: -6,
                 centerX: 6,
                 centerY: 6,
                 directionStartX: -12,
@@ -231,7 +231,7 @@ namespace Hilke.KineticConvolution.Tests
             // Arrange expected
             var expected = _factory.CreateArc(
                 radius: 1.0,
-                weight: 2,
+                weight: -2,
                 centerX: 6.0,
                 centerY: 6.0,
                 directionStartX: 12.0,
@@ -333,7 +333,7 @@ namespace Hilke.KineticConvolution.Tests
             // Arrange expected
             var expected = _factory.CreateArc(
                 radius: 0.0,
-                weight: 10,
+                weight: -10,
                 centerX: 6.0,
                 centerY: 6.0,
                 directionStartX: 12.0,
@@ -798,7 +798,7 @@ namespace Hilke.KineticConvolution.Tests
                 startY: 13.0,
                 endX: 13.0,
                 endY: 8.0,
-                new Fraction(numerator: 1, denominator: 2));
+                new Fraction(numerator: -1, denominator: 2));
 
             // Act
             var actual = _factory.ConvolveArcAndSegment(arc, segment);
