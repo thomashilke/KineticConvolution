@@ -134,11 +134,22 @@ namespace Hilke.KineticConvolution
             }
             else if (range.End.CompareTo(Start, range.Start) == DirectionOrder.After)
             {
-                yield return new DirectionRange<TAlgebraicNumber>(
-                    _calculator,
-                    Start,
-                    Start.FirstOf(End, range.End),
-                    Orientation.CounterClockwise);
+                if (Start == End)
+                {
+                    yield return new DirectionRange<TAlgebraicNumber>(
+                        _calculator,
+                        Start,
+                        range.End,
+                        Orientation.CounterClockwise);
+                }
+                else
+                {
+                    yield return new DirectionRange<TAlgebraicNumber>(
+                        _calculator,
+                        Start,
+                        Start.FirstOf(End, range.End),
+                        Orientation.CounterClockwise);
+                }
             }
         }
     }
