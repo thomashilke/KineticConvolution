@@ -40,6 +40,18 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             yield return Case_SpEqualsE_EpInRBar();
             yield return Case_SpEqualsE_EpEqualsS();
             yield return Case_SpEqualsE_EpInR();
+
+            // Enumerate all combinatorial cases where range R = (S, S) is a full disk
+            // and Rp = (Sp, Ep), R and Rp are counter clockwise and Sp is not equal to Ep.
+            yield return Case_RDisk_SpEqualsS_EpInR();
+            yield return Case_RDisk_SpInR_EpInR1();
+            yield return Case_RDisk_SpInR_EpEqualsS();
+            yield return Case_RDisk_SpInR_EpInR2();
+
+            // Enumerate all combinatorial cases where range R = (S, S) is a full disk
+            // and Rp = (Sp, Sp) is a full disk.
+            yield return Case_RDiskRpDisk_SEqualsSp();
+            yield return Case_RDiskRpDisk_SpInR();
         }
 
         private static TestCaseData Case01()
@@ -554,6 +566,163 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
 
             return new TestCaseData(range1, range2, expectedIntersections)
                 .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpEqualsE_EpInR)}");
+        }
+
+        private static TestCaseData Case_RDisk_SpEqualsS_EpInR()
+        {
+            var S = new Direction<double>(Calculator, x: 1.0, y: 0.0);
+
+            var range1 = new DirectionRange<double>(
+                Calculator,
+                S, S,
+                Orientation.CounterClockwise);
+
+            var range2 = new DirectionRange<double>(
+                Calculator,
+                S,
+                new Direction<double>(Calculator, x: 1.0, y: 1.0),
+                Orientation.CounterClockwise);
+
+            var expectedIntersection = range2;
+
+            var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
+
+            return new TestCaseData(range1, range2, expectedIntersections)
+                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_RDisk_SpEqualsS_EpInR)}");
+        }
+
+        private static TestCaseData Case_RDisk_SpInR_EpInR1()
+        {
+            var S = new Direction<double>(Calculator, x: 1.0, y: 0.0);
+
+            var range1 = new DirectionRange<double>(
+                Calculator,
+                S, S,
+                Orientation.CounterClockwise);
+
+            var range2 = new DirectionRange<double>(
+                Calculator,
+                new Direction<double>(Calculator, x: 1.0, y: 1.0),
+                new Direction<double>(Calculator, x: -1.0, y: 1.0),
+                Orientation.CounterClockwise);
+
+            var expectedIntersection = range2;
+
+            var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
+
+            return new TestCaseData(range1, range2, expectedIntersections)
+                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_RDisk_SpInR_EpInR1)}");
+        }
+
+        private static TestCaseData Case_RDisk_SpInR_EpEqualsS()
+        {
+            var S = new Direction<double>(Calculator, x: 1.0, y: 0.0);
+
+            var range1 = new DirectionRange<double>(
+                Calculator,
+                S, S,
+                Orientation.CounterClockwise);
+
+            var range2 = new DirectionRange<double>(
+                Calculator,
+                new Direction<double>(Calculator, x: 1.0, y: 1.0),
+                S,
+                Orientation.CounterClockwise);
+
+            var expectedIntersection = range2;
+
+            var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
+
+            return new TestCaseData(range1, range2, expectedIntersections)
+                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_RDisk_SpInR_EpEqualsS)}");
+        }
+
+        private static TestCaseData Case_RDisk_SpInR_EpInR2()
+        {
+            var S = new Direction<double>(Calculator, x: 1.0, y: 0.0);
+
+            var range1 = new DirectionRange<double>(
+                Calculator,
+                S, S,
+                Orientation.CounterClockwise);
+
+            var range2 = new DirectionRange<double>(
+                Calculator,
+                new Direction<double>(Calculator, x: 0.0, y: 1.0),
+                new Direction<double>(Calculator, x: 1.0, y: 1.0),
+                Orientation.CounterClockwise);
+
+            var expectedIntersection1 = new DirectionRange<double>(
+                Calculator,
+                new Direction<double>(Calculator, x: 0.0, y: 1.0),
+                S,
+                Orientation.CounterClockwise);
+
+            var expectedIntersection2 = new DirectionRange<double>(
+                Calculator,
+                S,
+                new Direction<double>(Calculator, x: 1.0, y: 1.0),
+                Orientation.CounterClockwise);
+
+            var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection1, expectedIntersection2 };
+
+            return new TestCaseData(range1, range2, expectedIntersections)
+                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_RDisk_SpInR_EpInR2)}");
+        }
+
+        private static TestCaseData Case_RDiskRpDisk_SEqualsSp()
+        {
+            var S = new Direction<double>(Calculator, x: 1.0, y: 0.0);
+
+            var range1 = new DirectionRange<double>(
+                Calculator,
+                S, S,
+                Orientation.CounterClockwise);
+
+            var range2 = new DirectionRange<double>(
+                Calculator,
+                S,
+                S,
+                Orientation.CounterClockwise);
+
+            var expectedIntersection = range2;
+
+            var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
+
+            return new TestCaseData(range1, range2, expectedIntersections)
+                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_RDiskRpDisk_SEqualsSp)}");
+        }
+
+        private static TestCaseData Case_RDiskRpDisk_SpInR()
+        {
+            var S = new Direction<double>(Calculator, x: 1.0, y: 0.0);
+
+            var Sp = new Direction<double>(Calculator, x: 0.0, y: 1.0);
+
+            var range1 = new DirectionRange<double>(
+                Calculator,
+                S, S,
+                Orientation.CounterClockwise);
+
+            var range2 = new DirectionRange<double>(
+                Calculator,
+                Sp, Sp,
+                Orientation.CounterClockwise);
+
+            var expectedIntersection1 = new DirectionRange<double>(
+                Calculator,
+                S, Sp,
+                Orientation.CounterClockwise);
+
+            var expectedIntersection2 = new DirectionRange<double>(
+                Calculator,
+                Sp, S,
+                Orientation.CounterClockwise);
+
+            var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection1, expectedIntersection2 };
+
+            return new TestCaseData(range1, range2, expectedIntersections)
+                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_RDiskRpDisk_SpInR)}");
         }
     }
 }

@@ -40,9 +40,11 @@ namespace Hilke.KineticConvolution
 
         public Orientation Orientation { get; }
 
+        internal bool IsFullDisk() => Start == End;
+
         internal bool IsShortestRange()
         {
-            if (Start == End)
+            if (IsFullDisk())
             {
                 return false;
             }
@@ -94,60 +96,115 @@ namespace Hilke.KineticConvolution
                     ? other
                     : other.Reverse();
 
-            var result = counterClockwiseRange1.CounterClockwiseRangesIntersection(counterClockwiseRange2).ToList();
+            var intersections =
+                CounterClockwiseRangesIntersection(
+                    _calculator,
+                    counterClockwiseRange1,
+                    counterClockwiseRange2)
+                .ToList();
 
             return Orientation == Orientation.CounterClockwise
-                    ? result
-                    : result.Select(t => t.Reverse());
+                    ? intersections
+                    : intersections.Select(t => t.Reverse());
         }
 
-        private IEnumerable<DirectionRange<TAlgebraicNumber>> CounterClockwiseRangesIntersection(
-            DirectionRange<TAlgebraicNumber> range)
+        private static IEnumerable<DirectionRange<TAlgebraicNumber>> CounterClockwiseRangesIntersection(
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            DirectionRange<TAlgebraicNumber> range1,
+            DirectionRange<TAlgebraicNumber> range2)
         {
-            if (Orientation != Orientation.CounterClockwise)
+            if (range1.IsFullDisk())
+            {
+                return CounterClockwiseRangeIntersectionWithFullDisk(
+                    calculator, range2, range1);
+            }
+
+            if (range2.IsFullDisk())
+            {
+               return CounterClockwiseRangeIntersectionWithFullDisk(
+                   calculator, range1, range2);
+            }
+
+            return CounterClockwiseRegularRangesIntersection(calculator, range1, range2);
+        }
+
+        private static IEnumerable<DirectionRange<TAlgebraicNumber>> CounterClockwiseRangeIntersectionWithFullDisk(
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            DirectionRange<TAlgebraicNumber> range,
+            DirectionRange<TAlgebraicNumber> disk)
+        {
+            if (!disk.IsFullDisk())
+            {
+                throw new InvalidOperationException("A full disk is expected.");
+            }
+
+            if (disk.Start.StrictlyBelongsTo(range))
+            {
+                yield return new DirectionRange<TAlgebraicNumber>(
+                    calculator,
+                    disk.Start, range.End,
+                    Orientation.CounterClockwise);
+
+                yield return new DirectionRange<TAlgebraicNumber>(
+                    calculator,
+                    range.Start, disk.Start,
+                    Orientation.CounterClockwise);
+            }
+            else
+            {
+                yield return range;
+            }
+        }
+
+        private static IEnumerable<DirectionRange<TAlgebraicNumber>> CounterClockwiseRegularRangesIntersection(
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            DirectionRange<TAlgebraicNumber> range1,
+            DirectionRange<TAlgebraicNumber> range2)
+        {
+            if (range1.Orientation != Orientation.CounterClockwise)
             {
                 throw new InvalidOperationException("The direction range must be counterclockwise.");
             }
 
-            if (range.Orientation != Orientation.CounterClockwise)
+            if (range2.Orientation != Orientation.CounterClockwise)
             {
-                throw new ArgumentException("The direction range must be counterclockwise.", nameof(range));
+                throw new ArgumentException("The direction range must be counterclockwise.", nameof(range2));
             }
 
-            if (range.Start.StrictlyBelongsTo(this))
+            if (range2.Start.StrictlyBelongsTo(range1))
             {
                 yield return new DirectionRange<TAlgebraicNumber>(
-                    _calculator,
-                    range.Start,
-                    range.Start.FirstOf(End, range.End),
+                    calculator,
+                    range2.Start,
+                    range2.Start.FirstOf(range1.End, range2.End),
                     Orientation.CounterClockwise);
 
-                if (range.Start.CompareTo(range.End, Start) == DirectionOrder.After
-                    && range.End.CompareTo(Start, End) == DirectionOrder.After)
+                if (range2.Start.CompareTo(range2.End, range1.Start) == DirectionOrder.After
+                    && range2.End.CompareTo(range1.Start, range1.End) == DirectionOrder.After)
                 {
                     yield return new DirectionRange<TAlgebraicNumber>(
-                        _calculator,
-                        Start,
-                        range.End,
+                        calculator,
+                        range1.Start,
+                        range2.End,
                         Orientation.CounterClockwise);
                 }
             }
-            else if (range.End.CompareTo(Start, range.Start) == DirectionOrder.After)
+            else if (range2.End.CompareTo(range1.Start, range2.Start) == DirectionOrder.After)
             {
-                if (Start == End)
+                if (range1.Start == range1.End)
                 {
                     yield return new DirectionRange<TAlgebraicNumber>(
-                        _calculator,
-                        Start,
-                        range.End,
+                        calculator,
+                        range1.Start,
+                        range2.End,
                         Orientation.CounterClockwise);
                 }
                 else
                 {
                     yield return new DirectionRange<TAlgebraicNumber>(
-                        _calculator,
-                        Start,
-                        Start.FirstOf(End, range.End),
+                        calculator,
+                        range1.Start,
+                        range1.Start.FirstOf(range1.End, range2.End),
                         Orientation.CounterClockwise);
                 }
             }
