@@ -47,10 +47,18 @@ namespace Hilke.KineticConvolution.Tests
         {
             // Act
             var actual = range1.Intersection(range2).ToList();
+            var actual2 = range2.Intersection(range1).ToList();
 
             // Assert
             actual.Should().HaveCount(expected.Count);
             actual.Should().BeEquivalentTo(expected);
+
+            actual2.Should().HaveCount(expected.Count);
+            if (range1.Orientation == Orientation.CounterClockwise &&
+                range2.Orientation == Orientation.CounterClockwise)
+            {
+                actual2.Should().BeEquivalentTo(expected);
+            }
         }
     }
 }
