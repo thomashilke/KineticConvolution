@@ -40,11 +40,11 @@ namespace Hilke.KineticConvolution
 
         public Orientation Orientation { get; }
 
-        internal bool IsFullDisk() => Start == End;
+        internal bool IsDegenerate() => Start == End;
 
         internal bool IsShortestRange()
         {
-            if (IsFullDisk())
+            if (IsDegenerate())
             {
                 return false;
             }
@@ -113,41 +113,41 @@ namespace Hilke.KineticConvolution
             DirectionRange<TAlgebraicNumber> range1,
             DirectionRange<TAlgebraicNumber> range2)
         {
-            if (range1.IsFullDisk())
+            if (range1.IsDegenerate())
             {
-                return CounterClockwiseRangeIntersectionWithFullDisk(
+                return CounterClockwiseDegenerateRangesIntersection(
                     calculator, range2, range1);
             }
 
-            if (range2.IsFullDisk())
+            if (range2.IsDegenerate())
             {
-               return CounterClockwiseRangeIntersectionWithFullDisk(
+               return CounterClockwiseDegenerateRangesIntersection(
                    calculator, range1, range2);
             }
 
             return CounterClockwiseRegularRangesIntersection(calculator, range1, range2);
         }
 
-        private static IEnumerable<DirectionRange<TAlgebraicNumber>> CounterClockwiseRangeIntersectionWithFullDisk(
+        private static IEnumerable<DirectionRange<TAlgebraicNumber>> CounterClockwiseDegenerateRangesIntersection(
             IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             DirectionRange<TAlgebraicNumber> range,
-            DirectionRange<TAlgebraicNumber> disk)
+            DirectionRange<TAlgebraicNumber> degenerateRange)
         {
-            if (!disk.IsFullDisk())
+            if (!degenerateRange.IsDegenerate())
             {
-                throw new InvalidOperationException("A full disk is expected.");
+                throw new InvalidOperationException("A degenerated range is expected.");
             }
 
-            if (disk.Start.StrictlyBelongsTo(range))
+            if (degenerateRange.Start.StrictlyBelongsTo(range))
             {
                 yield return new DirectionRange<TAlgebraicNumber>(
                     calculator,
-                    disk.Start, range.End,
+                    degenerateRange.Start, range.End,
                     Orientation.CounterClockwise);
 
                 yield return new DirectionRange<TAlgebraicNumber>(
                     calculator,
-                    range.Start, disk.Start,
+                    range.Start, degenerateRange.Start,
                     Orientation.CounterClockwise);
             }
             else
