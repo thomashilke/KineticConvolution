@@ -41,7 +41,7 @@ namespace Hilke.KineticConvolution.Tests
                 radius: radius2,
                 weight: 1);
 
-            var convolution = convolutionFactory.Convolve(arc1, arc2).ToList();
+            var convolution = convolutionFactory.ConvolveTracings(arc1, arc2).ToList();
 
             convolution.Should().HaveCount(1);
 

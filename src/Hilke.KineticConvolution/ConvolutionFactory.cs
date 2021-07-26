@@ -143,7 +143,7 @@ namespace Hilke.KineticConvolution
             var convolutions =
                 from tracing1 in shape1.Tracings
                 from tracing2 in shape2.Tracings
-                select Convolve(tracing1, tracing2);
+                select ConvolveTracings(tracing1, tracing2);
 
             return new Convolution<TAlgebraicNumber>(shape1, shape2, convolutions.SelectMany(x => x).ToList());
         }
@@ -173,7 +173,7 @@ namespace Hilke.KineticConvolution
             }
         }
 
-        internal IEnumerable<ConvolvedTracing<TAlgebraicNumber>> Convolve(
+        public IEnumerable<ConvolvedTracing<TAlgebraicNumber>> ConvolveTracings(
             Tracing<TAlgebraicNumber> tracing1,
             Tracing<TAlgebraicNumber> tracing2) =>
             (tracing1, tracing2) switch

@@ -424,7 +424,7 @@ namespace Hilke.KineticConvolution.Tests
                 weight: 4);
 
             // Act
-            var actual = _factory.Convolve(segment1, segment2);
+            var actual = _factory.ConvolveTracings(segment1, segment2);
 
             // Assert
             actual.Should().BeEmpty();
@@ -451,7 +451,7 @@ namespace Hilke.KineticConvolution.Tests
                 weight: 4);
 
             // Act
-            var actual = _factory.Convolve(segment1, segment2);
+            var actual = _factory.ConvolveTracings(segment1, segment2);
 
             // Assert
             actual.Should().BeEmpty();
@@ -607,9 +607,9 @@ namespace Hilke.KineticConvolution.Tests
             var verticalSegment = _factory.CreateSegment(origin, _factory.CreatePoint(0.0, 1.0), 1);
 
             // Act
-            var convolution1 = _factory.Convolve(diskArc, smoothingArc1);
-            var convolution2 = _factory.Convolve(diskArc, smoothingArc2);
-            var convolution3 = _factory.Convolve(diskArc, verticalSegment);
+            var convolution1 = _factory.ConvolveTracings(diskArc, smoothingArc1);
+            var convolution2 = _factory.ConvolveTracings(diskArc, smoothingArc2);
+            var convolution3 = _factory.ConvolveTracings(diskArc, verticalSegment);
 
             // Assert
             convolution1.Should().HaveCount(1);
