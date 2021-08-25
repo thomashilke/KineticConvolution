@@ -203,13 +203,16 @@ namespace Hilke.KineticConvolution
         {
             if (arc1.Directions.Orientation == arc2.Directions.Orientation)
             {
+                var convolutionWeightSign = arc1.Directions.Orientation == Orientation.CounterClockwise ? 1 : -1;
+                var convolutionWeight = convolutionWeightSign * arc1.Weight * arc2.Weight;
+
                 return arc1.Directions.Intersection(arc2.Directions)
                            .Select(
                                range => CreateArc(
                                    arc1.Center.Sum(arc2.Center),
                                    range,
                                    AlgebraicNumberCalculator.Add(arc1.Radius, arc2.Radius),
-                                   arc1.Weight * arc2.Weight))
+                                   convolutionWeight))
                            .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
             }
 
@@ -217,13 +220,18 @@ namespace Hilke.KineticConvolution
                 .Select(range =>
                 {
                     var signedRadius = AlgebraicNumberCalculator.Subtract(arc1.Radius, arc2.Radius);
+
+                    var convolutionWeightSign =
+                        (arc1.Directions.Orientation == Orientation.Clockwise && arc2.Directions.Orientation == Orientation.CounterClockwise);
+                    var convolutionWeight = (convolutionWeightSign ? 1 : -1) * arc1.Weight * arc2.Weight;
+
                     return CreateArc(
                         arc1.Center.Sum(arc2.Center),
                         AlgebraicNumberCalculator.IsStrictlyNegative(signedRadius)
                             ? range.Opposite()
                             : range,
                         AlgebraicNumberCalculator.Abs(signedRadius),
-                        -1 * arc1.Weight * arc2.Weight);
+                        convolutionWeight);
                 })
                 .Select(arc => new ConvolvedTracing<TAlgebraicNumber>(arc, arc1, arc2));
         }
