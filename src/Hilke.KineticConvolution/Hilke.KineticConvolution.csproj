@@ -17,7 +17,6 @@
     <Title>Kinetic convolution</Title>
     <Description>Implementation of the kinetic convolution of polygonal tracings in the Euclidian plane.</Description>
     <Authors>Thomas Hilke</Authors>
-    <Version>1.1.0-local005</Version>
   </PropertyGroup>
 
   <ItemGroup>
