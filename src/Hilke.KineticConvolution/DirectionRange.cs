@@ -108,6 +108,36 @@ namespace Hilke.KineticConvolution
                     : intersections.Select(t => t.Reverse());
         }
 
+        public IEnumerable<DirectionRange<TAlgebraicNumber>> Union(
+            DirectionRange<TAlgebraicNumber> other)
+        {
+            if (other is null)
+            {
+                throw new ArgumentNullException(nameof(other));
+            }
+
+            var counterClockwiseRange1 =
+                this.Orientation == Orientation.CounterClockwise
+                    ? this
+                    : this.Reverse();
+
+            var counterClockwiseRange2 =
+                other.Orientation == Orientation.CounterClockwise
+                    ? other
+                    : other.Reverse();
+
+            var unions =
+                CounterClockwiseRangeUnion(
+                    _calculator,
+                    counterClockwiseRange1,
+                    counterClockwiseRange2)
+                .ToList();
+
+            return this.Orientation == Orientation.CounterClockwise
+               ? unions
+               : unions.Select(t => t.Reverse());
+        }
+
         private static IEnumerable<DirectionRange<TAlgebraicNumber>> CounterClockwiseRangesIntersection(
             IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
             DirectionRange<TAlgebraicNumber> range1,
@@ -207,6 +237,64 @@ namespace Hilke.KineticConvolution
                         range1.Start.FirstOf(range1.End, range2.End),
                         Orientation.CounterClockwise);
                 }
+            }
+        }
+
+        private static IEnumerable<DirectionRange<TAlgebraicNumber>> CounterClockwiseRangeUnion(
+            IAlgebraicNumberCalculator<TAlgebraicNumber> calculator,
+            DirectionRange<TAlgebraicNumber> range1,
+            DirectionRange<TAlgebraicNumber> range2)
+        {
+            if (range1.Orientation != Orientation.CounterClockwise ||
+                range2.Orientation != Orientation.CounterClockwise)
+            {
+                throw new InvalidOperationException(
+                    "The direction range must be counterclockwise.");
+            }
+
+            if(range1.Start == range2.Start && range1.End == range2.End)
+            {
+                yield return range1;
+            }
+            else if (range2.Start.BelongsTo(range1) && !range2.End.BelongsTo(range1))
+            {
+                yield return new DirectionRange<TAlgebraicNumber>(
+                    calculator,
+                    range1.Start,
+                    range2.End,
+                    Orientation.CounterClockwise);
+            }
+            else if (range1.Start.BelongsTo(range2) && !range1.End.BelongsTo(range2))
+            {
+                yield return new DirectionRange<TAlgebraicNumber>(
+                    calculator,
+                    range2.Start,
+                    range1.End,
+                    Orientation.CounterClockwise);
+            }
+            else if (range2.Start.BelongsTo(range1)
+                      && range2.End.BelongsTo(range1)
+                      && range1.Start.BelongsTo(range2)
+                      && range1.End.BelongsTo(range2))
+            {
+                yield return new DirectionRange<TAlgebraicNumber>(
+                    calculator,
+                    range1.Start,
+                    range1.Start,
+                    Orientation.CounterClockwise);
+            }
+            else if (range2.Start.BelongsTo(range1) && range2.End.BelongsTo(range1))
+            {
+                yield return range1;
+            }
+            else if (range1.Start.BelongsTo(range2) && range1.End.BelongsTo(range2))
+            {
+                yield return range2;
+            }
+            else
+            {
+                yield return range1;
+                yield return range2;
             }
         }
     }
