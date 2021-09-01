@@ -282,7 +282,7 @@ namespace Hilke.KineticConvolution.Tests
             // Arrange expected
             var expected = _factory.CreateArc(
                 radius: 3.0,
-                weight: 2,
+                weight: -2,
                 centerX: 6.0,
                 centerY: 6.0,
                 directionStartX: 12.0,
