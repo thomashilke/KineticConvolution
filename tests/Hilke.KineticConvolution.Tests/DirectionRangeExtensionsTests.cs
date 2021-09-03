@@ -1,12 +1,13 @@
+using System.Linq;
+using System.Collections.Generic;
+
 using FluentAssertions;
 
 using Hilke.KineticConvolution.DoubleAlgebraicNumber;
+using Hilke.KineticConvolution.Extensions;
+using Hilke.KineticConvolution.Tests.TestCaseDataSource;
 
 using NUnit.Framework;
-
-using System.Collections.Generic;
-
-using Hilke.KineticConvolution.Tests.TestCaseDataSource;
 
 namespace Hilke.KineticConvolution.Tests
 {
@@ -71,6 +72,76 @@ namespace Hilke.KineticConvolution.Tests
             var intersection = leftHalfPlan.Intersection(rightHalfPlan);
 
             intersection.Should().BeEquivalentTo(expectedRange);
+        }
+
+        [TestCaseSource(
+            typeof(DirectionRangeExtensionsUnionTestCaseDataSource),
+            nameof(DirectionRangeExtensionsUnionTestCaseDataSource.TestCases))]
+        public void When_calling_Union_with_valid_ranges_Then_the_correct_result_Should_be_returned(
+            DirectionRange<double> range1,
+            DirectionRange<double> range2,
+            IReadOnlyList<DirectionRange<double>> expected)
+        {
+            // Arrange
+            var expectedReversed = expected.Select(t => t.Reverse());
+
+            // Act
+            var actual1 = range1.Union(range2).ToList();
+            var actual2 = range2.Union(range1).ToList();
+
+            // Assert
+            actual1.Should().HaveCount(expected.Count);
+            actual1.Should().BeEquivalentTo(expected);
+
+            actual2.Should().HaveCount(expected.Count);
+
+            // degenerate range
+            if (expected.Count == 1 && expected[0].Start == expected[0].End)
+            {
+                actual2[0].Start.Should().BeEquivalentTo(actual2[0].End);
+                actual2[0].Orientation.Should().BeEquivalentTo(range2.Orientation);
+            }
+            else
+            {
+                if (range1.Orientation == range2.Orientation)
+                {
+                    actual2.Should().BeEquivalentTo(expected);
+                }
+                else
+                {
+                    actual2.Should().BeEquivalentTo(expectedReversed);
+                }
+            }
+        }
+
+        [TestCaseSource(
+            typeof(DirectionRangeExtensionsUnionTestCaseDataSource),
+            nameof(DirectionRangeExtensionsUnionTestCaseDataSource.TestCasesMultipleUnion))]
+        public void When_calling_Union_on_valid_multiple_ranges_Then_the_correct_result_Should_be_returned(
+            IEnumerable<DirectionRange<double>> ranges,
+            IReadOnlyList<DirectionRange<double>> expected)
+        {
+            // Act
+            var actual = ranges.Union().ToList();
+
+            // Assert
+            actual.Should().HaveCount(expected.Count);
+            actual.Should().BeEquivalentTo(expected);
+        }
+
+        [TestCaseSource(
+            typeof(DirectionRangeExtensionsUnionTestCaseDataSource),
+            nameof(DirectionRangeExtensionsUnionTestCaseDataSource.TestCasesSortByStart))]
+        public void When_calling_SortByStart_On_multiple_ranges_Should_sort_correctly(
+            IEnumerable<DirectionRange<double>> unsortedRanges,
+            IReadOnlyList<DirectionRange<double>> expected)
+        {
+            // Act
+            var actual = unsortedRanges.SortCounterClockwise();
+
+            // Assert
+            actual.Should().HaveCount(expected.Count);
+            actual.Should().BeEquivalentTo(expected);
         }
     }
 }

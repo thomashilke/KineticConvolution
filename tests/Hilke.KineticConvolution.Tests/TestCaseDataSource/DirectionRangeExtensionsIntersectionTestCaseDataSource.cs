@@ -7,7 +7,7 @@ using NUnit.Framework;
 
 namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
 {
-    internal static class DirectionRangeTestCaseDataSource
+    internal static class DirectionRangeExtensionsIntersectionTestCaseDataSource
     {
         private static readonly IAlgebraicNumberCalculator<double> Calculator =
             new DoubleAlgebraicNumberCalculator(zeroTolerance: 1e-12);
@@ -74,7 +74,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expected = new List<DirectionRange<double>> {expectedRange};
 
             return new TestCaseData(range1, range2, expected)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case01)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case01)}");
         }
 
         private static TestCaseData Case02()
@@ -103,7 +103,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expected = new List<DirectionRange<double>> {expectedRange1, expectedRange2};
 
             return new TestCaseData(range1, range2, expected)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case02)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case02)}");
         }
 
         private static TestCaseData Case03()
@@ -126,7 +126,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expected = new List<DirectionRange<double>> {expectedRange};
 
             return new TestCaseData(range1, range2, expected)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case03)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case03)}");
         }
 
         private static TestCaseData Case04()
@@ -143,7 +143,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expected = new List<DirectionRange<double>> ();
 
             return new TestCaseData(range1, range2, expected)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case04)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case04)}");
         }
 
         private static TestCaseData Case05()
@@ -172,7 +172,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expected = new List<DirectionRange<double>> {expectedRange1, expectedRange2};
 
             return new TestCaseData(range1, range2, expected)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case05)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case05)}");
         }
 
         private static TestCaseData Case06()
@@ -194,7 +194,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case06)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case06)}");
         }
 
         private static TestCaseData Case_SpInRBar_EpInRBar1()
@@ -214,7 +214,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = Enumerable.Empty<DirectionRange<double>>().ToList();
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpInRBar_EpInRBar1)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpInRBar_EpInRBar1)}");
         }
 
         private static TestCaseData Case_SpInRBar_EpInRBar2()
@@ -236,7 +236,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpInRBar_EpInRBar2)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpInRBar_EpInRBar2)}");
         }
 
         private static TestCaseData Case_SpInRBar_EpEqualsS()
@@ -256,7 +256,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = Enumerable.Empty<DirectionRange<double>>().ToList();
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpInRBar_EpEqualsS)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpInRBar_EpEqualsS)}");
         }
 
         private static TestCaseData Case_SpInRBar_EpInR()
@@ -282,7 +282,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpInRBar_EpInR)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpInRBar_EpInR)}");
         }
 
         private static TestCaseData Case_SpInRBar_EpEqualsE()
@@ -304,7 +304,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpInRBar_EpEqualsE)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpInRBar_EpEqualsE)}");
         }
 
         private static TestCaseData Case_SpEqualsS_EpInR()
@@ -326,7 +326,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpEqualsS_EpInR)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpEqualsS_EpInR)}");
         }
 
         private static TestCaseData Case_SpEqualsS_EpEqualsE()
@@ -348,7 +348,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpEqualsS_EpEqualsE)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpEqualsS_EpEqualsE)}");
         }
 
         private static TestCaseData Case_SpEqualsS_EpInRBar()
@@ -370,7 +370,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpEqualsS_EpInRBar)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpEqualsS_EpInRBar)}");
         }
 
         private static TestCaseData Case_SpInR_EpInR()
@@ -393,7 +393,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpInR_EpInR)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpInR_EpInR)}");
         }
 
         private static TestCaseData Case_SpInR_EpEqualsE()
@@ -415,7 +415,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpInR_EpEqualsE)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpInR_EpEqualsE)}");
         }
 
         private static TestCaseData Case_SpInR_EpInRBar()
@@ -441,7 +441,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpInR_EpInRBar)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpInR_EpInRBar)}");
         }
 
         private static TestCaseData Case_SpInR_EpEqualsS()
@@ -467,7 +467,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpInR_EpEqualsS)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpInR_EpEqualsS)}");
         }
 
         private static TestCaseData Case_SpInR_EpInR2()
@@ -499,7 +499,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection1, expectedIntersection2 };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpInR_EpInR2)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpInR_EpInR2)}");
         }
 
         private static TestCaseData Case_SpEqualsE_EpInRBar()
@@ -519,7 +519,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>>();
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpEqualsE_EpInRBar)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpEqualsE_EpInRBar)}");
         }
 
         private static TestCaseData Case_SpEqualsE_EpEqualsS()
@@ -539,7 +539,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>>();
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpEqualsE_EpEqualsS)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpEqualsE_EpEqualsS)}");
         }
 
         private static TestCaseData Case_SpEqualsE_EpInR()
@@ -565,7 +565,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_SpEqualsE_EpInR)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_SpEqualsE_EpInR)}");
         }
 
         private static TestCaseData Case_RDegenerate_SpEqualsS_EpInR()
@@ -588,7 +588,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_RDegenerate_SpEqualsS_EpInR)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_RDegenerate_SpEqualsS_EpInR)}");
         }
 
         private static TestCaseData Case_RDegenerate_SpInR_EpInR1()
@@ -611,7 +611,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_RDegenerate_SpInR_EpInR1)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_RDegenerate_SpInR_EpInR1)}");
         }
 
         private static TestCaseData Case_RDegenerate_SpInR_EpEqualsS()
@@ -634,7 +634,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_RDegenerate_SpInR_EpEqualsS)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_RDegenerate_SpInR_EpEqualsS)}");
         }
 
         private static TestCaseData Case_RDegenerate_SpInR_EpInR2()
@@ -667,7 +667,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection1, expectedIntersection2 };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_RDegenerate_SpInR_EpInR2)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_RDegenerate_SpInR_EpInR2)}");
         }
 
         private static TestCaseData Case_RDegenerateRpDegenerate_SEqualsSp()
@@ -690,7 +690,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_RDegenerateRpDegenerate_SEqualsSp)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_RDegenerateRpDegenerate_SEqualsSp)}");
         }
 
         private static TestCaseData Case_RDegenerateRpDegenerate_SpInR()
@@ -722,7 +722,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
             var expectedIntersections = new List<DirectionRange<double>> { expectedIntersection1, expectedIntersection2 };
 
             return new TestCaseData(range1, range2, expectedIntersections)
-                .SetName($"{nameof(DirectionRangeTestCaseDataSource)} - {nameof(Case_RDegenerateRpDegenerate_SpInR)}");
+                .SetName($"{nameof(DirectionRangeExtensionsIntersectionTestCaseDataSource)} - {nameof(Case_RDegenerateRpDegenerate_SpInR)}");
         }
     }
 }
