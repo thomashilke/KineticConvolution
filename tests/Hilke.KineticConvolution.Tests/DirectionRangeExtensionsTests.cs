@@ -8,6 +8,7 @@ using Hilke.KineticConvolution.Extensions;
 using Hilke.KineticConvolution.Tests.TestCaseDataSource;
 
 using NUnit.Framework;
+using System;
 
 namespace Hilke.KineticConvolution.Tests
 {
@@ -142,6 +143,44 @@ namespace Hilke.KineticConvolution.Tests
             // Assert
             actual.Should().HaveCount(expected.Count);
             actual.Should().BeEquivalentTo(expected);
+        }
+
+        [Test]
+        public void When_calling_Union_with_null_source_Then_ArgumentNullException_should_be_thrown()
+        {
+            // Act
+            Action action = () => ((IEnumerable<DirectionRange<double>>)null).Union();
+
+            // Assert
+            action.Should().Throw<ArgumentNullException>().And.ParamName.Should().Be("ranges");
+        }
+
+        [Test]
+        public void When_calling_Union_with_empty_source_Then_empty_collection_should_be_returned()
+        {
+            // Act
+            var union = Enumerable.Empty<DirectionRange<double>>().Union();
+
+            // Assert
+            union.Should().BeEmpty();
+        }
+
+        [Test]
+        public void When_calling_Union_with_a_single_element_then_it_should_be_returned()
+        {
+            // Arrange
+            var factory = new ConvolutionFactory();
+
+            var d1 = factory.CreateDirection(1.0, 0.0);
+            var d2 = factory.CreateDirection(0.0, 1.0);
+            var range = factory.CreateDirectionRange(d1, d2, Orientation.CounterClockwise);
+            var ranges = new[] { range };
+
+            // Act
+            var union = ranges.Union();
+
+            // Assert
+            union.Single().Should().Be(range);
         }
     }
 }

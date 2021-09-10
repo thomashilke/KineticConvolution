@@ -22,7 +22,7 @@ namespace Hilke.KineticConvolution.Extensions
 
             var disjointUnions = new Queue<DirectionRange<double>>();
             var stagingUnion = orderedRanges[0];
-            foreach (var currentRange in orderedRanges)
+            foreach (var currentRange in orderedRanges.Skip(1))
             {
                 var unionWithStaging = stagingUnion.Union(currentRange).ToList();
                 if(unionWithStaging.Count == 2)
@@ -36,7 +36,7 @@ namespace Hilke.KineticConvolution.Extensions
                 }
             }
 
-            if (disjointUnions.Peek().Start.BelongsTo(stagingUnion))
+            if (disjointUnions.Count > 0 && disjointUnions.Peek().Start.BelongsTo(stagingUnion))
             {
                 // The last stagingUnion still intersect some ranges
                 // at the front of the queue.
