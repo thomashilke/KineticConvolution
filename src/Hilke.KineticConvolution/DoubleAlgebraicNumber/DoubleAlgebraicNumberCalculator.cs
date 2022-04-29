@@ -47,5 +47,8 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
 
         /// <inheritdoc />
         public double CreateConstant(double value) => value;
+
+        /// <inheritdoc />
+        public double ToDouble(double value) => value;
     }
 }

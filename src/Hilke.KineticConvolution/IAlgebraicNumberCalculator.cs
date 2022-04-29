@@ -21,5 +21,7 @@
         TAlgebraicNumber CreateConstant(int value);
 
         TAlgebraicNumber CreateConstant(double value);
+
+        double ToDouble(TAlgebraicNumber number);
     }
 }
