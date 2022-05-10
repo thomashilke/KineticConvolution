@@ -1,2 +1,5 @@
-mode: Mainline
+mode: ContinuousDeployment
 tag-prefix: ''
+branches:
+  master:
+    tag: beta
