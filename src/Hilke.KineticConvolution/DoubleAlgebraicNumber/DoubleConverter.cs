@@ -84,10 +84,27 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
 
             var start = ToDouble(range.Start);
             var end = ToDouble(range.End);
-
+            
             return range.Start != range.End && start == end
-                       ? null
+                       ? resolveLimitCase()
                        : DoubleFactory.CreateDirectionRange(start, end, range.Orientation);
+
+            DirectionRange<double>? resolveLimitCase()
+            {
+                var referenceDirection = range.Start.Opposite();
+                if (range.Start.CompareTo(range.End, referenceDirection) == DirectionOrder.Before)
+                {
+                    return range.Orientation == Orientation.CounterClockwise
+                           ? null
+                           : DoubleFactory.CreateDirectionRange(start, end, range.Orientation);
+                }
+                else
+                {
+                    return range.Orientation == Orientation.CounterClockwise
+                               ? DoubleFactory.CreateDirectionRange(start, end, range.Orientation)
+                               : null;
+                }
+            }
         }
 
         public Segment<TAlgebraicNumber> FromDouble(Segment<double> segment)
