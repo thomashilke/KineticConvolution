@@ -75,17 +75,19 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                 range.Orientation);
         }
 
-        public DirectionRange<double> ToDouble(DirectionRange<TAlgebraicNumber> range)
+        public DirectionRange<double>? TryToDouble(DirectionRange<TAlgebraicNumber> range)
         {
             if (range is null)
             {
                 throw new ArgumentNullException(nameof(range));
             }
 
-            return DoubleFactory.CreateDirectionRange(
-                ToDouble(range.Start),
-                ToDouble(range.End),
-                range.Orientation);
+            var start = ToDouble(range.Start);
+            var end = ToDouble(range.End);
+
+            return range.Start != range.End && start == end
+                       ? null
+                       : DoubleFactory.CreateDirectionRange(start, end, range.Orientation);
         }
 
         public Segment<TAlgebraicNumber> FromDouble(Segment<double> segment)
@@ -101,7 +103,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                 segment.Weight);
         }
 
-        public Segment<double>? ToDouble(Segment<TAlgebraicNumber> segment)
+        public Segment<double>? TryToDouble(Segment<TAlgebraicNumber> segment)
         {
             if (segment is null)
             {
@@ -113,10 +115,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
 
             return start == end
                        ? null
-                       : DoubleFactory.CreateSegment(
-                           ToDouble(segment.Start),
-                           ToDouble(segment.End),
-                           segment.Weight);
+                       : DoubleFactory.CreateSegment(start, end, segment.Weight);
         }
 
         public Arc<TAlgebraicNumber> FromDouble(Arc<double> arc)
@@ -133,18 +132,22 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                 arc.Weight);
         }
 
-        public Arc<double> ToDouble(Arc<TAlgebraicNumber> arc)
+        public Arc<double>? TryToDouble(Arc<TAlgebraicNumber> arc)
         {
             if (arc is null)
             {
                 throw new ArgumentNullException(nameof(arc));
             }
 
-            return DoubleFactory.CreateArc(
-                ToDouble(arc.Center),
-                ToDouble(arc.Directions),
-                ToDouble(arc.Radius),
-                arc.Weight);
+            var directions = TryToDouble(arc.Directions);
+
+            return directions is null
+                       ? null
+                       : DoubleFactory.CreateArc(
+                           ToDouble(arc.Center),
+                           directions,
+                           ToDouble(arc.Radius),
+                           arc.Weight);
         }
 
         public Tracing<TAlgebraicNumber> FromDouble(Tracing<double> tracing)
@@ -163,7 +166,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
             };
         }
 
-        public Tracing<double>? ToDouble(Tracing<TAlgebraicNumber> tracing)
+        public Tracing<double>? TryToDouble(Tracing<TAlgebraicNumber> tracing)
         {
             if (tracing is null)
             {
@@ -172,8 +175,8 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
 
             return tracing switch
             {
-                Arc<TAlgebraicNumber> arc => ToDouble(arc),
-                Segment<TAlgebraicNumber> segment => ToDouble(segment),
+                Arc<TAlgebraicNumber> arc => TryToDouble(arc),
+                Segment<TAlgebraicNumber> segment => TryToDouble(segment),
                 _ => throw new NotSupportedException(
                          $"Only segments and arcs are supported but got '{tracing.GetType()}'.")
             };
@@ -189,61 +192,19 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
             return AlgebraicNumberFactory.CreateShape(shape.Tracings.Select(t => FromDouble(t)));
         }
 
-        public Shape<double> ToDouble(Shape<TAlgebraicNumber> shape)
+        public Shape<double>? ToDouble(Shape<TAlgebraicNumber> shape)
         {
             if (shape is null)
             {
                 throw new ArgumentNullException(nameof(shape));
             }
 
-            var tracings = shape.Tracings.Select(t => ToDouble(t))
+            var tracings = shape.Tracings.Select(t => TryToDouble(t))
                                 .Where(t => !(t is null))
                                 .Cast<Tracing<double>>()
                                 .ToList();
 
-            if (tracings.Count < 1)
-            {
-                throw new InvalidOperationException("No tracing left after conversion to double.");
-            }
-
-            return DoubleFactory.CreateShape(tracings);
-        }
-
-        public ConvolvedTracing<TAlgebraicNumber> FromDouble(ConvolvedTracing<double> convolvedTracing)
-        {
-            if (convolvedTracing is null)
-            {
-                throw new ArgumentNullException(nameof(convolvedTracing));
-            }
-
-            return new ConvolvedTracing<TAlgebraicNumber>(
-                FromDouble(convolvedTracing.Convolution),
-                FromDouble(convolvedTracing.Parent1),
-                FromDouble(convolvedTracing.Parent2));
-        }
-
-        public ConvolvedTracing<double> ToDouble(ConvolvedTracing<TAlgebraicNumber> convolvedTracing)
-        {
-            if (convolvedTracing is null)
-            {
-                throw new ArgumentNullException(nameof(convolvedTracing));
-            }
-
-            var convolution = ToDouble(convolvedTracing.Convolution);
-            var parent1 = ToDouble(convolvedTracing.Parent1);
-            var parent2 = ToDouble(convolvedTracing.Parent2);
-
-            if (convolution is null)
-            {
-                throw new InvalidOperationException("Convolution is null after conversion to double.");
-            }
-
-            if (parent1 is null || parent2 is null)
-            {
-                throw new InvalidOperationException("A parent is null after conversion to double.");
-            }
-
-            return new ConvolvedTracing<double>(convolution, parent1, parent2);
+            return tracings.Count < 1 ? null : DoubleFactory.CreateShape(tracings);
         }
     }
 }
