@@ -175,7 +175,6 @@ namespace Hilke.KineticConvolution
 
             return new Shape<TAlgebraicNumber>(tracingsEnumerated);
 
-
             static bool continuityCondition(Tracing<TAlgebraicNumber> current, Tracing<TAlgebraicNumber> next) =>
                 current.IsContinuousWith(next);
 
