@@ -94,7 +94,7 @@ namespace Hilke.KineticConvolution.Tests.DoubleAlgebraicNumber
 
             // Act
             var converted = subject.FromDouble(range);
-            var actual = subject.ToDouble(converted);
+            var actual = subject.TryToDouble(converted);
 
             // Assert
             actual.Should().BeEquivalentTo(range);
@@ -112,7 +112,7 @@ namespace Hilke.KineticConvolution.Tests.DoubleAlgebraicNumber
 
             // Act
             var converted = subject.FromDouble(segment);
-            var actual = subject.ToDouble(converted);
+            var actual = subject.TryToDouble(converted);
 
             // Assert
             actual.Should().BeEquivalentTo(segment);
@@ -136,7 +136,7 @@ namespace Hilke.KineticConvolution.Tests.DoubleAlgebraicNumber
 
             // Act
             var converted = subject.FromDouble(arc);
-            var actual = subject.ToDouble(converted);
+            var actual = subject.TryToDouble(converted);
 
             // Assert
             actual.Should().BeEquivalentTo(arc);
