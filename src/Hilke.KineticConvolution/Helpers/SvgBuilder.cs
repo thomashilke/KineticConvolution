@@ -74,7 +74,7 @@ namespace Hilke.KineticConvolution.Helpers
             IEnumerable<(IReadOnlyList<Tracing<double>> Tracings, string Name, string Color)> namedTracings)
         {
             var sb = new StringBuilder();
-            sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone =\"yes\"?>");
+            sb.AppendLine("<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"yes\"?>");
             sb.AppendLine(
                 $"<svg id=\"map-svg\" width=\"{_svgScaling}px\" height=\"{_svgScaling}px\" viewBox=\"0 0 1 1\">");
 

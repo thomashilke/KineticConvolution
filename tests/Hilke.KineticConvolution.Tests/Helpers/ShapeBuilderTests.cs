@@ -12,7 +12,7 @@ namespace Hilke.KineticConvolution.Tests.Helpers
     [TestFixture(TestOf = typeof(ShapeBuilder<>))]
     public class ShapeBuilderTests
     {
-        private static readonly string? SaveFolder = @"C:\Users\t.pouchon\Desktop\shapes";
+        private static readonly string? SaveFolder = null;
 
         private static readonly ConvolutionFactory<double> DoubleFactory =
             new(new DoubleAlgebraicNumberCalculator());
