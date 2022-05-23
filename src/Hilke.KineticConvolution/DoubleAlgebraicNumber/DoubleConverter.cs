@@ -231,7 +231,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                 throw new ArgumentNullException(nameof(shape));
             }
 
-            return AlgebraicNumberFactory.CreateShape(shape.Tracings.Select(t => FromDouble(t)));
+            return AlgebraicNumberFactory.CreateShape(shape.Tracings.Select(FromDouble));
         }
 
         public virtual Shape<double>? ToDouble(Shape<TAlgebraicNumber> shape)
@@ -241,7 +241,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                 throw new ArgumentNullException(nameof(shape));
             }
 
-            var tracings = shape.Tracings.Select(t => ToDouble(t))
+            var tracings = shape.Tracings.Select(ToDouble)
                                 .Where(t => !(t is null))
                                 .Cast<Tracing<double>>()
                                 .ToList();
