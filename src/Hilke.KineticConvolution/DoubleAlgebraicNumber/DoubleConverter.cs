@@ -102,34 +102,25 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
             DirectionRange<double>? resolveLimitCase()
             {
                 var referenceDirection = range.Start.Opposite();
-                if (range.Start.CompareTo(range.End, referenceDirection) == DirectionOrder.Before)
-                {
-                    return range.Orientation == Orientation.CounterClockwise
-                               ? Mode switch
-                               {
-                                   InvalidityManagementMode.Silent => null,
-                                   InvalidityManagementMode.ThrowException =>
-                                       throw new InvalidOperationException(
-                                           "The range collapsed to a single direction during conversion to double."),
-                                   _ => throw new NotSupportedException(
-                                            $"Only Silent and ThrowException mode are supported but got {Mode.GetType()}.")
-                               }
-                               : DoubleFactory.CreateDirectionRange(start, end, range.Orientation);
-                }
-                else
-                {
-                    return range.Orientation == Orientation.CounterClockwise
-                               ? DoubleFactory.CreateDirectionRange(start, end, range.Orientation)
-                               : Mode switch
-                               {
-                                   InvalidityManagementMode.Silent => null,
-                                   InvalidityManagementMode.ThrowException =>
-                                       throw new InvalidOperationException(
-                                           "The range collapsed to a single direction during conversion to double."),
-                                   _ => throw new NotSupportedException(
-                                            $"Only Silent and ThrowException mode are supported but got {Mode.GetType()}.")
-                               };
-                }
+
+                var result = range.Start.CompareTo(range.End, referenceDirection) == DirectionOrder.Before
+                                 ? range.Orientation == Orientation.CounterClockwise
+                                       ? null
+                                       : DoubleFactory.CreateDirectionRange(start, end, range.Orientation)
+                                 : range.Orientation == Orientation.CounterClockwise
+                                     ? DoubleFactory.CreateDirectionRange(start, end, range.Orientation)
+                                     : null;
+
+                return result
+                    ?? Mode switch
+                       {
+                           InvalidityManagementMode.Silent => null,
+                           InvalidityManagementMode.ThrowException =>
+                               throw new InvalidOperationException(
+                                   "The range collapsed to a single direction during conversion to double."),
+                           _ => throw new NotSupportedException(
+                                    $"Only Silent and ThrowException mode are supported but got {Mode.GetType()}.")
+                       };
             }
         }
 
