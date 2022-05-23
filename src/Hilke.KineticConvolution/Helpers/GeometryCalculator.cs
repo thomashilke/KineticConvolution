@@ -82,44 +82,5 @@ namespace Hilke.KineticConvolution.Helpers
                 }
             }
         }
-
-        // move to ConvolutionFactoryExtensions ?
-        public Tracing<TAlgebraicNumber> Translate(
-            Tracing<TAlgebraicNumber> tracing,
-            Direction<TAlgebraicNumber> direction,
-            TAlgebraicNumber length)
-        {
-            if (tracing is null)
-            {
-                throw new ArgumentNullException(nameof(tracing));
-            }
-
-            if (direction is null)
-            {
-                throw new ArgumentNullException(nameof(direction));
-            }
-
-            if (length is null)
-            {
-                throw new ArgumentNullException(nameof(length));
-            }
-
-            return tracing switch
-            {
-                Segment<TAlgebraicNumber> segment =>
-                    _convolutionFactory.CreateSegment(
-                        segment.Start.Translate(direction, length),
-                        segment.End.Translate(direction, length),
-                        segment.Weight),
-                Arc<TAlgebraicNumber> arc =>
-                    _convolutionFactory.CreateArc(
-                        arc.Center.Translate(direction, length),
-                        arc.Directions,
-                        arc.Radius,
-                        arc.Weight),
-                _ => throw new NotSupportedException(
-                         $"Only segments and arcs are supported but got '{tracing.GetType()}'.")
-            };
-        }
     }
 }

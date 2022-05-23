@@ -57,12 +57,22 @@ namespace Hilke.KineticConvolution.Helpers
 
         public ShapeBuilder<TAlgebraicNumber> CloseWith(TAlgebraicNumber radius)
         {
+            if (_startPoint is null)
+            {
+                throw new InvalidOperationException("Start with a start point.");
+            }
+
+            if (_corners.Count < 1)
+            {
+                throw new InvalidOperationException("At least one corner is needed.");
+            }
+
             _corners.Add((_startPoint, radius));
 
             return this;
         }
 
-        public Shape<TAlgebraicNumber> CreateShape()
+        public Shape<TAlgebraicNumber> Build()
         {
             if (_corners.Count < 2)
             {
@@ -73,7 +83,7 @@ namespace Hilke.KineticConvolution.Helpers
             var lastIndex = arcs.Count - 1;
 
             var tracings =
-                new Tracing<TAlgebraicNumber>[] { arcs[lastIndex] }
+                new [] { arcs[lastIndex] }
                     .Concat(createSegmentIfNecessary(arcs[lastIndex].End, arcs[0].Start))
                     .Concat(
                         arcs.Pairwise(

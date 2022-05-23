@@ -62,7 +62,7 @@ namespace Hilke.KineticConvolution.Tests.Helpers
                    .CloseWith(calc.CreateConstant(0.0));
 
             // Act
-            var shape = subject.CreateShape();
+            var shape = subject.Build();
 
             // Assert
             shape.Tracings.Should().HaveCount(4);
@@ -95,7 +95,7 @@ namespace Hilke.KineticConvolution.Tests.Helpers
                    .CloseWith(calc.CreateConstant(radius));
 
             // Act
-            var shape = subject.CreateShape();
+            var shape = subject.Build();
 
             // Assert
             shape.Tracings.Should().HaveCount(8);
@@ -126,7 +126,7 @@ namespace Hilke.KineticConvolution.Tests.Helpers
                    .CloseWith(calc.CreateConstant(radius));
 
             // Act
-            var shape = subject.CreateShape();
+            var shape = subject.Build();
 
             // Assert
             shape.Tracings.Should().HaveCount(6);
@@ -159,7 +159,7 @@ namespace Hilke.KineticConvolution.Tests.Helpers
                    .CloseWith(calc.CreateConstant(radius));
 
             // Act
-            var shape = subject.CreateShape();
+            var shape = subject.Build();
 
             // Assert
             shape.Tracings.Should().HaveCount(expectedCount);
@@ -189,7 +189,7 @@ namespace Hilke.KineticConvolution.Tests.Helpers
                    .CloseWith(calc.CreateConstant(0.0));
 
             // Act
-            var shape = subject.CreateShape();
+            var shape = subject.Build();
 
             // Assert
             shape.Tracings.Should().HaveCount(6);

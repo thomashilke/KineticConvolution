@@ -103,6 +103,22 @@ namespace Hilke.KineticConvolution.Helpers
             return _calculator.IsSmallerThan(GetLength(Subtract(left, right)), tolerance);
         }
 
+        public bool AreOrthogonal(Vector<TAlgebraicNumber> left,
+                                Vector<TAlgebraicNumber> right)
+        {
+            if (left is null)
+            {
+                throw new ArgumentNullException(nameof(left));
+            }
+
+            if (right is null)
+            {
+                throw new ArgumentNullException(nameof(right));
+            }
+
+            return _calculator.IsZero(GetDot(left, right));
+        }
+
         public Vector<TAlgebraicNumber> Add(Vector<TAlgebraicNumber> left, Vector<TAlgebraicNumber> right)
         {
             if (left is null)
