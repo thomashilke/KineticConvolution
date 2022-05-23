@@ -69,7 +69,8 @@ namespace Hilke.KineticConvolution.Tests.Helpers
 
             if (SaveFolder is not null)
             {
-                new SvgWriter().ExportTracingsTo(shape.Tracings, $"{SaveFolder}\\minimal_shape.svg");
+                new SvgWriter().Add(shape.Tracings)
+                               .Write($"{SaveFolder}\\minimal_shape.svg");
             }
         }
 
@@ -102,7 +103,8 @@ namespace Hilke.KineticConvolution.Tests.Helpers
 
             if (SaveFolder is not null)
             {
-                new SvgWriter().ExportTracingsTo(shape.Tracings, $"{SaveFolder}\\square_{side}_{radius}.svg");
+                new SvgWriter().Add(shape.Tracings)
+                               .Write($"{SaveFolder}\\square_{side}_{radius}.svg");
             }
         }
 
@@ -133,7 +135,8 @@ namespace Hilke.KineticConvolution.Tests.Helpers
 
             if (SaveFolder is not null)
             {
-                new SvgWriter().ExportTracingsTo(shape.Tracings, $"{SaveFolder}\\triangle_{side}_{radius}.svg");
+                new SvgWriter().Add(shape.Tracings)
+                               .Write($"{SaveFolder}\\triangle_{side}_{radius}.svg");
             }
         }
 
@@ -166,7 +169,8 @@ namespace Hilke.KineticConvolution.Tests.Helpers
 
             if (SaveFolder is not null)
             {
-                new SvgWriter().ExportTracingsTo(shape.Tracings, $"{SaveFolder}\\lshape_{side}_{radius}.svg");
+                new SvgWriter().Add(shape.Tracings)
+                               .Write($"{SaveFolder}\\lshape_{side}_{radius}.svg");
             }
         }
 
@@ -196,7 +200,8 @@ namespace Hilke.KineticConvolution.Tests.Helpers
 
             if (SaveFolder is not null)
             {
-                new SvgWriter().ExportTracingsTo(shape.Tracings, $"{SaveFolder}\\flat_{side}.svg");
+                new SvgWriter().Add(shape.Tracings)
+                               .Write($"{SaveFolder}\\flat_{side}.svg");
             }
         }
     }

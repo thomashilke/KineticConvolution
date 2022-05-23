@@ -1,12 +1,13 @@
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
 
 using Hilke.KineticConvolution.DoubleAlgebraicNumber;
 
-namespace Hilke.KineticConvolution.Tests.Helpers
+namespace Hilke.KineticConvolution.Helpers
 {
     public class SvgWriter
     {
@@ -16,6 +17,7 @@ namespace Hilke.KineticConvolution.Tests.Helpers
 
         private readonly ConvolutionFactory<double> _factory;
         private readonly double _minimumArcRadius, _lineWidth, _svgScaling;
+        private readonly List<(IReadOnlyList<Tracing<double>> Tracings, string Name)> _manyTracings;
 
         public SvgWriter(
             double minimumArcRadius = DefaultMinimumArcRadius,
@@ -26,51 +28,48 @@ namespace Hilke.KineticConvolution.Tests.Helpers
             _minimumArcRadius = minimumArcRadius;
             _lineWidth = lineWidth;
             _svgScaling = svgScaling;
+            _manyTracings = new List<(IReadOnlyList<Tracing<double>> Tracings, string Name)>();
         }
 
-        public void ExportTracingsTo(IEnumerable<Tracing<double>> tracings, string filename) =>
-            ExportManyTracingsTo(
-                new (IReadOnlyList<Tracing<double>>, string)[] { (tracings.ToList(), "a_tracing") },
-                filename);
-
-        public void ExportManyTracingsTo(
-            IEnumerable<IReadOnlyList<Tracing<double>>> manyTracings,
-            string filename) =>
-            ExportManyTracingsTo(manyTracings.Select((tracings, index) => (tracings, $"tracing {index}")), filename);
-
-        public void ExportManyTracingsTo(
-            IEnumerable<(IReadOnlyList<Tracing<double>> Tracings, string Name)> manyNamedTracings,
-            string filename)
+        public SvgWriter Add(IEnumerable<Tracing<double>> tracings, string name = "tracing")
         {
-            var enumerated = manyNamedTracings.ToList();
+            if (tracings is null)
+            {
+                throw new ArgumentNullException(nameof(tracings));
+            }
+
+            if (name is null)
+            {
+                throw new ArgumentNullException(nameof(name));
+            }
+
+            _manyTracings.Add((PrepareForSvg(tracings), name));
+
+            return this;
+        }
+
+        public string BuildSvgContent()
+        {
             var coloredTracings =
-                enumerated.Zip(
-                              GenerateColors(enumerated.Count),
-                              (namedTracings, Color) =>
-                                  (Tracings: PrepareForSvg(namedTracings.Tracings),
-                                   namedTracings.Name, Color))
-                          .ToList();
+                _manyTracings.Zip(
+                                 GenerateColors(_manyTracings.Count),
+                                 (namedTracings, Color) =>
+                                     (namedTracings.Tracings, namedTracings.Name, Color))
+                             .ToList();
 
-            File.WriteAllText(filename, BuildManyTracingsSvgDocument(coloredTracings));
+            return BuildManyTracingsSvgDocument(coloredTracings);
         }
 
-        public static void ExportSumTo(
-            Shape<double> shapeA,
-            Shape<double> shapeB,
-            IEnumerable<Tracing<double>> convolvedTracings,
-            string filename)
+        public void Write(string filename)
         {
-            var pathA = BuildSvgPath(shapeA.Tracings, buildContinuous: true, addNewLines: false);
-            var pathB = BuildSvgPath(shapeB.Tracings, buildContinuous: true, addNewLines: false);
-            var pathSum = BuildSvgPath(convolvedTracings, buildContinuous: true, addNewLines: false);
+            if (string.IsNullOrWhiteSpace(filename))
+            {
+                throw new ArgumentException("Invalid filename.", nameof(filename));
+            }
 
-            File.WriteAllText($"{withoutExtension(filename)}.html", BuildHtmlDocument(pathA, pathB, pathSum));
-            File.WriteAllText($"{withoutExtension(filename)}.svg", BuildSvgDocument(pathA, pathB, pathSum));
-
-            static string withoutExtension(string fn) =>
-                $"{Path.GetDirectoryName(fn)}{Path.DirectorySeparatorChar}{Path.GetFileNameWithoutExtension(fn)}";
+            File.WriteAllText(filename, BuildSvgContent());
         }
-
+        
         private string BuildManyTracingsSvgDocument(
             IEnumerable<(IReadOnlyList<Tracing<double>> Tracings, string Name, string Color)> namedTracings)
         {
@@ -141,66 +140,7 @@ namespace Hilke.KineticConvolution.Tests.Helpers
 
         private static string EmitPathSegment(Segment<double> segment) =>
             $"L {segment.End.X} {segment.End.Y}";
-
-        private static string BuildHtmlDocument(string pathA, string pathB, string pathSum)
-        {
-            return @"<!DOCTYPE html>
-<html>
-  <head>
-    <style>
-      svg { display: block;  position: absolute; }
-
-      #wheel {
-          background-color: red;
-          offset-path: path('"
-                 + pathSum
-                 + @"');
-          offset-distance: 0%;
-          offset-rotate: 180deg;
-          animation: red-ball 20s linear normal infinite;
-      }
-
-      @keyframes red-ball {
-          from { offset-distance: 0%; }
-          to { offset-distance: 100%; }
-      }
-    </style>
-  </head>
-  <body>
-    <svg id=""map-svg"" width=""200px"" height=""200px"" viewBox=""-5 -5 10 10"">
-      <g id = ""matrix-group"" transform=""matrix(1.2 0 0 -1.2 0 0)"">
-        <path fill = ""transparent"" stroke=""#bbbbbb"" stroke-width=""0.1"" d="""
-                 + pathSum
-                 + @" z"" id=""minkowski-sum""></path>
-        <path fill = ""#55555555"" stroke=""#555555"" stroke-width=""0.1"" d="""
-                 + pathA
-                 + @" z"" id=""profile""></path>
-        <path fill = ""#55aa0055"" stroke=""#555555"" stroke-width=""0.1"" d="""
-                 + pathB
-                 + @" z"" id=""wheel""></path>
-      </g>
-    </svg>
-  </body>
-</html>
-";
-        }
-
-        private static string BuildSvgDocument(string pathA, string pathB, string pathSum)
-        {
-            return @"<?xml version=""1.0"" encoding=""UTF-8"" standalone =""yes""?>
-<svg id=""map-svg"" width=""800px"" height=""800px"" viewBox=""-100 -100 200 200"">
-    <path fill-opacity=""0.0"" stroke=""#800080"" stroke-width=""0.02"" d="""
-                 + pathSum
-                 + @" z"" id=""minkowski-sum""></path>
-    <path fill-opacity=""0.0"" stroke=""#0000FF"" stroke-width=""0.02"" d="""
-                 + pathA
-                 + @" z"" id=""profile""></path>
-    <path fill-opacity=""0.0"" stroke=""#FF0000"" stroke-width=""0.02"" d="""
-                 + pathB
-                 + @" z"" id=""wheel""></path>
-</svg>
-";
-        }
+        
 
         private static readonly Dictionary<string, string> Colors = new()
         {
@@ -216,12 +156,11 @@ namespace Hilke.KineticConvolution.Tests.Helpers
             Colors.Values.Concat(Enumerable.Repeat("#000000", Math.Max(0, count - Colors.Count))).ToArray();
 
         private IReadOnlyList<Tracing<double>> PrepareForSvg(IEnumerable<Tracing<double>> tracings) =>
-            tracings.Select(t => EnsureMinimalRadiusForArc(t))
-                    .Select(t => DivideCircle(t))
+            tracings.Select(EnsureMinimalRadiusForArc)
+                    .Select(DivideCircle)
                     .SelectMany(ts => ts)
                     .ToList();
 
-        // zero radius arcs do not work (the whole path is ignored)
         private Tracing<double> EnsureMinimalRadiusForArc(Tracing<double> tracing) =>
             tracing switch
             {
@@ -232,7 +171,7 @@ namespace Hilke.KineticConvolution.Tests.Helpers
                 _ => tracing
             };
 
-        // full circle arcs do not work (path is ignored)
+        // full circle arcs are not allowed in svg path 
         private Tracing<double>[] DivideCircle(Tracing<double> tracing) =>
             tracing switch
             {
