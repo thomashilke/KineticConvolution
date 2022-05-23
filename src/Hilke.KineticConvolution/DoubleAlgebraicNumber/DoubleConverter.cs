@@ -1,20 +1,30 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
 {
     public class DoubleConverter<TAlgebraicNumber>
     {
-        public DoubleConverter(IConvolutionFactory<TAlgebraicNumber> algebraicNumberFactory)
+        public DoubleConverter(IConvolutionFactory<TAlgebraicNumber> algebraicNumberConvolutionFactory, InvalidityManagementMode mode)
         {
             AlgebraicNumberFactory =
-                algebraicNumberFactory ?? throw new ArgumentNullException(nameof(algebraicNumberFactory));
+                algebraicNumberConvolutionFactory ?? throw new ArgumentNullException(nameof(algebraicNumberConvolutionFactory));
             DoubleFactory = new ConvolutionFactory();
+
+            if (!Enum.IsDefined(typeof(InvalidityManagementMode), mode))
+            {
+                throw new InvalidEnumArgumentException(nameof(mode), (int)mode, typeof(InvalidityManagementMode));
+            }
+
+            Mode = mode;
         }
 
         public IConvolutionFactory<double> DoubleFactory { get; }
 
         public IConvolutionFactory<TAlgebraicNumber> AlgebraicNumberFactory { get; }
+
+        public InvalidityManagementMode Mode { get; }
 
         public TAlgebraicNumber FromDouble(double number) =>
             AlgebraicNumberFactory.AlgebraicNumberCalculator.CreateConstant(number);
@@ -22,7 +32,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
         public double ToDouble(TAlgebraicNumber number) =>
             AlgebraicNumberFactory.AlgebraicNumberCalculator.ToDouble(number);
 
-        public Point<TAlgebraicNumber> FromDouble(Point<double> point)
+        public virtual Point<TAlgebraicNumber> FromDouble(Point<double> point)
         {
             if (point is null)
             {
@@ -32,7 +42,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
             return AlgebraicNumberFactory.CreatePoint(FromDouble(point.X), FromDouble(point.Y));
         }
 
-        public Point<double> ToDouble(Point<TAlgebraicNumber> point)
+        public virtual Point<double> ToDouble(Point<TAlgebraicNumber> point)
         {
             if (point is null)
             {
@@ -42,7 +52,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
             return DoubleFactory.CreatePoint(ToDouble(point.X), ToDouble(point.Y));
         }
 
-        public Direction<TAlgebraicNumber> FromDouble(Direction<double> direction)
+        public virtual Direction<TAlgebraicNumber> FromDouble(Direction<double> direction)
         {
             if (direction is null)
             {
@@ -52,7 +62,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
             return AlgebraicNumberFactory.CreateDirection(FromDouble(direction.X), FromDouble(direction.Y));
         }
 
-        public Direction<double> ToDouble(Direction<TAlgebraicNumber> direction)
+        public virtual Direction<double> ToDouble(Direction<TAlgebraicNumber> direction)
         {
             if (direction is null)
             {
@@ -62,7 +72,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
             return DoubleFactory.CreateDirection(ToDouble(direction.X), ToDouble(direction.Y));
         }
 
-        public DirectionRange<TAlgebraicNumber> FromDouble(DirectionRange<double> range)
+        public virtual DirectionRange<TAlgebraicNumber> FromDouble(DirectionRange<double> range)
         {
             if (range is null)
             {
@@ -75,7 +85,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                 range.Orientation);
         }
 
-        public DirectionRange<double>? TryToDouble(DirectionRange<TAlgebraicNumber> range)
+        public virtual DirectionRange<double>? ToDouble(DirectionRange<TAlgebraicNumber> range)
         {
             if (range is null)
             {
@@ -95,19 +105,35 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                 if (range.Start.CompareTo(range.End, referenceDirection) == DirectionOrder.Before)
                 {
                     return range.Orientation == Orientation.CounterClockwise
-                           ? null
-                           : DoubleFactory.CreateDirectionRange(start, end, range.Orientation);
+                               ? Mode switch
+                               {
+                                   InvalidityManagementMode.Silent => null,
+                                   InvalidityManagementMode.ThrowException =>
+                                       throw new InvalidOperationException(
+                                           "The range collapsed to a single direction during conversion to double."),
+                                   _ => throw new NotSupportedException(
+                                            $"Only Silent and ThrowException mode are supported but got {Mode.GetType()}.")
+                               }
+                               : DoubleFactory.CreateDirectionRange(start, end, range.Orientation);
                 }
                 else
                 {
                     return range.Orientation == Orientation.CounterClockwise
                                ? DoubleFactory.CreateDirectionRange(start, end, range.Orientation)
-                               : null;
+                               : Mode switch
+                               {
+                                   InvalidityManagementMode.Silent => null,
+                                   InvalidityManagementMode.ThrowException =>
+                                       throw new InvalidOperationException(
+                                           "The range collapsed to a single direction during conversion to double."),
+                                   _ => throw new NotSupportedException(
+                                            $"Only Silent and ThrowException mode are supported but got {Mode.GetType()}.")
+                               };
                 }
             }
         }
 
-        public Segment<TAlgebraicNumber> FromDouble(Segment<double> segment)
+        public virtual Segment<TAlgebraicNumber> FromDouble(Segment<double> segment)
         {
             if (segment is null)
             {
@@ -120,7 +146,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                 segment.Weight);
         }
 
-        public Segment<double>? TryToDouble(Segment<TAlgebraicNumber> segment)
+        public virtual Segment<double>? ToDouble(Segment<TAlgebraicNumber> segment)
         {
             if (segment is null)
             {
@@ -131,11 +157,19 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
             var end = ToDouble(segment.End);
 
             return start == end
-                       ? null
+                       ? Mode switch
+                       {
+                           InvalidityManagementMode.Silent => null,
+                           InvalidityManagementMode.ThrowException =>
+                               throw new InvalidOperationException(
+                                   "The segment collapsed to a single point during conversion to double."),
+                           _ => throw new NotSupportedException(
+                                    $"Only Silent and ThrowException mode are supported but got {Mode.GetType()}.")
+                       }
                        : DoubleFactory.CreateSegment(start, end, segment.Weight);
         }
 
-        public Arc<TAlgebraicNumber> FromDouble(Arc<double> arc)
+        public virtual Arc<TAlgebraicNumber> FromDouble(Arc<double> arc)
         {
             if (arc is null)
             {
@@ -149,14 +183,14 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                 arc.Weight);
         }
 
-        public Arc<double>? TryToDouble(Arc<TAlgebraicNumber> arc)
+        public virtual Arc<double>? ToDouble(Arc<TAlgebraicNumber> arc)
         {
             if (arc is null)
             {
                 throw new ArgumentNullException(nameof(arc));
             }
 
-            var directions = TryToDouble(arc.Directions);
+            var directions = ToDouble(arc.Directions);
 
             return directions is null
                        ? null
@@ -167,7 +201,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                            arc.Weight);
         }
 
-        public Tracing<TAlgebraicNumber> FromDouble(Tracing<double> tracing)
+        public virtual Tracing<TAlgebraicNumber> FromDouble(Tracing<double> tracing)
         {
             if (tracing is null)
             {
@@ -183,7 +217,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
             };
         }
 
-        public Tracing<double>? TryToDouble(Tracing<TAlgebraicNumber> tracing)
+        public virtual Tracing<double>? ToDouble(Tracing<TAlgebraicNumber> tracing)
         {
             if (tracing is null)
             {
@@ -192,14 +226,14 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
 
             return tracing switch
             {
-                Arc<TAlgebraicNumber> arc => TryToDouble(arc),
-                Segment<TAlgebraicNumber> segment => TryToDouble(segment),
+                Arc<TAlgebraicNumber> arc => ToDouble(arc),
+                Segment<TAlgebraicNumber> segment => ToDouble(segment),
                 _ => throw new NotSupportedException(
                          $"Only segments and arcs are supported but got '{tracing.GetType()}'.")
             };
         }
 
-        public Shape<TAlgebraicNumber> FromDouble(Shape<double> shape)
+        public virtual Shape<TAlgebraicNumber> FromDouble(Shape<double> shape)
         {
             if (shape is null)
             {
@@ -209,14 +243,14 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
             return AlgebraicNumberFactory.CreateShape(shape.Tracings.Select(t => FromDouble(t)));
         }
 
-        public Shape<double>? ToDouble(Shape<TAlgebraicNumber> shape)
+        public virtual Shape<double>? ToDouble(Shape<TAlgebraicNumber> shape)
         {
             if (shape is null)
             {
                 throw new ArgumentNullException(nameof(shape));
             }
 
-            var tracings = shape.Tracings.Select(t => TryToDouble(t))
+            var tracings = shape.Tracings.Select(t => ToDouble(t))
                                 .Where(t => !(t is null))
                                 .Cast<Tracing<double>>()
                                 .ToList();
