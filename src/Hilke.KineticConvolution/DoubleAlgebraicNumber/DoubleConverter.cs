@@ -119,7 +119,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                                throw new InvalidOperationException(
                                    "The range collapsed to a single direction during conversion to double."),
                            _ => throw new NotSupportedException(
-                                    $"Only Silent and ThrowException mode are supported but got {Mode.GetType()}.")
+                                    $"Only Silent and ThrowException modes are supported but got {Mode.GetType()}.")
                        };
             }
         }
@@ -155,7 +155,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                                throw new InvalidOperationException(
                                    "The segment collapsed to a single point during conversion to double."),
                            _ => throw new NotSupportedException(
-                                    $"Only Silent and ThrowException mode are supported but got {Mode.GetType()}.")
+                                    $"Only Silent and ThrowException modes are supported but got {Mode.GetType()}.")
                        }
                        : DoubleFactory.CreateSegment(start, end, segment.Weight);
         }
