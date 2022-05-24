@@ -37,7 +37,7 @@ namespace Hilke.KineticConvolution
         public bool IsContinuousWith(Tracing<TAlgebraicNumber> next) =>
             End == next.Start;
 
-        public bool IsTangentContinuousWith(Tracing<TAlgebraicNumber> next) =>
+        public bool TangentIsContinuousWith(Tracing<TAlgebraicNumber> next) =>
             EndTangentDirection.Normalize() == next.StartTangentDirection.Normalize();
     }
 }

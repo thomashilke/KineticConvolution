@@ -18,9 +18,9 @@
 
         TAlgebraicNumber SquareRoot(TAlgebraicNumber number);
 
-        TAlgebraicNumber CreateConstant(int value);
+        TAlgebraicNumber FromInt(int value);
 
-        TAlgebraicNumber CreateConstant(double value);
+        TAlgebraicNumber FromDouble(double value);
 
         double ToDouble(TAlgebraicNumber number);
     }

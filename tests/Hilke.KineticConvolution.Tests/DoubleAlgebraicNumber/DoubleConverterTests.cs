@@ -21,7 +21,7 @@ namespace Hilke.KineticConvolution.Tests.DoubleAlgebraicNumber
         public void Given_valid_parameters_When_calling_constructor_Then_does_not_throw_exception()
         {
             // Arrange
-            Action action = () => _ = new DoubleConverter<double>(DoubleFactory, InvalidityManagementMode.Silent);
+            Action action = () => _ = new DoubleConverter<double>(DoubleFactory);
 
             // Assert
             action.Should().NotThrow();
@@ -31,7 +31,7 @@ namespace Hilke.KineticConvolution.Tests.DoubleAlgebraicNumber
         public void Given_valid_parameters_When_calling_constructor_Then_create_a_valid_instance()
         {
             // Act
-            var subject = new DoubleConverter<double>(DoubleFactory, InvalidityManagementMode.Silent);
+            var subject = new DoubleConverter<double>(DoubleFactory);
 
             // Assert
             subject.Should().NotBeNull().And.BeAssignableTo<DoubleConverter<double>>();
@@ -43,20 +43,20 @@ namespace Hilke.KineticConvolution.Tests.DoubleAlgebraicNumber
             // Arrange
             Action action1 = () => _ = new DoubleConverter<double>(
                                        algebraicNumberConvolutionFactory: null,
-                                       mode: InvalidityManagementMode.Silent);
+                                       policy: InvalidConversionPolicy.IgnoreSilently);
 
-            Action action2 = () => _ = new DoubleConverter<double>(DoubleFactory, mode: (InvalidityManagementMode)10);
+            Action action2 = () => _ = new DoubleConverter<double>(DoubleFactory, policy: (InvalidConversionPolicy)10);
 
             // Assert
             action1.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("algebraicNumberConvolutionFactory");
-            action2.Should().ThrowExactly<InvalidEnumArgumentException>().And.ParamName.Should().Be("mode");
+            action2.Should().ThrowExactly<InvalidEnumArgumentException>().And.ParamName.Should().Be("policy");
         }
 
         [Test]
         public void Given_a_number_When_calling_FromDouble_and_ToDouble_Then_convert_as_expected()
         {
             // Arrange
-            var subject = new DoubleConverter<double>(DoubleFactory, InvalidityManagementMode.Silent);
+            var subject = new DoubleConverter<double>(DoubleFactory);
             var number = 1.4;
 
             // Act
@@ -71,7 +71,7 @@ namespace Hilke.KineticConvolution.Tests.DoubleAlgebraicNumber
         public void Given_a_Point_When_calling_FromDouble_and_ToDouble_Then_convert_as_expected()
         {
             // Arrange
-            var subject = new DoubleConverter<double>(DoubleFactory, InvalidityManagementMode.Silent);
+            var subject = new DoubleConverter<double>(DoubleFactory);
             var point = DoubleFactory.CreatePoint(1.0, 1.3);
 
             // Act
@@ -87,7 +87,7 @@ namespace Hilke.KineticConvolution.Tests.DoubleAlgebraicNumber
         public void Given_a_Direction_When_calling_FromDouble_and_ToDouble_Then_convert_as_expected()
         {
             // Arrange
-            var subject = new DoubleConverter<double>(DoubleFactory, InvalidityManagementMode.Silent);
+            var subject = new DoubleConverter<double>(DoubleFactory);
             var direction = DoubleFactory.CreateDirection(1.0, 1.3);
 
             // Act
@@ -102,7 +102,7 @@ namespace Hilke.KineticConvolution.Tests.DoubleAlgebraicNumber
         public void Given_a_DirectionRange_When_calling_FromDouble_and_ToDouble_Then_convert_as_expected()
         {
             // Arrange
-            var subject = new DoubleConverter<double>(DoubleFactory, InvalidityManagementMode.Silent);
+            var subject = new DoubleConverter<double>(DoubleFactory);
             var range = DoubleFactory.CreateDirectionRange(
                 DoubleFactory.CreateDirection(1.0, 1.3),
                 DoubleFactory.CreateDirection(2.0, 2.3),
@@ -120,7 +120,7 @@ namespace Hilke.KineticConvolution.Tests.DoubleAlgebraicNumber
         public void Given_a_segment_When_calling_FromDouble_and_ToDouble_Then_convert_as_expected()
         {
             // Arrange
-            var subject = new DoubleConverter<double>(DoubleFactory, InvalidityManagementMode.Silent);
+            var subject = new DoubleConverter<double>(DoubleFactory);
             var segment = DoubleFactory.CreateSegment(
                 DoubleFactory.CreatePoint(1.0, 1.3),
                 DoubleFactory.CreatePoint(2.0, 2.3),
@@ -138,7 +138,7 @@ namespace Hilke.KineticConvolution.Tests.DoubleAlgebraicNumber
         public void Given_an_arc_When_calling_FromDouble_and_ToDouble_Then_convert_as_expected()
         {
             // Arrange
-            var subject = new DoubleConverter<double>(DoubleFactory, InvalidityManagementMode.Silent);
+            var subject = new DoubleConverter<double>(DoubleFactory);
             var range = DoubleFactory.CreateDirectionRange(
                 DoubleFactory.CreateDirection(1.0, 1.3),
                 DoubleFactory.CreateDirection(2.0, 2.3),
@@ -162,7 +162,7 @@ namespace Hilke.KineticConvolution.Tests.DoubleAlgebraicNumber
         public void Given_a_shape_When_calling_FromDouble_and_ToDouble_Then_convert_as_expected()
         {
             // Arrange
-            var subject = new DoubleConverter<double>(DoubleFactory, InvalidityManagementMode.Silent);
+            var subject = new DoubleConverter<double>(DoubleFactory);
             var point1 = DoubleFactory.CreatePoint(1.0, 1.3);
             var point2 = DoubleFactory.CreatePoint(2.0, 2.3);
             var segment12 = DoubleFactory.CreateSegment(point1, point2, Fraction.One);

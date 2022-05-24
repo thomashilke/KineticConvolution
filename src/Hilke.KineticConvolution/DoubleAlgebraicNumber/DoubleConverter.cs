@@ -6,28 +6,31 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
 {
     public class DoubleConverter<TAlgebraicNumber>
     {
-        public DoubleConverter(IConvolutionFactory<TAlgebraicNumber> algebraicNumberConvolutionFactory, InvalidityManagementMode mode)
+        public DoubleConverter(
+            IConvolutionFactory<TAlgebraicNumber> algebraicNumberConvolutionFactory,
+            InvalidConversionPolicy policy = InvalidConversionPolicy.Throw)
         {
             AlgebraicNumberFactory =
-                algebraicNumberConvolutionFactory ?? throw new ArgumentNullException(nameof(algebraicNumberConvolutionFactory));
+                algebraicNumberConvolutionFactory
+             ?? throw new ArgumentNullException(nameof(algebraicNumberConvolutionFactory));
             DoubleFactory = new ConvolutionFactory();
 
-            if (!Enum.IsDefined(typeof(InvalidityManagementMode), mode))
+            if (!Enum.IsDefined(typeof(InvalidConversionPolicy), policy))
             {
-                throw new InvalidEnumArgumentException(nameof(mode), (int)mode, typeof(InvalidityManagementMode));
+                throw new InvalidEnumArgumentException(nameof(policy), (int)policy, typeof(InvalidConversionPolicy));
             }
 
-            Mode = mode;
+            Policy = policy;
         }
 
         public IConvolutionFactory<double> DoubleFactory { get; }
 
         public IConvolutionFactory<TAlgebraicNumber> AlgebraicNumberFactory { get; }
 
-        public InvalidityManagementMode Mode { get; }
+        public InvalidConversionPolicy Policy { get; }
 
         public TAlgebraicNumber FromDouble(double number) =>
-            AlgebraicNumberFactory.AlgebraicNumberCalculator.CreateConstant(number);
+            AlgebraicNumberFactory.AlgebraicNumberCalculator.FromDouble(number);
 
         public double ToDouble(TAlgebraicNumber number) =>
             AlgebraicNumberFactory.AlgebraicNumberCalculator.ToDouble(number);
@@ -94,34 +97,28 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
 
             var start = ToDouble(range.Start);
             var end = ToDouble(range.End);
-            
-            return range.Start != range.End && start == end
-                       ? resolveLimitCase()
-                       : DoubleFactory.CreateDirectionRange(start, end, range.Orientation);
 
-            DirectionRange<double>? resolveLimitCase()
+            if (start != end || range.Start == range.End)
             {
-                var referenceDirection = range.Start.Opposite();
+                return DoubleFactory.CreateDirectionRange(start, end, range.Orientation);
+            }
 
-                var result = range.Start.CompareTo(range.End, referenceDirection) == DirectionOrder.Before
-                                 ? range.Orientation == Orientation.CounterClockwise
-                                       ? null
-                                       : DoubleFactory.CreateDirectionRange(start, end, range.Orientation)
-                                 : range.Orientation == Orientation.CounterClockwise
-                                     ? DoubleFactory.CreateDirectionRange(start, end, range.Orientation)
-                                     : null;
+            var isAlmostOmniRange =
+                range.Orientation == Orientation.CounterClockwise
+                    ? range.Start.CompareTo(range.End, range.Start.Opposite()) == DirectionOrder.After
+                    : range.Start.CompareTo(range.End, range.Start.Opposite()) == DirectionOrder.Before;
 
-                return result
-                    ?? Mode switch
+            return isAlmostOmniRange
+                       ? DoubleFactory.CreateDirectionRange(start, end, range.Orientation)
+                       : Policy switch
                        {
-                           InvalidityManagementMode.Silent => null,
-                           InvalidityManagementMode.ThrowException =>
+                           InvalidConversionPolicy.Throw =>
                                throw new InvalidOperationException(
                                    "The range collapsed to a single direction during conversion to double."),
+                           InvalidConversionPolicy.IgnoreSilently => null,
                            _ => throw new NotSupportedException(
-                                    $"Only Silent and ThrowException modes are supported but got {Mode.GetType()}.")
+                                    $"Only Silent and ThrowException modes are supported but got {Policy.GetType()}.")
                        };
-            }
         }
 
         public virtual Segment<TAlgebraicNumber> FromDouble(Segment<double> segment)
@@ -147,17 +144,20 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
             var start = ToDouble(segment.Start);
             var end = ToDouble(segment.End);
 
-            return start == end
-                       ? Mode switch
-                       {
-                           InvalidityManagementMode.Silent => null,
-                           InvalidityManagementMode.ThrowException =>
-                               throw new InvalidOperationException(
-                                   "The segment collapsed to a single point during conversion to double."),
-                           _ => throw new NotSupportedException(
-                                    $"Only Silent and ThrowException modes are supported but got {Mode.GetType()}.")
-                       }
-                       : DoubleFactory.CreateSegment(start, end, segment.Weight);
+            if (start != end)
+            {
+                return DoubleFactory.CreateSegment(start, end, segment.Weight);
+            }
+
+            return Policy switch
+            {
+                InvalidConversionPolicy.Throw =>
+                    throw new InvalidOperationException(
+                        "The segment collapsed to a single point during conversion to double."),
+                InvalidConversionPolicy.IgnoreSilently => null,
+                _ => throw new NotSupportedException(
+                         $"Only Silent and ThrowException modes are supported but got {Policy.GetType()}.")
+            };
         }
 
         public virtual Arc<TAlgebraicNumber> FromDouble(Arc<double> arc)

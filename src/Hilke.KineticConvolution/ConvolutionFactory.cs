@@ -4,6 +4,8 @@ using System.Linq;
 
 using Fractions;
 
+using Hilke.KineticConvolution.Extensions;
+
 namespace Hilke.KineticConvolution
 {
     public class ConvolutionFactory<TAlgebraicNumber> : IConvolutionFactory<TAlgebraicNumber>
@@ -13,9 +15,9 @@ namespace Hilke.KineticConvolution
             AlgebraicNumberCalculator = algebraicNumberCalculator
                                      ?? throw new ArgumentNullException(nameof(algebraicNumberCalculator));
 
-            Zero = algebraicNumberCalculator.CreateConstant(0);
+            Zero = algebraicNumberCalculator.FromInt(0);
 
-            One = algebraicNumberCalculator.CreateConstant(1);
+            One = algebraicNumberCalculator.FromInt(1);
         }
 
         public IAlgebraicNumberCalculator<TAlgebraicNumber> AlgebraicNumberCalculator { get; }
@@ -157,19 +159,19 @@ namespace Hilke.KineticConvolution
                 throw new ArgumentException("There should be at least one tracing.", nameof(tracings));
             }
 
-            if (!verifyConditionOnConsecutive(tracingsEnumerated, continuityCondition, out var indicesWhereNotContinuous))
+            if (!verifyConditionOnConsecutive(tracingsEnumerated, continuityCondition, out var discontinuityLocations))
             {
                 throw new ArgumentException(
-                    $"The tracings must be continuous. Discontinuity detected at indices "
-                  + $"{string.Join(", ", indicesWhereNotContinuous.Select(index => $"{index} -> {nextIndex(index)}"))}",
+                    $"The tracings must be continuous. Discontinuity detected between tracings "
+                  + $"{string.Join(", ", discontinuityLocations.Select(index => $"{index} -> {nextIndex(index)}"))}",
                     nameof(tracings));
             }
 
-            if (!verifyConditionOnConsecutive(tracingsEnumerated, tangentContinuityCondition, out var indicesWhereTangentNotContinuous))
+            if (!verifyConditionOnConsecutive(tracingsEnumerated, tangentContinuityCondition, out var tangentDiscontinuityLocations))
             {
                 throw new ArgumentException(
-                    $"The tracings tangents must be continuous. Tangents discontinuity detected at indices "
-                  + $"{string.Join(", ", indicesWhereTangentNotContinuous.Select(index => $"{index} -> {nextIndex(index)}"))}",
+                    $"The tracings tangents must be continuous. Tangents discontinuity detected between tracings "
+                  + $"{string.Join(", ", tangentDiscontinuityLocations.Select(index => $"{index} -> {nextIndex(index)}"))}",
                     nameof(tracings));
             }
 
@@ -179,15 +181,13 @@ namespace Hilke.KineticConvolution
                 current.IsContinuousWith(next);
 
             static bool tangentContinuityCondition(Tracing<TAlgebraicNumber> current, Tracing<TAlgebraicNumber> next) =>
-                current.IsTangentContinuousWith(next);
+                current.TangentIsContinuousWith(next);
 
             static bool verifyConditionOnConsecutive(IReadOnlyList<Tracing<TAlgebraicNumber>> tracings,
                                     Func<Tracing<TAlgebraicNumber>, Tracing<TAlgebraicNumber>, bool> condition,
                                      out IReadOnlyList<int> indicesWhereConditionFails)
             {
-                indicesWhereConditionFails = tracings.Zip(
-                                                         tracings.Skip(1).Append(tracings.First()),
-                                                         (current, next) => condition(current, next))
+                indicesWhereConditionFails = tracings.CyclicPairwise(condition)
                                                      .Select((satisfiesCondition, index) => (satisfiesCondition, index))
                                                      .Where(e => !e.satisfiesCondition)
                                                      .Select(e => e.index)

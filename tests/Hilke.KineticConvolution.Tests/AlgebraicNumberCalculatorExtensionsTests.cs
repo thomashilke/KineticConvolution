@@ -250,8 +250,8 @@ namespace Hilke.KineticConvolution.Tests
             double doubleNumber1, double doubleNumber2)
         {
             // Arrange
-            var number1 = _calculator.CreateConstant(doubleNumber1);
-            var number2 = _calculator.CreateConstant(doubleNumber2);
+            var number1 = _calculator.FromDouble(doubleNumber1);
+            var number2 = _calculator.FromDouble(doubleNumber2);
 
             // Act
             var comparison = _calculator.IsSmallerThan(number1, number2);
@@ -266,8 +266,8 @@ namespace Hilke.KineticConvolution.Tests
             double doubleNumber1, double doubleNumber2)
         {
             // Arrange
-            var number1 = _calculator.CreateConstant(doubleNumber1);
-            var number2 = _calculator.CreateConstant(doubleNumber2);
+            var number1 = _calculator.FromDouble(doubleNumber1);
+            var number2 = _calculator.FromDouble(doubleNumber2);
 
             // Act
             var comparison = _calculator.IsSmallerThan(number1, number2);
@@ -284,8 +284,8 @@ namespace Hilke.KineticConvolution.Tests
             double doubleNumber1, double doubleNumber2)
         {
             // Arrange
-            var number1 = _calculator.CreateConstant(doubleNumber1);
-            var number2 = _calculator.CreateConstant(doubleNumber2);
+            var number1 = _calculator.FromDouble(doubleNumber1);
+            var number2 = _calculator.FromDouble(doubleNumber2);
 
             // Act
             var comparison = _calculator.IsGreaterThan(number1, number2);
@@ -300,8 +300,8 @@ namespace Hilke.KineticConvolution.Tests
             double doubleNumber1, double doubleNumber2)
         {
             // Arrange
-            var number1 = _calculator.CreateConstant(doubleNumber1);
-            var number2 = _calculator.CreateConstant(doubleNumber2);
+            var number1 = _calculator.FromDouble(doubleNumber1);
+            var number2 = _calculator.FromDouble(doubleNumber2);
 
             // Act
             var comparison = _calculator.IsGreaterThan(number1, number2);
@@ -317,8 +317,8 @@ namespace Hilke.KineticConvolution.Tests
             double doubleNumber1, double doubleNumber2)
         {
             // Arrange
-            var number1 = _calculator.CreateConstant(doubleNumber1);
-            var number2 = _calculator.CreateConstant(doubleNumber2);
+            var number1 = _calculator.FromDouble(doubleNumber1);
+            var number2 = _calculator.FromDouble(doubleNumber2);
 
             // Act
             var comparison = _calculator.IsStrictlyGreaterThan(number1, number2);
@@ -334,8 +334,8 @@ namespace Hilke.KineticConvolution.Tests
             double doubleNumber1, double doubleNumber2)
         {
             // Arrange
-            var number1 = _calculator.CreateConstant(doubleNumber1);
-            var number2 = _calculator.CreateConstant(doubleNumber2);
+            var number1 = _calculator.FromDouble(doubleNumber1);
+            var number2 = _calculator.FromDouble(doubleNumber2);
 
             // Act
             var comparison = _calculator.IsStrictlyGreaterThan(number1, number2);
@@ -351,8 +351,8 @@ namespace Hilke.KineticConvolution.Tests
             double doubleNumber1, double doubleNumber2)
         {
             // Arrange
-            var number1 = _calculator.CreateConstant(doubleNumber1);
-            var number2 = _calculator.CreateConstant(doubleNumber2);
+            var number1 = _calculator.FromDouble(doubleNumber1);
+            var number2 = _calculator.FromDouble(doubleNumber2);
 
             // Act
             var comparison = _calculator.IsStrictlySmallerThan(number1, number2);
@@ -368,8 +368,8 @@ namespace Hilke.KineticConvolution.Tests
             double doubleNumber1, double doubleNumber2)
         {
             // Arrange
-            var number1 = _calculator.CreateConstant(doubleNumber1);
-            var number2 = _calculator.CreateConstant(doubleNumber2);
+            var number1 = _calculator.FromDouble(doubleNumber1);
+            var number2 = _calculator.FromDouble(doubleNumber2);
 
             // Act
             var comparison = _calculator.IsStrictlySmallerThan(number1, number2);
@@ -385,7 +385,7 @@ namespace Hilke.KineticConvolution.Tests
         public void Number_Absolute_Value_Should_Have_Expected_Value(double doubleNumber, double expectedAbsoluteValue)
         {
             // Arrange
-            var number = _calculator.CreateConstant(doubleNumber);
+            var number = _calculator.FromDouble(doubleNumber);
 
             // Act
             var absoluteValue = _calculator.Abs(number);
@@ -403,8 +403,8 @@ namespace Hilke.KineticConvolution.Tests
             double doubleNumber1, double doubleNumber2, bool number1EqualsNumber2Expectation)
         {
             // Arrange
-            var number1 = _calculator.CreateConstant(doubleNumber1);
-            var number2 = _calculator.CreateConstant(doubleNumber2);
+            var number1 = _calculator.FromDouble(doubleNumber1);
+            var number2 = _calculator.FromDouble(doubleNumber2);
 
             // Act
             var number1EqualsNumber2 = _calculator.AreEqual(number1, number2);
@@ -425,9 +425,9 @@ namespace Hilke.KineticConvolution.Tests
             bool numberAreCloseExpectation)
         {
             // Arrange
-            var number1 = _calculator.CreateConstant(doubleNumber1);
-            var number2 = _calculator.CreateConstant(doubleNumber2);
-            var tolerance = _calculator.CreateConstant(doubleTolerance);
+            var number1 = _calculator.FromDouble(doubleNumber1);
+            var number2 = _calculator.FromDouble(doubleNumber2);
+            var tolerance = _calculator.FromDouble(doubleTolerance);
 
             // Act
             var number1IsCloseToNumber2 = _calculator.AreClose(number1, number2, tolerance);
