@@ -58,11 +58,11 @@ namespace Hilke.KineticConvolution.Helpers
 
             Arc<TAlgebraicNumber> createArcForNonAlignedPoints()
             {
-                var isAcuteAngle = _calculator.IsPositive(dotProduct);
+                var IsAngleCounterClockwise = _calculator.IsPositive(dotProduct);
 
-                var start = isAcuteAngle ? vc.ToDirection(rightNormalBefore) : vc.ToDirection(rightNormalBefore).Opposite();
-                var end = isAcuteAngle ? vc.ToDirection(rightNormalAfter) : vc.ToDirection(rightNormalAfter).Opposite();
-                var orientation = isAcuteAngle ? Orientation.CounterClockwise : Orientation.Clockwise;
+                var start = IsAngleCounterClockwise ? vc.ToDirection(rightNormalBefore) : vc.ToDirection(rightNormalBefore).Opposite();
+                var end = IsAngleCounterClockwise ? vc.ToDirection(rightNormalAfter) : vc.ToDirection(rightNormalAfter).Opposite();
+                var orientation = IsAngleCounterClockwise ? Orientation.CounterClockwise : Orientation.Clockwise;
                 var directions = _convolutionFactory.CreateDirectionRange(start, end, orientation);
 
                 var center = _calculator.IsZero(radius)
