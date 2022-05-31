@@ -117,7 +117,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                                    "The range collapsed to a single direction during conversion to double."),
                            InvalidConversionPolicy.IgnoreSilently => null,
                            _ => throw new NotSupportedException(
-                                    $"Only Silent and ThrowException modes are supported but got {Policy.GetType()}.")
+                                    $"Only Silent and ThrowException modes are supported but got {Policy}.")
                        };
         }
 
@@ -156,7 +156,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                         "The segment collapsed to a single point during conversion to double."),
                 InvalidConversionPolicy.IgnoreSilently => null,
                 _ => throw new NotSupportedException(
-                         $"Only Silent and ThrowException modes are supported but got {Policy.GetType()}.")
+                         $"Only Silent and ThrowException modes are supported but got {Policy}.")
             };
         }
 
@@ -204,7 +204,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                 Arc<double> arc => FromDouble(arc),
                 Segment<double> segment => FromDouble(segment),
                 _ => throw new NotSupportedException(
-                         $"Only segments and arcs are supported but got '{tracing.GetType()}'.")
+                         $"Only segments and arcs are supported but got '{tracing}'.")
             };
         }
 
@@ -220,7 +220,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
                 Arc<TAlgebraicNumber> arc => ToDouble(arc),
                 Segment<TAlgebraicNumber> segment => ToDouble(segment),
                 _ => throw new NotSupportedException(
-                         $"Only segments and arcs are supported but got '{tracing.GetType()}'.")
+                         $"Only segments and arcs are supported but got '{tracing}'.")
             };
         }
 
