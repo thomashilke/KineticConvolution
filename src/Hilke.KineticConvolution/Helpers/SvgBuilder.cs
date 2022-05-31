@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -24,7 +23,7 @@ namespace Hilke.KineticConvolution.Helpers
             double lineWidth = DefaultLineWidth,
             double svgScaling = DefaultSvgScaling)
         {
-            _factory = new(new DoubleAlgebraicNumberCalculator());
+            _factory = new ConvolutionFactory<double>(new DoubleAlgebraicNumberCalculator());
             _minimumArcRadius = minimumArcRadius;
             _lineWidth = lineWidth;
             _svgScaling = svgScaling;
@@ -69,7 +68,7 @@ namespace Hilke.KineticConvolution.Helpers
 
             File.WriteAllText(filename, BuildSvgContent());
         }
-        
+
         private string BuildManyTracingsSvgDocument(
             IEnumerable<(IReadOnlyList<Tracing<double>> Tracings, string Name, string Color)> namedTracings)
         {
@@ -91,7 +90,10 @@ namespace Hilke.KineticConvolution.Helpers
             return sb.ToString();
         }
 
-        private static string BuildSvgPath(IEnumerable<Tracing<double>> tracings, bool buildContinuous, bool addNewLines)
+        private static string BuildSvgPath(
+            IEnumerable<Tracing<double>> tracings,
+            bool buildContinuous,
+            bool addNewLines)
         {
             var pathSegments = new List<string>();
 
@@ -138,9 +140,7 @@ namespace Hilke.KineticConvolution.Helpers
                 $"A {arc.Radius} {arc.Radius} 0.0 {largeArcFlag} {sweepFlag} {arc.End.X} {arc.End.Y}";
         }
 
-        private static string EmitPathSegment(Segment<double> segment) =>
-            $"L {segment.End.X} {segment.End.Y}";
-        
+        private static string EmitPathSegment(Segment<double> segment) => $"L {segment.End.X} {segment.End.Y}";
 
         private static readonly Dictionary<string, string> Colors = new()
         {

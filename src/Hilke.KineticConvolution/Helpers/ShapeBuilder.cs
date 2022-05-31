@@ -13,8 +13,8 @@ namespace Hilke.KineticConvolution.Helpers
         private readonly ConvolutionFactory<TAlgebraicNumber> _convolutionFactory;
         private readonly IAlgebraicNumberCalculator<TAlgebraicNumber> _calculator;
         private readonly GeometryCalculator<TAlgebraicNumber> _geometryCalculator;
-        private Point<TAlgebraicNumber>? _startPoint;
         private readonly List<(Point<TAlgebraicNumber> point, TAlgebraicNumber radius)> _corners;
+        private Point<TAlgebraicNumber>? _startPoint;
 
         public ShapeBuilder(ConvolutionFactory<TAlgebraicNumber> factory)
         {

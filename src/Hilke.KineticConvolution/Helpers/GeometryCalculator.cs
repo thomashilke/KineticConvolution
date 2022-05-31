@@ -1,6 +1,5 @@
 ﻿using System;
 
-
 namespace Hilke.KineticConvolution.Helpers
 {
     public class GeometryCalculator<TAlgebraicNumber>
@@ -22,17 +21,15 @@ namespace Hilke.KineticConvolution.Helpers
             Direction<TAlgebraicNumber> tangentDirectionAfter,
             TAlgebraicNumber radius)
         {
-            var vc = _vectorCalculator;
+            var tangentBefore = _vectorCalculator.FromDirection(tangentDirectionBefore.Normalize());
+            var tangentAfter = _vectorCalculator.FromDirection(tangentDirectionAfter.Normalize());
+            var rightNormalBefore = _vectorCalculator.RotateThreeQuarterOfATurn(tangentBefore);
+            var rightNormalAfter = _vectorCalculator.RotateThreeQuarterOfATurn(tangentAfter);
 
-            var tangentBefore = vc.FromDirection(tangentDirectionBefore.Normalize());
-            var tangentAfter = vc.FromDirection(tangentDirectionAfter.Normalize());
-            var rightNormalBefore = vc.RotateThreeQuarterOfATurn(tangentBefore);
-            var rightNormalAfter = vc.RotateThreeQuarterOfATurn(tangentAfter);
-
-            var dotProduct = vc.GetDot(tangentBefore, rightNormalAfter);
+            var dotProduct = _vectorCalculator.GetDot(tangentBefore, rightNormalAfter);
             if (_calculator.IsZero(dotProduct))
             {
-                var haveSameDirections = _calculator.IsPositive(vc.GetDot(tangentBefore, tangentAfter));
+                var haveSameDirections = _calculator.IsPositive(_vectorCalculator.GetDot(tangentBefore, tangentAfter));
 
                 if (!haveSameDirections && !_calculator.IsZero(radius))
                 {
@@ -50,9 +47,9 @@ namespace Hilke.KineticConvolution.Helpers
                 _convolutionFactory.CreateArc(
                     center: cornerPoint,
                     directions: _convolutionFactory.CreateDirectionRange(
-                        start: vc.ToDirection(rightNormalBefore),
-                        end: vc.ToDirection(rightNormalAfter),
-                                            orientation: Orientation.CounterClockwise),
+                        start: _vectorCalculator.ToDirection(rightNormalBefore),
+                        end: _vectorCalculator.ToDirection(rightNormalAfter),
+                        orientation: Orientation.CounterClockwise),
                     radius: _calculator.CreateConstant(0.0),
                     weight: 1);
 
@@ -60,8 +57,12 @@ namespace Hilke.KineticConvolution.Helpers
             {
                 var IsAngleCounterClockwise = _calculator.IsPositive(dotProduct);
 
-                var start = IsAngleCounterClockwise ? vc.ToDirection(rightNormalBefore) : vc.ToDirection(rightNormalBefore).Opposite();
-                var end = IsAngleCounterClockwise ? vc.ToDirection(rightNormalAfter) : vc.ToDirection(rightNormalAfter).Opposite();
+                var start = IsAngleCounterClockwise
+                                ? _vectorCalculator.ToDirection(rightNormalBefore)
+                                : _vectorCalculator.ToDirection(rightNormalBefore).Opposite();
+                var end = IsAngleCounterClockwise
+                              ? _vectorCalculator.ToDirection(rightNormalAfter)
+                              : _vectorCalculator.ToDirection(rightNormalAfter).Opposite();
                 var orientation = IsAngleCounterClockwise ? Orientation.CounterClockwise : Orientation.Clockwise;
                 var directions = _convolutionFactory.CreateDirectionRange(start, end, orientation);
 
@@ -73,12 +74,16 @@ namespace Hilke.KineticConvolution.Helpers
 
                 Point<TAlgebraicNumber> computeCenterForNonZeroRadius()
                 {
-                    var oppositeTangentBefore = vc.GetOpposite(tangentBefore);
-                    var bisectorDirection = vc.Add(oppositeTangentBefore, tangentAfter);
+                    var oppositeTangentBefore = _vectorCalculator.GetOpposite(tangentBefore);
+                    var bisectorDirection = _vectorCalculator.Add(oppositeTangentBefore, tangentAfter);
                     var parameterOnBisectorLine = _calculator.Divide(radius, _calculator.Abs(dotProduct));
-                    var translationLength = _calculator.Multiply(parameterOnBisectorLine, vc.GetLength(bisectorDirection));
+                    var translationLength = _calculator.Multiply(
+                        parameterOnBisectorLine,
+                        _vectorCalculator.GetLength(bisectorDirection));
 
-                    return cornerPoint.Translate(direction: vc.ToDirection(bisectorDirection), length: translationLength);
+                    return cornerPoint.Translate(
+                        direction: _vectorCalculator.ToDirection(bisectorDirection),
+                        length: translationLength);
                 }
             }
         }

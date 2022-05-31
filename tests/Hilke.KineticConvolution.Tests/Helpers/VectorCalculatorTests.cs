@@ -1,6 +1,7 @@
 ﻿using System;
 
 using FluentAssertions;
+using FluentAssertions.Execution;
 
 using Hilke.KineticConvolution.DoubleAlgebraicNumber;
 using Hilke.KineticConvolution.Helpers;
@@ -73,29 +74,30 @@ namespace Hilke.KineticConvolution.Tests.Helpers
             Action action12 = () => subject.Multiply(1.2, vector: null);
 
             // Assert
-            action0.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("direction");
-            action00.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("point");
+            using (new AssertionScope())
+            {
+                action0.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("direction");
+                action00.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("point");
 
-            action1.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
-            action2.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
+                action1.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
+                action2.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
 
-            action3.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
-            action4.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
+                action3.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
+                action4.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
 
-            action5.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
-            action6.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
+                action5.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
+                action6.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
 
-            action7.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
-            action8.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
+                action7.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
+                action8.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
 
-            action9.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("vector");
-            action10.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("vector");
-            action11.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("vector");
+                action9.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("vector");
+                action10.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("vector");
+                action11.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("vector");
 
-            action12.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("vector");
+                action12.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("vector");
+            }
         }
-
-
 
         [Test]
         public void Given_valid_arguments_When_calculate_on_one_vector_Then_returns_expected()
@@ -105,7 +107,7 @@ namespace Hilke.KineticConvolution.Tests.Helpers
             var vector = new Vector<double>(2.0, 1.0);
             var factor = 2.1;
 
-            var expectedLength = Math.Sqrt(2.0 * 2.0  + 1.0 * 1.0);
+            var expectedLength = Math.Sqrt(2.0 * 2.0 + 1.0 * 1.0);
             var expectedRotated = new Vector<double>(1.0, -2.0);
             var expectedMultiplication = new Vector<double>(4.2, 2.1);
 
@@ -143,7 +145,6 @@ namespace Hilke.KineticConvolution.Tests.Helpers
             actualDot.Should().Be(expectedDot);
         }
 
-
         [Test]
         public void Given_test_cases_When_query_quality_Then_returns_expected()
         {
@@ -159,5 +160,3 @@ namespace Hilke.KineticConvolution.Tests.Helpers
         }
     }
 }
-
-

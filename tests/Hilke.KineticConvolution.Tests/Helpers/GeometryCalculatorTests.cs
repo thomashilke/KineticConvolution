@@ -13,7 +13,6 @@ namespace Hilke.KineticConvolution.Tests.Helpers
     [TestFixture(TestOf = typeof(GeometryCalculator<>))]
     internal class GeometryCalculatorTests
     {
-
         private static readonly DoubleAlgebraicNumberCalculator DoubleCalculator = new();
         private static readonly ConvolutionFactory<double> Factory = new(DoubleCalculator);
 
