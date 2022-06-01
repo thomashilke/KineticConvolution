@@ -1,4 +1,6 @@
-﻿using Fractions;
+﻿#nullable disable
+
+using Fractions;
 
 using Hilke.KineticConvolution;
 using Hilke.KineticConvolution.DoubleAlgebraicNumber;
