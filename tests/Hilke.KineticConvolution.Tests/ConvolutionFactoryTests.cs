@@ -625,7 +625,7 @@ namespace Hilke.KineticConvolution.Tests
         [Test]
         public void Working_Example_From_Readme_Should_Compile_And_Produce_Correct_Results()
         {
-            var factory = new ConvolutionFactory();
+            var factory = new ConvolutionFactory<double>(new DoubleAlgebraicNumberCalculator());
 
             var disk = CreateDiskShape(factory);
 
@@ -635,7 +635,7 @@ namespace Hilke.KineticConvolution.Tests
 
             minkowskiSum.ConvolvedTracings.Should().HaveCount(5);
 
-            static Shape<double> CreateDiskShape(ConvolutionFactory factory)
+            static Shape<double> CreateDiskShape(ConvolutionFactory<double> factory)
             {
                 var eastDirection = factory.CreateDirection(1.0, 0.0);
 
@@ -648,7 +648,7 @@ namespace Hilke.KineticConvolution.Tests
                 return factory.CreateShape(new[] { diskArc });
             }
 
-            static Shape<double> CreatePathShape(ConvolutionFactory factory)
+            static Shape<double> CreatePathShape(ConvolutionFactory<double> factory)
             {
                 var pathSegment = factory.CreateSegment(
                     startX: 0.0, startY: 0.0,

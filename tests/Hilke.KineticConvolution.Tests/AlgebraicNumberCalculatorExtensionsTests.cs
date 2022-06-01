@@ -16,7 +16,7 @@ namespace Hilke.KineticConvolution.Tests
         [SetUp]
         public void SetUp()
         {
-            var factory = new ConvolutionFactory();
+            var factory = new ConvolutionFactory<double>(new DoubleAlgebraicNumberCalculator());
             _calculator = factory.AlgebraicNumberCalculator;
         }
 

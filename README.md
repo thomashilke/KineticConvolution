@@ -43,10 +43,10 @@ be used to create geometric entities:
 ```
 
 Given `shape1` and `shape2` of type `Shape<T>` which represent two
-polygonal tracings, the kinetic convolution of those two tracings is
-obtained by calling
+polygonal tracings and `factory` of type
+`IConvolutionFactory<double>`, the kinetic convolution of those two
+tracings is obtained by calling
 ```C#
-    var factory = new ConvolutionFactory();
     var convolution = factory.ConvolveShapes(shape1, shape2);
 ```
 Note that if `shape1` and `shape2` represent the boundary of two
@@ -72,9 +72,7 @@ Instance of `Shape<T>`, as well as every other objects must be
 instantiated through a factory instance of
 `IConvolutionFactory<TAlgebraicNumber>`. More about the reasons for
 this design is given in section Factory and algebraic numbers
-below. As a convenience, an implementation of
-`IConvolutionFactory<double>` is provided by
-`DoubleAlgebraicNumber.ConvolutionFactory` that can be used as-is.
+below.
 
 # Factory and algebraic numbers
 A fundamental initial requirement of this implementation was the
@@ -120,24 +118,21 @@ the factory's methods `CreatePoint`, `CreateSegment`, etc.
 The following example demonstrates the library usage to compute the
 convolution of a unit disk with a straight line. The two shapes being
 convex, the result is the boundary of the Minkowski sum of the two
-shapes.
+shapes. The following code can be found ready to run in the project
+`samples/Hilke.KineticConvolution.ReadMeExamples/`.
 
 ```C#
-using Fractions;
-
 using Hilke.KineticConvolution;
 using Hilke.KineticConvolution.DoubleAlgebraicNumber;
 
-using System;
-using System.Collections.Generic;
-
-namespace Rollomatic.Conv
+namespace Rollomatic.KinematicConvolution.ReadMeExamples
 {
-    class Program
+    class WorkingExample
     {
-        static void Main(string[] args)
+        static void Run()
         {
-            var factory = new ConvolutionFactory();
+            var calculator = new DoubleAlgebraicNumberCalculator();
+            var factory = new ConvolutionFactory<double>(calculator);
 
             var disk = CreateDiskShape(factory);
 
@@ -164,7 +159,7 @@ namespace Rollomatic.Conv
             }
         }
 
-        static Shape<double> CreateDiskShape(ConvolutionFactory factory)
+        static Shape<double> CreateDiskShape(ConvolutionFactory<double> factory)
         {
             var eastDirection = factory.CreateDirection(1.0, 0.0);
 
@@ -177,7 +172,7 @@ namespace Rollomatic.Conv
             return factory.CreateShape(new[] { diskArc });
         }
 
-        static Shape<double> CreatePathShape(ConvolutionFactory factory)
+        static Shape<double> CreatePathShape(ConvolutionFactory<double> factory)
         {
             var pathSegment = factory.CreateSegment(
                 startX: 0.0, startY: 0.0,
@@ -192,8 +187,8 @@ namespace Rollomatic.Conv
             var smoothingArc1 = factory.CreateArc(
                 pathSegment.Start,
                 factory.CreateDirectionRange(
-                    pathReverseSegment.Direction().NormalDirection().Opposite(),
-                    pathSegment.Direction().NormalDirection().Opposite(),
+                    pathReverseSegment.EndTangentDirection.NormalDirection().Opposite(),
+                    pathSegment.StartTangentDirection.NormalDirection().Opposite(),
                     Orientation.CounterClockwise),
                 0.0,
                 1);
@@ -201,8 +196,8 @@ namespace Rollomatic.Conv
             var smoothingArc2 = factory.CreateArc(
                 pathReverseSegment.Start,
                 factory.CreateDirectionRange(
-                    pathSegment.Direction().NormalDirection().Opposite(),
-                    pathReverseSegment.Direction().NormalDirection().Opposite(),
+                    pathSegment.StartTangentDirection.NormalDirection().Opposite(),
+                    pathReverseSegment.EndTangentDirection.NormalDirection().Opposite(),
                     Orientation.CounterClockwise),
                 0.0,
                 1);

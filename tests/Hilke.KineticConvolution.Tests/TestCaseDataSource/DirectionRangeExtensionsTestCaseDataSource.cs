@@ -11,7 +11,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
     {
         public static IEnumerable<TestCaseData> TestCases()
         {
-            var factory = new ConvolutionFactory();
+            var factory = new ConvolutionFactory<double>(new DoubleAlgebraicNumberCalculator());
 
             yield return new TestCaseData(
                 Orientation.CounterClockwise, Enumerable.Empty<DirectionRange<double>>());
