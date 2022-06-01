@@ -843,7 +843,7 @@ namespace Hilke.KineticConvolution.Tests
             // Assert
             action.Should()
                   .ThrowExactly<ArgumentException>()
-                  .WithMessage("The tracings should be continuous. (Parameter 'tracings')");
+                  .WithMessage("The tracings must be continuous. Discontinuity detected between tracings 0 -> 1, 1 -> 0 (Parameter 'tracings')");
         }
 
         [Test]

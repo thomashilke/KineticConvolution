@@ -34,7 +34,10 @@ namespace Hilke.KineticConvolution
 
         protected IAlgebraicNumberCalculator<TAlgebraicNumber> Calculator { get; }
 
-        public bool IsG1ContinuousWith(Tracing<TAlgebraicNumber> next) =>
-            End == next.Start && EndTangentDirection.Normalize() == next.StartTangentDirection.Normalize();
+        public bool IsContinuousWith(Tracing<TAlgebraicNumber> next) =>
+            End == next.Start;
+
+        public bool TangentIsContinuousWith(Tracing<TAlgebraicNumber> next) =>
+            EndTangentDirection.Normalize() == next.StartTangentDirection.Normalize();
     }
 }

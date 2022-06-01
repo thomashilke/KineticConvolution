@@ -43,9 +43,12 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
         public double SquareRoot(double number) => Math.Sqrt(number);
 
         /// <inheritdoc />
-        public double CreateConstant(int value) => value;
+        public double FromInt(int value) => value;
 
         /// <inheritdoc />
-        public double CreateConstant(double value) => value;
+        public double FromDouble(double value) => value;
+
+        /// <inheritdoc />
+        public double ToDouble(double value) => value;
     }
 }
