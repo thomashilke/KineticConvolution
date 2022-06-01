@@ -4,6 +4,8 @@ using System.Linq;
 
 using Fractions;
 
+using Hilke.KineticConvolution.Extensions;
+
 namespace Hilke.KineticConvolution
 {
     public class ConvolutionFactory<TAlgebraicNumber> : IConvolutionFactory<TAlgebraicNumber>
@@ -13,9 +15,9 @@ namespace Hilke.KineticConvolution
             AlgebraicNumberCalculator = algebraicNumberCalculator
                                      ?? throw new ArgumentNullException(nameof(algebraicNumberCalculator));
 
-            Zero = algebraicNumberCalculator.CreateConstant(0);
+            Zero = algebraicNumberCalculator.FromInt(0);
 
-            One = algebraicNumberCalculator.CreateConstant(1);
+            One = algebraicNumberCalculator.FromInt(1);
         }
 
         public IAlgebraicNumberCalculator<TAlgebraicNumber> AlgebraicNumberCalculator { get; }
@@ -157,20 +159,44 @@ namespace Hilke.KineticConvolution
                 throw new ArgumentException("There should be at least one tracing.", nameof(tracings));
             }
 
-            if (!isG1Continuous(tracingsEnumerated))
+            if (!verifyConditionOnConsecutive(tracingsEnumerated, continuityCondition, out var discontinuityLocations))
             {
-                throw new ArgumentException("The tracings should be continuous.", nameof(tracings));
+                throw new ArgumentException(
+                    $"The tracings must be continuous. Discontinuity detected between tracings "
+                  + $"{string.Join(", ", discontinuityLocations.Select(index => $"{index} -> {nextIndex(index)}"))}",
+                    nameof(tracings));
+            }
+
+            if (!verifyConditionOnConsecutive(tracingsEnumerated, tangentContinuityCondition, out var tangentDiscontinuityLocations))
+            {
+                throw new ArgumentException(
+                    $"The tracings tangents must be continuous. Tangents discontinuity detected between tracings "
+                  + $"{string.Join(", ", tangentDiscontinuityLocations.Select(index => $"{index} -> {nextIndex(index)}"))}",
+                    nameof(tracings));
             }
 
             return new Shape<TAlgebraicNumber>(tracingsEnumerated);
 
-            static bool isG1Continuous(IReadOnlyList<Tracing<TAlgebraicNumber>> tracings)
+            static bool continuityCondition(Tracing<TAlgebraicNumber> current, Tracing<TAlgebraicNumber> next) =>
+                current.IsContinuousWith(next);
+
+            static bool tangentContinuityCondition(Tracing<TAlgebraicNumber> current, Tracing<TAlgebraicNumber> next) =>
+                current.TangentIsContinuousWith(next);
+
+            static bool verifyConditionOnConsecutive(IReadOnlyList<Tracing<TAlgebraicNumber>> tracings,
+                                    Func<Tracing<TAlgebraicNumber>, Tracing<TAlgebraicNumber>, bool> condition,
+                                     out IReadOnlyList<int> indicesWhereConditionFails)
             {
-                return tracings.Zip(
-                                   tracings.Skip(1).Append(tracings.First()),
-                                   (right, left) => right.IsG1ContinuousWith(left))
-                               .All(isContinuous => isContinuous);
+                indicesWhereConditionFails = tracings.CyclicPairwise(condition)
+                                                     .Select((satisfiesCondition, index) => (satisfiesCondition, index))
+                                                     .Where(e => !e.satisfiesCondition)
+                                                     .Select(e => e.index)
+                                                     .ToList();
+
+                return indicesWhereConditionFails.Count == 0;
             }
+
+            int nextIndex(int index) => index != tracingsEnumerated.Count - 1 ? index + 1 : 0;
         }
 
         public IEnumerable<ConvolvedTracing<TAlgebraicNumber>> ConvolveTracings(
