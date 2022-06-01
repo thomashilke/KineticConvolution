@@ -13,7 +13,6 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
     <IsPackable>true</IsPackable>
-    <PackageId>Hilke.EFloatCalculator</PackageId>
     <Description>Implementation of a calculator with arbitrary precision numbers.</Description>
   </PropertyGroup>
 

@@ -9,10 +9,10 @@ using NUnit.Framework;
 
 using PeterO.Numbers;
 
-namespace Hilke.EFloatCalculator.Tests
+namespace Hilke.KineticConvolution.EFloatAlgebraicNumberCalculator.Tests
 {
-    [TestFixture(TestOf = typeof(EFloatCalculator))]
-    public class EFloatCalculatorTests
+    [TestFixture(TestOf = typeof(EFloatAlgebraicNumberCalculator))]
+    public class EFloatAlgebraicNumberCalculatorTests
     {
         private static readonly EContext ValidContext = EContext.Binary64;
         private static readonly EFloat ValidTolerance = EFloat.Create(2, -32);
@@ -23,7 +23,7 @@ namespace Hilke.EFloatCalculator.Tests
         public void Given_valid_parameters_When_calling_constructor_Then_does_not_throw_exception()
         {
             // Arrange
-            Action action = () => _ = new EFloatCalculator(ValidContext, ValidTolerance);
+            Action action = () => _ = new EFloatAlgebraicNumberCalculator(ValidContext, ValidTolerance);
 
             // Assert
             action.Should().NotThrow();
@@ -33,19 +33,19 @@ namespace Hilke.EFloatCalculator.Tests
         public void Given_valid_parameters_When_calling_constructor_Then_create_a_valid_instance()
         {
             // Act
-            var subject = new EFloatCalculator(ValidContext, ValidTolerance);
+            var subject = new EFloatAlgebraicNumberCalculator(ValidContext, ValidTolerance);
 
             // Assert
-            subject.Should().NotBeNull().And.BeAssignableTo<EFloatCalculator>();
+            subject.Should().NotBeNull().And.BeAssignableTo<EFloatAlgebraicNumberCalculator>();
         }
 
         [Test]
         public void Given_invalid_parameters_When_calling_constructor_Then_throw_exception()
         {
             // Arrange
-            Action action1 = () => _ = new EFloatCalculator(context: null, ValidTolerance);
-            Action action2 = () => _ = new EFloatCalculator(ValidContext, tolerance: null);
-            Action action3 = () => _ = new EFloatCalculator(ValidContext, tolerance: EFloat.Create(-2, 8));
+            Action action1 = () => _ = new EFloatAlgebraicNumberCalculator(context: null, ValidTolerance);
+            Action action2 = () => _ = new EFloatAlgebraicNumberCalculator(ValidContext, tolerance: null);
+            Action action3 = () => _ = new EFloatAlgebraicNumberCalculator(ValidContext, tolerance: EFloat.Create(-2, 8));
 
             // Assert
             action1.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("context");
@@ -57,7 +57,7 @@ namespace Hilke.EFloatCalculator.Tests
         public void Given_invalid_arguments_When_calculate_Then_throw()
         {
             // Arrange
-            var subject = new EFloatCalculator(ValidContext, ValidTolerance);
+            var subject = new EFloatAlgebraicNumberCalculator(ValidContext, ValidTolerance);
             var validNumber = EFloat.One;
 
             Action action1 = () => subject.Add(left: null, validNumber);
@@ -107,7 +107,7 @@ namespace Hilke.EFloatCalculator.Tests
             double right)
         {
             // Arrange
-            var subject = new EFloatCalculator(EContext.Binary64, EFloat.Create(2, -32));
+            var subject = new EFloatAlgebraicNumberCalculator(EContext.Binary64, EFloat.Create(2, -32));
             var eLeft = EFloat.FromDouble(left);
             var eRight = EFloat.FromDouble(right);
             var expected = DoubleCalculator.Add(left, right);
@@ -127,7 +127,7 @@ namespace Hilke.EFloatCalculator.Tests
             double right)
         {
             // Arrange
-            var subject = new EFloatCalculator(EContext.Binary64, EFloat.Create(2, -32));
+            var subject = new EFloatAlgebraicNumberCalculator(EContext.Binary64, EFloat.Create(2, -32));
             var eLeft = EFloat.FromDouble(left);
             var eRight = EFloat.FromDouble(right);
             var expected = DoubleCalculator.Subtract(left, right);
@@ -147,7 +147,7 @@ namespace Hilke.EFloatCalculator.Tests
             double right)
         {
             // Arrange
-            var subject = new EFloatCalculator(EContext.Binary64, EFloat.Create(2, -32));
+            var subject = new EFloatAlgebraicNumberCalculator(EContext.Binary64, EFloat.Create(2, -32));
             var eLeft = EFloat.FromDouble(left);
             var eRight = EFloat.FromDouble(right);
             var expected = DoubleCalculator.Multiply(left, right);
@@ -167,7 +167,7 @@ namespace Hilke.EFloatCalculator.Tests
             double right)
         {
             // Arrange
-            var subject = new EFloatCalculator(EContext.Binary64, EFloat.Create(2, -32));
+            var subject = new EFloatAlgebraicNumberCalculator(EContext.Binary64, EFloat.Create(2, -32));
             var eLeft = EFloat.FromDouble(left);
             var eRight = EFloat.FromDouble(right);
             var expected = DoubleCalculator.Divide(left, right);
@@ -185,7 +185,7 @@ namespace Hilke.EFloatCalculator.Tests
         public void Given_a_double_When_compute_Opposite_Then_result_is_the_same_as_with_DoubleCalculator(double number)
         {
             // Arrange
-            var subject = new EFloatCalculator(EContext.Binary64, EFloat.Create(2, -32));
+            var subject = new EFloatAlgebraicNumberCalculator(EContext.Binary64, EFloat.Create(2, -32));
             var eNumber = EFloat.FromDouble(number);
             var expected = DoubleCalculator.Opposite(number);
 
@@ -203,7 +203,7 @@ namespace Hilke.EFloatCalculator.Tests
             double number)
         {
             // Arrange
-            var subject = new EFloatCalculator(EContext.Binary64, EFloat.Create(2, -32));
+            var subject = new EFloatAlgebraicNumberCalculator(EContext.Binary64, EFloat.Create(2, -32));
             var eNumber = EFloat.FromDouble(number);
             var expected = DoubleCalculator.SquareRoot(number);
 
@@ -220,7 +220,7 @@ namespace Hilke.EFloatCalculator.Tests
         public void Given_a_double_When_compute_Sign_Then_result_is_the_same_as_with_DoubleCalculator(double number)
         {
             // Arrange
-            var subject = new EFloatCalculator(EContext.Binary64, EFloat.Create(2, -32));
+            var subject = new EFloatAlgebraicNumberCalculator(EContext.Binary64, EFloat.Create(2, -32));
             var eNumber = EFloat.FromDouble(number);
             var expected = DoubleCalculator.Sign(number);
 

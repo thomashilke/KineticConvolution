@@ -25,9 +25,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{7527BC77
 		.github\workflows\build-deploy.yml = .github\workflows\build-deploy.yml
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hilke.EFloatCalculator", "src\Hilke.EFloatCalculator\Hilke.EFloatCalculator.csproj", "{81BC3082-2522-400C-998D-C644803C5384}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hilke.KineticConvolution.EFloatAlgebraicNumber", "src\Hilke.EFloatCalculator\Hilke.KineticConvolution.EFloatAlgebraicNumber.csproj", "{81BC3082-2522-400C-998D-C644803C5384}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Hilke.EFloatCalculator.Tests", "tests\Hilke.EFloatCalculator.Tests\Hilke.EFloatCalculator.Tests.csproj", "{7B0F9628-EDE5-4332-946D-60566520F42E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hilke.KineticConvolution.EFloatAlgebraicNumber.Tests", "tests\Hilke.EFloatCalculator.Tests\Hilke.KineticConvolution.EFloatAlgebraicNumber.Tests.csproj", "{7B0F9628-EDE5-4332-946D-60566520F42E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -1,17 +1,15 @@
 using System;
 
-using Hilke.KineticConvolution;
-
 using PeterO.Numbers;
 
-namespace Hilke.EFloatCalculator
+namespace Hilke.KineticConvolution.EFloatAlgebraicNumberCalculator
 {
-    public class EFloatCalculator : IAlgebraicNumberCalculator<EFloat>
+    public class EFloatAlgebraicNumberCalculator : IAlgebraicNumberCalculator<EFloat>
     {
         private readonly EContext _context;
         private readonly EFloat _tolerance;
 
-        public EFloatCalculator(EContext context, EFloat tolerance)
+        public EFloatAlgebraicNumberCalculator(EContext context, EFloat tolerance)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _tolerance = tolerance ?? throw new ArgumentNullException(nameof(tolerance));

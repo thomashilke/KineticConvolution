@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\Hilke.EFloatCalculator\Hilke.EFloatCalculator.csproj" />
+    <ProjectReference Include="..\..\src\Hilke.EFloatCalculator\Hilke.KineticConvolution.EFloatAlgebraicNumber.csproj" />
   </ItemGroup>
 
 </Project>
