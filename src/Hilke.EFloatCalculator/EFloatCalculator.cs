@@ -39,9 +39,9 @@ namespace Hilke.EFloatCalculator
             return left.Add(right, _context);
         }
 
-        public EFloat CreateConstant(int value) => EFloat.FromInt32(value);
+        public EFloat FromInt(int value) => EFloat.FromInt32(value);
 
-        public EFloat CreateConstant(double value) => EFloat.FromDouble(value);
+        public EFloat FromDouble(double value) => EFloat.FromDouble(value);
 
         public EFloat Divide(EFloat dividend, EFloat divisor)
         {

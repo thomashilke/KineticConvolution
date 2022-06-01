@@ -1,6 +1,7 @@
 ﻿using System;
 
 using FluentAssertions;
+using FluentAssertions.Execution;
 
 using Hilke.KineticConvolution.DoubleAlgebraicNumber;
 
@@ -77,22 +78,25 @@ namespace Hilke.EFloatCalculator.Tests
             Action action12 = () => subject.SquareRoot(number: null);
 
             // Assert
-            action1.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
-            action2.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
+            using (new AssertionScope())
+            {
+                action1.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
+                action2.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
 
-            action3.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
-            action4.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
+                action3.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
+                action4.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
 
-            action5.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
-            action6.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
+                action5.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("left");
+                action6.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("right");
 
-            action7.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("dividend");
-            action8.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("divisor");
+                action7.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("dividend");
+                action8.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("divisor");
 
-            action9.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("number");
-            action10.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("number");
-            action11.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("number");
-            action12.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("number");
+                action9.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("number");
+                action10.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("number");
+                action11.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("number");
+                action12.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("number");
+            }
         }
 
         [TestCase(2.3, 4.1, TestName = "testcase 01")]
