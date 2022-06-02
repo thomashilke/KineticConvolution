@@ -71,7 +71,7 @@ convolution of `parent1` from `shape1` and `parent2` from `shape2`.
 Instance of `Shape<T>`, as well as every other objects must be
 instantiated through a factory instance of
 `IConvolutionFactory<TAlgebraicNumber>`. More about the reasons for
-this design is given in section Factory and algebraic numbers
+this design is given in section [Factory and algebraic numbers](#factory-and-algebraic-numbers)
 below.
 
 # Factory and algebraic numbers
