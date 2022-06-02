@@ -50,7 +50,7 @@ namespace Hilke.KineticConvolution.Helpers
                         start: _vectorCalculator.ToDirection(rightNormalBefore),
                         end: _vectorCalculator.ToDirection(rightNormalAfter),
                         orientation: Orientation.CounterClockwise),
-                    radius: _calculator.CreateConstant(0.0),
+                    radius: _calculator.FromDouble(0.0),
                     weight: 1);
 
             Arc<TAlgebraicNumber> createArcForNonAlignedPoints()

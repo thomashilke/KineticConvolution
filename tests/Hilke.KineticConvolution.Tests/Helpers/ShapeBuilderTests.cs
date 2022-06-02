@@ -58,8 +58,8 @@ namespace Hilke.KineticConvolution.Tests.Helpers
             var p1 = DoubleFactory.CreatePoint(1.0, 0.0);
 
             subject.StartAt(p0)
-                   .AddCorner(p1, calc.CreateConstant(0.0))
-                   .CloseWith(calc.CreateConstant(0.0));
+                   .AddCorner(p1, calc.FromDouble(0.0))
+                   .CloseWith(calc.FromDouble(0.0));
 
             // Act
             var shape = subject.Build();
@@ -90,10 +90,10 @@ namespace Hilke.KineticConvolution.Tests.Helpers
             var p3 = DoubleFactory.CreatePoint(0.0, side);
 
             subject.StartAt(p0)
-                   .AddCorner(p1, calc.CreateConstant(radius))
-                   .AddCorner(p2, calc.CreateConstant(radius))
-                   .AddCorner(p3, calc.CreateConstant(radius))
-                   .CloseWith(calc.CreateConstant(radius));
+                   .AddCorner(p1, calc.FromDouble(radius))
+                   .AddCorner(p2, calc.FromDouble(radius))
+                   .AddCorner(p3, calc.FromDouble(radius))
+                   .CloseWith(calc.FromDouble(radius));
 
             // Act
             var shape = subject.Build();
@@ -123,9 +123,9 @@ namespace Hilke.KineticConvolution.Tests.Helpers
             var p2 = DoubleFactory.CreatePoint(0.0, side);
 
             subject.StartAt(p0)
-                   .AddCorner(p1, calc.CreateConstant(radius))
-                   .AddCorner(p2, calc.CreateConstant(radius))
-                   .CloseWith(calc.CreateConstant(radius));
+                   .AddCorner(p1, calc.FromDouble(radius))
+                   .AddCorner(p2, calc.FromDouble(radius))
+                   .CloseWith(calc.FromDouble(radius));
 
             // Act
             var shape = subject.Build();
@@ -156,10 +156,10 @@ namespace Hilke.KineticConvolution.Tests.Helpers
             var p2 = DoubleFactory.CreatePoint(0.0, side);
 
             subject.StartAt(p0)
-                   .AddCorner(p1, calc.CreateConstant(0.0))
-                   .AddCorner(p0, calc.CreateConstant(radius))
-                   .AddCorner(p2, calc.CreateConstant(0.0))
-                   .CloseWith(calc.CreateConstant(radius));
+                   .AddCorner(p1, calc.FromDouble(0.0))
+                   .AddCorner(p0, calc.FromDouble(radius))
+                   .AddCorner(p2, calc.FromDouble(0.0))
+                   .CloseWith(calc.FromDouble(radius));
 
             // Act
             var shape = subject.Build();
@@ -187,10 +187,10 @@ namespace Hilke.KineticConvolution.Tests.Helpers
             var p2 = DoubleFactory.CreatePoint(2.0 * side, 0.0);
 
             subject.StartAt(p0)
-                   .AddCorner(p1, calc.CreateConstant(0.0))
-                   .AddCorner(p2, calc.CreateConstant(0.0))
-                   .AddCorner(p1, calc.CreateConstant(0.0))
-                   .CloseWith(calc.CreateConstant(0.0));
+                   .AddCorner(p1, calc.FromDouble(0.0))
+                   .AddCorner(p2, calc.FromDouble(0.0))
+                   .AddCorner(p1, calc.FromDouble(0.0))
+                   .CloseWith(calc.FromDouble(0.0));
 
             // Act
             var shape = subject.Build();
