@@ -43,7 +43,7 @@ be used to create geometric entities:
 ```
 
 Given `shape1` and `shape2` of type `Shape<T>` which represent two
-polygonal tracings and `factory` of type
+tracings and `factory` of type
 `IConvolutionFactory<double>`, the kinetic convolution of those two
 tracings is obtained by calling
 ```C#
