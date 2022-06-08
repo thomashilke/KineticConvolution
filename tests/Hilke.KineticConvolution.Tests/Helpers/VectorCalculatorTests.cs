@@ -50,7 +50,7 @@ namespace Hilke.KineticConvolution.Tests.Helpers
         {
             // Arrange
             var subject = new VectorCalculator<double>(DoubleCalculator);
-            var validVector = new Vector<double>(1.0, 2.0);
+            var validVector = Vector<double>.FromEnumerable(new[] { 1.0, 2.0 });
 
             Action action0 = () => subject.FromDirection(direction: null);
             Action action00 = () => subject.FromPoint(point: null);
@@ -100,16 +100,36 @@ namespace Hilke.KineticConvolution.Tests.Helpers
         }
 
         [Test]
+        public void Given_invalid_dimension_arguments_When_calculate_Then_throw()
+        {
+            // Arrange
+            var subject = new VectorCalculator<double>(DoubleCalculator);
+            var invalidDimensionVector = Vector<double>.FromEnumerable(new[] { 1.0, 2.0, 3.0 });
+
+            Action action1 = () => subject.RotateThreeQuarterOfATurn(invalidDimensionVector);
+            Action action2 = () => subject.ToPoint(invalidDimensionVector);
+            Action action3 = () => subject.ToDirection(invalidDimensionVector);
+
+            // Assert
+            using (new AssertionScope())
+            {
+                action1.Should().ThrowExactly<ArgumentException>().And.ParamName.Should().Be("vector");
+                action2.Should().ThrowExactly<ArgumentException>().And.ParamName.Should().Be("vector");
+                action3.Should().ThrowExactly<ArgumentException>().And.ParamName.Should().Be("vector");
+            }
+        }
+
+        [Test]
         public void Given_valid_arguments_When_calculate_on_one_vector_Then_returns_expected()
         {
             // Arrange
             var subject = new VectorCalculator<double>(DoubleCalculator);
-            var vector = new Vector<double>(2.0, 1.0);
+            var vector = Vector<double>.FromEnumerable(new[] { 2.0, 1.0 });
             var factor = 2.1;
 
             var expectedLength = Math.Sqrt(2.0 * 2.0 + 1.0 * 1.0);
-            var expectedRotated = new Vector<double>(1.0, -2.0);
-            var expectedMultiplication = new Vector<double>(4.2, 2.1);
+            var expectedRotated = Vector<double>.FromEnumerable(new[] { 1.0, -2.0 });
+            var expectedMultiplication = Vector<double>.FromEnumerable(new[] { 4.2, 2.1 });
 
             // Act
             var actualLength = subject.GetLength(vector);
@@ -127,11 +147,11 @@ namespace Hilke.KineticConvolution.Tests.Helpers
         {
             // Arrange
             var subject = new VectorCalculator<double>(DoubleCalculator);
-            var vector1 = new Vector<double>(2.0, 1.0);
-            var vector2 = new Vector<double>(1.0, 0.0);
+            var vector1 = Vector<double>.FromEnumerable(new[] { 2.0, 1.0 });
+            var vector2 = Vector<double>.FromEnumerable(new[] { 1.0, 0.0 });
 
-            var expectedSum = new Vector<double>(3.0, 1.0);
-            var expectedDifference = new Vector<double>(1.0, 1.0);
+            var expectedSum = Vector<double>.FromEnumerable(new[] { 3.0, 1.0 });
+            var expectedDifference = Vector<double>.FromEnumerable(new[] { 1.0, 1.0 });
             var expectedDot = 2.0;
 
             // Act
@@ -150,13 +170,14 @@ namespace Hilke.KineticConvolution.Tests.Helpers
         {
             // Arrange
             var subject = new VectorCalculator<double>(DoubleCalculator);
-            var vector = new Vector<double>(2.0, 1.0);
-            var almostVector = new Vector<double>(2.0, 1.1);
+            var vector = Vector<double>.FromEnumerable(new[] { 2.0, 1.0 });
+            var almostVector = Vector<double>.FromEnumerable(new[] { 2.0, 1.1 });
             var tolerance = 0.1;
 
             // Act - Assert
             subject.AreAlmostEqual(vector, almostVector, tolerance).Should().BeTrue();
             subject.AreOrthogonal(vector, subject.RotateThreeQuarterOfATurn(vector)).Should().BeTrue();
+            subject.AreOrthogonal(vector, almostVector).Should().BeFalse();
         }
     }
 }

@@ -40,7 +40,7 @@ namespace Hilke.KineticConvolution
             X = x;
             Y = y;
         }
-
+        
         public TAlgebraicNumber X { get; }
 
         public TAlgebraicNumber Y { get; }

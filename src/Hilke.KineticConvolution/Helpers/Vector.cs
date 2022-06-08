@@ -1,17 +1,25 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Hilke.KineticConvolution.Helpers
 {
     public class Vector<TAlgebraicNumber>
     {
-        internal Vector(TAlgebraicNumber x, TAlgebraicNumber y)
+        private Vector(IReadOnlyList<TAlgebraicNumber> coordinates)
         {
-            X = x ?? throw new ArgumentNullException(nameof(x));
-            Y = y ?? throw new ArgumentNullException(nameof(y));
+            Coordinates = coordinates ?? throw new ArgumentNullException(nameof(coordinates));
+            Dimension = coordinates.Count;
         }
 
-        public TAlgebraicNumber X { get; }
+        public int Dimension { get; }
 
-        public TAlgebraicNumber Y { get; }
+        public IReadOnlyList<TAlgebraicNumber> Coordinates { get; }
+
+        public static Vector<TAlgebraicNumber> FromEnumerable(IEnumerable<TAlgebraicNumber> coordinates)
+        {
+            var enumerated = coordinates?.ToList() ?? throw new ArgumentNullException(nameof(coordinates));
+            return new Vector<TAlgebraicNumber>(enumerated);
+        }
     }
 }
