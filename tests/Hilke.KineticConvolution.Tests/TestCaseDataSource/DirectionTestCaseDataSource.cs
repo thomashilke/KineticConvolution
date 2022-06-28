@@ -8,7 +8,7 @@ namespace Hilke.KineticConvolution.Tests.TestCaseDataSource
 {
     public static class DirectionTestCaseDataSource
     {
-        private static readonly ConvolutionFactory Factory = new();
+        private static readonly ConvolutionFactory<double> Factory = new(new DoubleAlgebraicNumberCalculator());
 
         public static IEnumerable<TestCaseData> TestCases()
         {

@@ -13,7 +13,7 @@ namespace Hilke.KineticConvolution.DoubleAlgebraicNumber
             AlgebraicNumberFactory =
                 algebraicNumberConvolutionFactory
              ?? throw new ArgumentNullException(nameof(algebraicNumberConvolutionFactory));
-            DoubleFactory = new ConvolutionFactory();
+            DoubleFactory = new ConvolutionFactory<double>(new DoubleAlgebraicNumberCalculator());
 
             if (!Enum.IsDefined(typeof(InvalidConversionPolicy), policy))
             {

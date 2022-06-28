@@ -12,7 +12,7 @@ namespace Hilke.KineticConvolution.Tests
         [Test]
         public void When_Direction_Is_Given_Then_BelongsTo_Should_Return_Expected_Result()
         {
-            var factory = new ConvolutionFactory();
+            var factory = new ConvolutionFactory<double>(new DoubleAlgebraicNumberCalculator());
 
             var east = factory.CreateDirection(1.0, 0.0);
             var north = factory.CreateDirection(0.0, 1.0);
@@ -33,7 +33,7 @@ namespace Hilke.KineticConvolution.Tests
         [Test]
         public void When_Direction_Is_Close_To_Range_Boundary_Then_BelongsTo_Should_Return_Expected_Result()
         {
-            var factory = new ConvolutionFactory();
+            var factory = new ConvolutionFactory<double>(new DoubleAlgebraicNumberCalculator());
 
             var northEast = factory.CreateDirection(1.0, 1.0);
             var northWest = factory.CreateDirection(-1.0, 1.0);

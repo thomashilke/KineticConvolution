@@ -16,7 +16,7 @@ namespace Hilke.KineticConvolution.Tests
     [TestFixture]
     public class DirectionTests
     {
-        private static readonly ConvolutionFactory Factory = new();
+        private static readonly ConvolutionFactory<double> Factory = new(new DoubleAlgebraicNumberCalculator());
         private Direction<double> _subject;
 
         [OneTimeSetUp]

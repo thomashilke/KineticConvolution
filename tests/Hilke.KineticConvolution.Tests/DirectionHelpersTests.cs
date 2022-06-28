@@ -14,7 +14,7 @@ namespace Hilke.KineticConvolution.Tests
         [Test]
         public void Direction_Determinant_Should_Have_Expected_Sign()
         {
-            var factory = new ConvolutionFactory();
+            var factory = new ConvolutionFactory<double>(new DoubleAlgebraicNumberCalculator());
 
             var d1 = factory.CreateDirection(1.0, 1.0);
             var d2 = factory.CreateDirection(-1.0, 1.0);

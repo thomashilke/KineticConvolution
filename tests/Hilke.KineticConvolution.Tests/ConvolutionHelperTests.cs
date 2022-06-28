@@ -17,7 +17,7 @@ namespace Hilke.KineticConvolution.Tests
             const double radius1 = 2.0;
             const double radius2 = 2.0;
 
-            var convolutionFactory = new ConvolutionFactory();
+            var convolutionFactory = new ConvolutionFactory<double>(new DoubleAlgebraicNumberCalculator());
 
             var arc1 = convolutionFactory.CreateArc(
                 centerX: 1.0,
