@@ -1,7 +1,7 @@
 ﻿using Hilke.KineticConvolution;
 using Hilke.KineticConvolution.DoubleAlgebraicNumber;
 
-namespace Rollomatic.KinematicConvolution.ReadMeExamples
+namespace Hilke.KinematicConvolution.ReadMeExamples
 {
     public static class WorkingExample
     {

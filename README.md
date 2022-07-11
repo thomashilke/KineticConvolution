@@ -125,7 +125,7 @@ shapes. The following code can be found ready to run in the project
 using Hilke.KineticConvolution;
 using Hilke.KineticConvolution.DoubleAlgebraicNumber;
 
-namespace Rollomatic.KinematicConvolution.ReadMeExamples
+namespace Hilke.KinematicConvolution.ReadMeExamples
 {
     class WorkingExample
     {
