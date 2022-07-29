@@ -32,7 +32,7 @@ namespace Hilke.KineticConvolution
 
         public Direction<TAlgebraicNumber> EndTangentDirection { get; }
 
-        protected IAlgebraicNumberCalculator<TAlgebraicNumber> Calculator { get; }
+        public IAlgebraicNumberCalculator<TAlgebraicNumber> Calculator { get; }
 
         public bool IsContinuousWith(Tracing<TAlgebraicNumber> next) =>
             End == next.Start;
