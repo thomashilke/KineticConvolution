@@ -13,7 +13,7 @@
     <SymbolPackageFormat>snupkg</SymbolPackageFormat>
 
     <IsPackable>true</IsPackable>
-    <Description>Implementation of a calculator with arbitrary precision numbers.</Description>
+    <Description>Implementation of a calculator with arbitrary precision arithmetics.</Description>
   </PropertyGroup>
 
   <ItemGroup>

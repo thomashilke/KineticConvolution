@@ -14,10 +14,10 @@ namespace Hilke.KineticConvolution.EFloatAlgebraicNumberCalculator
             _context = context ?? throw new ArgumentNullException(nameof(context));
             _tolerance = tolerance ?? throw new ArgumentNullException(nameof(tolerance));
 
-            if (tolerance.IsNegative)
+            if (!tolerance.IsZero && tolerance.IsNegative)
             {
                 throw new ArgumentOutOfRangeException(
-                    message: "Tolerance must be strictly positive.",
+                    message: "Tolerance must be positive or zero.",
                     paramName: nameof(tolerance));
             }
         }

@@ -25,9 +25,9 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "build", "build", "{7527BC77
 		.github\workflows\build-deploy.yml = .github\workflows\build-deploy.yml
 	EndProjectSection
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hilke.KineticConvolution.EFloatAlgebraicNumber", "src\Hilke.EFloatCalculator\Hilke.KineticConvolution.EFloatAlgebraicNumber.csproj", "{81BC3082-2522-400C-998D-C644803C5384}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hilke.KineticConvolution.EFloatAlgebraicNumber", "src\Hilke.KineticConvolution.EFloatCalculator\Hilke.KineticConvolution.EFloatAlgebraicNumber.csproj", "{0F3A4FC7-6A71-4971-80B5-7831FB844648}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hilke.KineticConvolution.EFloatAlgebraicNumber.Tests", "tests\Hilke.EFloatCalculator.Tests\Hilke.KineticConvolution.EFloatAlgebraicNumber.Tests.csproj", "{7B0F9628-EDE5-4332-946D-60566520F42E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Hilke.KineticConvolution.EFloatAlgebraicNumber.Tests", "tests\Hilke.KineticConvolution.EFloatCalculator.Tests\Hilke.KineticConvolution.EFloatAlgebraicNumber.Tests.csproj", "{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,30 +63,30 @@ Global
 		{2C93819A-383D-48EE-AB60-7ED0428E8D55}.Release|x64.Build.0 = Release|Any CPU
 		{2C93819A-383D-48EE-AB60-7ED0428E8D55}.Release|x86.ActiveCfg = Release|Any CPU
 		{2C93819A-383D-48EE-AB60-7ED0428E8D55}.Release|x86.Build.0 = Release|Any CPU
-		{81BC3082-2522-400C-998D-C644803C5384}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{81BC3082-2522-400C-998D-C644803C5384}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{81BC3082-2522-400C-998D-C644803C5384}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{81BC3082-2522-400C-998D-C644803C5384}.Debug|x64.Build.0 = Debug|Any CPU
-		{81BC3082-2522-400C-998D-C644803C5384}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{81BC3082-2522-400C-998D-C644803C5384}.Debug|x86.Build.0 = Debug|Any CPU
-		{81BC3082-2522-400C-998D-C644803C5384}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{81BC3082-2522-400C-998D-C644803C5384}.Release|Any CPU.Build.0 = Release|Any CPU
-		{81BC3082-2522-400C-998D-C644803C5384}.Release|x64.ActiveCfg = Release|Any CPU
-		{81BC3082-2522-400C-998D-C644803C5384}.Release|x64.Build.0 = Release|Any CPU
-		{81BC3082-2522-400C-998D-C644803C5384}.Release|x86.ActiveCfg = Release|Any CPU
-		{81BC3082-2522-400C-998D-C644803C5384}.Release|x86.Build.0 = Release|Any CPU
-		{7B0F9628-EDE5-4332-946D-60566520F42E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{7B0F9628-EDE5-4332-946D-60566520F42E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{7B0F9628-EDE5-4332-946D-60566520F42E}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{7B0F9628-EDE5-4332-946D-60566520F42E}.Debug|x64.Build.0 = Debug|Any CPU
-		{7B0F9628-EDE5-4332-946D-60566520F42E}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{7B0F9628-EDE5-4332-946D-60566520F42E}.Debug|x86.Build.0 = Debug|Any CPU
-		{7B0F9628-EDE5-4332-946D-60566520F42E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{7B0F9628-EDE5-4332-946D-60566520F42E}.Release|Any CPU.Build.0 = Release|Any CPU
-		{7B0F9628-EDE5-4332-946D-60566520F42E}.Release|x64.ActiveCfg = Release|Any CPU
-		{7B0F9628-EDE5-4332-946D-60566520F42E}.Release|x64.Build.0 = Release|Any CPU
-		{7B0F9628-EDE5-4332-946D-60566520F42E}.Release|x86.ActiveCfg = Release|Any CPU
-		{7B0F9628-EDE5-4332-946D-60566520F42E}.Release|x86.Build.0 = Release|Any CPU
+		{0F3A4FC7-6A71-4971-80B5-7831FB844648}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F3A4FC7-6A71-4971-80B5-7831FB844648}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F3A4FC7-6A71-4971-80B5-7831FB844648}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{0F3A4FC7-6A71-4971-80B5-7831FB844648}.Debug|x64.Build.0 = Debug|Any CPU
+		{0F3A4FC7-6A71-4971-80B5-7831FB844648}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{0F3A4FC7-6A71-4971-80B5-7831FB844648}.Debug|x86.Build.0 = Debug|Any CPU
+		{0F3A4FC7-6A71-4971-80B5-7831FB844648}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F3A4FC7-6A71-4971-80B5-7831FB844648}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F3A4FC7-6A71-4971-80B5-7831FB844648}.Release|x64.ActiveCfg = Release|Any CPU
+		{0F3A4FC7-6A71-4971-80B5-7831FB844648}.Release|x64.Build.0 = Release|Any CPU
+		{0F3A4FC7-6A71-4971-80B5-7831FB844648}.Release|x86.ActiveCfg = Release|Any CPU
+		{0F3A4FC7-6A71-4971-80B5-7831FB844648}.Release|x86.Build.0 = Release|Any CPU
+		{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37}.Debug|x64.Build.0 = Debug|Any CPU
+		{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37}.Debug|x86.Build.0 = Debug|Any CPU
+		{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37}.Release|x64.ActiveCfg = Release|Any CPU
+		{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37}.Release|x64.Build.0 = Release|Any CPU
+		{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37}.Release|x86.ActiveCfg = Release|Any CPU
+		{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,8 +94,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{12DAD913-2412-4018-9C0D-53206ED68DFB} = {4B550C17-7848-4B2D-B690-EBE3ACEAA3DE}
 		{2C93819A-383D-48EE-AB60-7ED0428E8D55} = {5B9941FD-71C9-4092-98D6-9648B4C37F0D}
-		{81BC3082-2522-400C-998D-C644803C5384} = {4B550C17-7848-4B2D-B690-EBE3ACEAA3DE}
-		{7B0F9628-EDE5-4332-946D-60566520F42E} = {5B9941FD-71C9-4092-98D6-9648B4C37F0D}
+		{0F3A4FC7-6A71-4971-80B5-7831FB844648} = {4B550C17-7848-4B2D-B690-EBE3ACEAA3DE}
+		{B18FA26A-0B8F-4588-BAB7-76FBEDBCAE37} = {5B9941FD-71C9-4092-98D6-9648B4C37F0D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {4766386D-4073-4773-B385-3C5C665F4A7A}
