@@ -7,20 +7,21 @@ namespace Hilke.KineticConvolution.EFloatAlgebraicNumberCalculator
     public class EFloatAlgebraicNumberCalculator : IAlgebraicNumberCalculator<EFloat>
     {
         private readonly EContext _context;
-        private readonly EFloat _tolerance;
 
-        public EFloatAlgebraicNumberCalculator(EContext context, EFloat tolerance)
+        public EFloatAlgebraicNumberCalculator(EContext context, EFloat zeroTolerance)
         {
             _context = context ?? throw new ArgumentNullException(nameof(context));
-            _tolerance = tolerance ?? throw new ArgumentNullException(nameof(tolerance));
+            ZeroTolerance = zeroTolerance ?? throw new ArgumentNullException(nameof(zeroTolerance));
 
-            if (tolerance.IsZero || tolerance.IsNegative)
+            if (zeroTolerance.IsZero || zeroTolerance.IsNegative)
             {
                 throw new ArgumentOutOfRangeException(
                     message: "Tolerance must be strictly positive.",
-                    paramName: nameof(tolerance));
+                    paramName: nameof(zeroTolerance));
             }
         }
+
+        public EFloat ZeroTolerance { get; }
 
         public EFloat Add(EFloat left, EFloat right)
         {

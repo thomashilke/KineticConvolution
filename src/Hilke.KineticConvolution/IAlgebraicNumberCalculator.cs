@@ -2,6 +2,8 @@
 {
     public interface IAlgebraicNumberCalculator<TAlgebraicNumber>
     {
+        TAlgebraicNumber ZeroTolerance { get; }
+
         TAlgebraicNumber Add(TAlgebraicNumber left, TAlgebraicNumber right);
 
         TAlgebraicNumber Subtract(TAlgebraicNumber left, TAlgebraicNumber right);
