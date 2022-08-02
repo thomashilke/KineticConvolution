@@ -99,7 +99,7 @@ namespace Hilke.KineticConvolution.EFloatAlgebraicNumberCalculator
                 throw new ArgumentNullException(nameof(number));
             }
 
-            return number.Abs().CompareTo(_tolerance) == -1 ? 0 : number.Sign;
+            return number.Abs().CompareTo(ZeroTolerance) == -1 ? 0 : number.Sign;
         }
 
         public EFloat SquareRoot(EFloat number)
