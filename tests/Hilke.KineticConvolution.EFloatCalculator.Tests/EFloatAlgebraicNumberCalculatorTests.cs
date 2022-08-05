@@ -44,13 +44,13 @@ namespace Hilke.KineticConvolution.EFloatAlgebraicNumberCalculator.Tests
         {
             // Arrange
             Action action1 = () => _ = new EFloatAlgebraicNumberCalculator(context: null, ValidTolerance);
-            Action action2 = () => _ = new EFloatAlgebraicNumberCalculator(ValidContext, tolerance: null);
-            Action action3 = () => _ = new EFloatAlgebraicNumberCalculator(ValidContext, tolerance: EFloat.Create(-2, 8));
+            Action action2 = () => _ = new EFloatAlgebraicNumberCalculator(ValidContext, zeroTolerance: null);
+            Action action3 = () => _ = new EFloatAlgebraicNumberCalculator(ValidContext, zeroTolerance: EFloat.Create(-1, 8));
 
             // Assert
             action1.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("context");
-            action2.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("tolerance");
-            action3.Should().ThrowExactly<ArgumentOutOfRangeException>().And.ParamName.Should().Be("tolerance");
+            action2.Should().ThrowExactly<ArgumentNullException>().And.ParamName.Should().Be("zeroTolerance");
+            action3.Should().ThrowExactly<ArgumentOutOfRangeException>().And.ParamName.Should().Be("zeroTolerance");
         }
 
         [Test]
