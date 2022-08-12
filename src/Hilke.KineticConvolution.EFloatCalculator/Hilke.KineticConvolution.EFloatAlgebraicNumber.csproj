@@ -14,7 +14,6 @@
 
     <IsPackable>true</IsPackable>
     <Description>Implementation of a calculator with arbitrary precision arithmetics.</Description>
-    <Version>1.0.0-alpha01</Version>
   </PropertyGroup>
 
   <ItemGroup>
